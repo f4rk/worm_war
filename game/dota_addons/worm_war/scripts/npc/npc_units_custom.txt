@@ -4,6 +4,71 @@
 	"Version"	"1"
 	
 	//=================================================================================	
+	// Creature: Sheep
+	//=================================================================================
+	"npc_dota_creature_sheep"	
+	{
+		// General
+		//----------------------------------------------------------------
+		"BaseClass"					"npc_dota_creature"
+		"Model"						"models/items/hex/sheep_hex/sheep_hex.vmdl"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"BountyXP"					"0"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
+		"StatusHealth"				"100"
+		"TeamName"					"DOTA_TEAM_NEUTRALS"
+		"BaseClass"					"npc_dota_creature"
+		//"SoundSet"					"n_creep_Ranged"
+		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
+		"Level"						"1"
+		"ModelScale" 				".9"
+	}
+
+	//=================================================================================	
+	// Creature: Pig
+	//=================================================================================
+	"npc_dota_creature_pig"	
+	{
+		// General
+		//----------------------------------------------------------------
+		"BaseClass"					"npc_dota_creature"
+		"Model"						"models/props_gameplay/pig.vmdl"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"BountyXP"					"0"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
+		"StatusHealth"				"100"
+		"TeamName"					"DOTA_TEAM_NEUTRALS"
+		"BaseClass"					"npc_dota_creature"
+		//"SoundSet"					"n_creep_Ranged"
+		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
+		"Level"						"1"
+		"ModelScale" 				".9"	
+	}
+
+	//=================================================================================	
+	// Creature: Golden Sheep
+	//=================================================================================
+	"npc_dota_creature_gold_sheep"	
+	{
+		// General
+		//----------------------------------------------------------------
+		"BaseClass"					"npc_dota_creature"
+		"Model"						"models/items/hex/sheep_hex/sheep_hex_gold.vmdl"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"BountyXP"					"0"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
+		"StatusHealth"				"100"
+		"TeamName"					"DOTA_TEAM_NEUTRALS"
+		"BaseClass"					"npc_dota_creature"
+		//"SoundSet"					"n_creep_Ranged"
+		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
+		"Level"						"1"
+		"ModelScale" 				".9"
+
+		
+	}
+
+	//=================================================================================	
 	// Creature: Gnoll Assassin
 	//=================================================================================
 	"npc_dota_creature_gnoll_assassin"	
