@@ -5,7 +5,8 @@ RECENT CHANGES
 ======================
 
 - Added sheep, pig and golden sheep spawning 
-
+- Can only select Nyx
+- Added Devour Aura to Nyx (similar to heart stopper, but kills creeps instantly (imba))
 
 
 =================
@@ -21,7 +22,8 @@ IN PROGRESS
 TO DO
 =================
 
-- Add custom hero, walk over = eat food
-- Tail that follows
-- Length increment of tail
+- Add OnKill Event to aura for tail growth (have flesh heap code)
+- Spawns unit that follows with similar aura that kills hero?
 - Wall/Tail colision
+- Reset tail length on death
+- Track kills, deaths, longest tail ect.
