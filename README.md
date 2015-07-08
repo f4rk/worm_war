@@ -1,5 +1,13 @@
 # worm_war
 
+Useful resources:
+
+DOTA 2 API: 			https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/API
+Built in ability names: https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/Built-In_Ability_Names
+SpellLibrary:			https://github.com/Pizzalol/SpellLibrary
+Dota 2 VPK: 			https://github.com/dotabuff/d2vpk
+
+
 ======================
 RECENT CHANGES
 ======================
