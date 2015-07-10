@@ -32,6 +32,7 @@ function Precache( context )
 	PrecacheModel( "models/items/hex/sheep_hex/sheep_hex_gold.vmdl", context) 	-- Golden Sheep Model
 	--PrecacheScriptSound("Item.PickUpGemWorld")
 
+	PrecacheModel("models/items/broodmother/spiderling/thistle_crawler/thistle_crawler.vmdl", context) -- Tail Bug Model
 
 end
 
@@ -50,6 +51,7 @@ function CWormWarGameMode:InitGameMode()
 	GameMode:SetFogOfWarDisabled(true)
 	
 
+	spawnListener = ListenToGameEvent("npc_spawned", Dynamic_Wrap(CWormWarGameMode, "OnNPCSpawned"), self) 
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
 end
 
@@ -57,10 +59,28 @@ end
 function CWormWarGameMode:OnThink()
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		--print( "Template addon script is running." )
+		if spawnListener then
+			local innateSpells = StopListeningToGameEvent(spawnListener) 
+		end
+
 		CWormWarGameMode:DetermineAnimalSpawn()
 
 	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
 		return nil
 	end
 	return 1
+end
+
+function CWormWarGameMode:OnNPCSpawned(keys)
+    local hero = EntIndexToHScript(keys.entindex)
+    if hero:IsHero() then
+    	hero:SetAbilityPoints(0)
+        local Ability1 = hero:FindAbilityByName("devour_aura")
+        local Ability2 = hero:FindAbilityByName("tail_growth")
+        if Ability1 and Ability2 then
+            print('hero Spawned leveling spells')
+            Ability1:SetLevel(1)
+            Ability2:SetLevel(1)
+        end
+    end
 end

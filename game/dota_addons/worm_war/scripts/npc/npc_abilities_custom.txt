@@ -80,6 +80,10 @@
 						"Target" 		"TARGET"
 					}
 				}
+				"OnKill"
+				{
+					
+				}
 			}
 
 		"modifier_devour_aura_debuff_visibility"
@@ -91,3 +95,37 @@
 		}
 	}
 }
+
+	//=================================================================================================================
+	// Nyx Assassin: Tail Growth
+	//=================================================================================================================
+	"tail_growth"
+ 	{
+ 		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"								"ability_datadriven"
+		"AbilityTextureName"					"weaver_the_swarm"
+		"ScriptFile"							"tail_growth"
+		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		
+		"Modifiers"
+		{
+			"modifier_tail_growth_datadriven"
+			{
+				"Passive"	"1"
+				"IsHidden"	"0"
+
+				"OnKill"
+				{
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/tail_growth.lua"
+						"Function"				"TailSpawn"
+					}
+				}
+			}
+		}
+	}
+}
+
+

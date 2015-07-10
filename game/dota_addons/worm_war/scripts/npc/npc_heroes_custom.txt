@@ -10,7 +10,7 @@
 	{
 		"override_hero"				"npc_dota_hero_nyx_assassin"			// Hero to override
 		"Ability1"					"devour_aura"						// Ability 1
-		"Ability2"					""
+		"Ability2"					"tail_growth"						// Ability 2
 		"Ability3"					""
 		"Ability4"					""	
 	}

@@ -54,18 +54,43 @@
 		//----------------------------------------------------------------
 		"BaseClass"					"npc_dota_creature"
 		"Model"						"models/items/hex/sheep_hex/sheep_hex_gold.vmdl"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
 		"BountyXP"					"0"
-		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
 		"StatusHealth"				"100"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
 		"BaseClass"					"npc_dota_creature"
 		//"SoundSet"					"n_creep_Ranged"
 		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
-		"ModelScale" 				".9"
+		"ModelScale" 				"0.9"
 
 		
+	}
+
+	//=================================================================================	
+	// Creature: Tail Bug
+	//=================================================================================
+	"npc_dota_creature_tail_bug"	
+	{
+		// General
+		//----------------------------------------------------------------
+		"BaseClass"					"npc_dota_creature"
+		"Model"						"models/items/broodmother/spiderling/thistle_crawler/thistle_crawler.vmdl"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"BountyXP"					"0"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"StatusHealth"				"100"
+		"BaseClass"					"npc_dota_creature"
+		//"SoundSet"					"n_creep_Ranged"
+		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
+		"Level"						"1"
+		"ModelScale" 				"0.5"
+
+		// Abilities
+		//----------------------------------------------------------------
+		"Ability1"					""			// Ability 1
+
 	}
 
 	//=================================================================================	
