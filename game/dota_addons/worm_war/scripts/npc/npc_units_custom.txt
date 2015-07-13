@@ -42,7 +42,7 @@
 		//"SoundSet"					"n_creep_Ranged"
 		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
-		"ModelScale" 				".9"	
+		"ModelScale" 				".9"
 	}
 
 	//=================================================================================	
@@ -64,8 +64,6 @@
 		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
 		"ModelScale" 				"0.9"
-
-		
 	}
 
 	//=================================================================================	
@@ -87,9 +85,11 @@
 		"Level"						"1"
 		"ModelScale" 				"0.5"
 
+		"MovementSpeed"				"500"	
+		
 		// Abilities
 		//----------------------------------------------------------------
-		"Ability1"					""			// Ability 1
+		"Ability1"					"death_aura"			// Ability 1
 
 	}
 

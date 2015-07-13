@@ -55,10 +55,12 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     	hero:SetAbilityPoints(0)
         local Ability1 = hero:FindAbilityByName("devour_aura")
         local Ability2 = hero:FindAbilityByName("tail_growth")
-        if Ability1 and Ability2 then
+		local Ability3 = hero:FindAbilityByName("worm_war_phase")
+        if Ability1 and Ability2 and Ability3 then
             print('hero Spawned leveling spells')
             Ability1:SetLevel(1)
             Ability2:SetLevel(1)
+			Ability3:SetLevel(1)
         end
     end
 end
@@ -131,7 +133,10 @@ function CWormWarGameMode:OnEntityKilled( event )
 		end
 	else
 		-- HANDLE LENGTH addition + win condition
-		local nSegments = hero.tailLength
+		local nSegments = 0
+		if hero.tailLength ~= null then
+			nSegments = hero.tailLength
+		end
 		local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
 		print("Current Segments: ".. nSegments)
 		print("Segments Remaining: ".. nSegmentsRemaining)

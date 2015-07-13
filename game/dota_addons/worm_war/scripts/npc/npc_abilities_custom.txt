@@ -80,10 +80,6 @@
 						"Target" 		"TARGET"
 					}
 				}
-				"OnKill"
-				{
-					
-				}
 			}
 
 		"modifier_devour_aura_debuff_visibility"
@@ -107,6 +103,8 @@
 		"AbilityTextureName"					"weaver_the_swarm"
 		"ScriptFile"							"tail_growth"
 		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityUnitTargetType"    			 	"DOTA_UNIT_TARGET_ALL"
+		"AbilityUnitTargetTeam"					"DOTA_UNIT_TARGET_TEAM_BOTH"
 		
 		"Modifiers"
 		{
@@ -124,6 +122,130 @@
 					}
 				}
 			}
+			
+			"modifier_tail_kill_datadriven"
+			{
+				"Passive"	"1"
+				"IsHidden"	"1"
+				
+				"OnDeath"
+				{
+					"RunScript"
+					{
+						"ScriptFile"		"scripts/vscripts/tail_growth.lua"
+						"Function"			"TailCleanup"
+					}
+				}
+			}
+		}
+	}
+	
+	//=================================================================================================================
+	// Nyx Assassin: Phase
+	//=================================================================================================================
+	"worm_war_phase"
+ 	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"								"ability_datadriven"
+		"AbilityTextureName"					"nyx_assassin_vendetta"
+		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		
+		"Modifiers"
+		{
+			"modifier_phase_datadriven"
+			{
+				"Passive"		"1"
+				"IsHidden"		"1"
+
+				"States"
+				{
+					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		
+		}
+	}
+	
+	//=================================================================================================================
+	// Tail Bug: Death Aura
+	//=================================================================================================================
+	"death_aura"
+ 	{
+ 		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"								"ability_datadriven"
+		"AbilityTextureName"					"necrolyte_heartstopper_aura"
+		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
+		"AbilityUnitTargetTeam"     			"DOTA_UNIT_TARGET_TEAM_BOTH"
+    	"AbilityUnitTargetType"    			 	"DOTA_UNIT_TARGET_HERO"
+
+    	// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"75"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"death_aura_range"		"75"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"death_aura_damage_interval"		"0.2" 
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_death_aura_datadriven"
+			{
+				"Passive"		"1"
+				"IsHidden"		"1"
+
+				"Aura" 			"modifier_death_debuff_datadriven"
+				"Aura_Radius" 	"%death_aura_range"
+				"Aura_Teams" 	"DOTA_UNIT_TARGET_TEAM_BOTH"
+				"Aura_Types" 	"DOTA_UNIT_TARGET_HERO"
+			}
+
+			"modifier_death_debuff_datadriven"
+			{
+				"IsDebuff"	"1"
+				"IsHidden"	"1"
+
+				"ThinkInterval"	"%death_aura_damage_interval"
+
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/death_aura.lua"
+						"Function"				"DeathAura"
+						"visibility_modifier"	"modifier_death_aura_debuff_visibility"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"RemoveModifier"
+					{
+						"ModifierName"	"modifier_death_aura_debuff_visibility"
+						"Target" 		"TARGET"
+					}
+				}
+			}
+
+		"modifier_death_aura_debuff_visibility"
+		{
+			"IsDebuff"		"1"
+			"IsHidden"		"0"
+			"IsPurgable" 	"0"
+			"Passive"		"0"
 		}
 	}
 }

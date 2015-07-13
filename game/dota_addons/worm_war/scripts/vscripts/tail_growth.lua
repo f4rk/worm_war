@@ -53,3 +53,22 @@ function TailSpawn(keys)
 		end
 	end
 end
+
+function TailCleanup(keys)
+	local caster = keys.caster
+	if caster.tailLength ~= nil then
+		for i=2,caster.tailLength+1 do
+			-- local damage_table = {}
+			-- local target = caster.followUnits[i]
+			-- damage_table.attacker = caster
+			-- damage_table.victim = target
+			-- damage_table.damage_type = DAMAGE_TYPE_PURE
+			-- damage_table.ability = keys.ability
+			-- damage_table.damage = target:GetMaxHealth()
+			-- ApplyDamage(damage_table)
+			caster.followUnits[i]:ForceKill(true)
+		end
+		caster.followUnits = {caster}
+		caster.tailLength = 0
+	end
+end
