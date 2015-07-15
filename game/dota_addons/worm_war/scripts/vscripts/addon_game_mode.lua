@@ -33,8 +33,11 @@ function Precache( context )
 	PrecacheModel( "models/items/hex/sheep_hex/sheep_hex_gold.vmdl", context) 	-- Golden Sheep Model
 	--PrecacheScriptSound("Item.PickUpGemWorld")
 
+	PrecacheUnitByNameAsync( "npc_dota_creature_tail_bug", function(unit) end )	
 	PrecacheModel("models/items/broodmother/spiderling/thistle_crawler/thistle_crawler.vmdl", context) -- Tail Bug Model
-
+	
+	PrecacheUnitByNameAsync( "npc_dota_creature_fire_elemental", function(unit) end )
+	PrecacheModel( "models/heroes/invoker/forge_spirit.vmdl", context) 	-- Forge Spirit model
 end
 
 -- Create the game mode when we activate
@@ -87,6 +90,7 @@ function CWormWarGameMode:InitGameMode()
 	self.FOOD_LIMIT = 20
 	self.NUM_CENTRE_FOOD = 5
 	self.NUM_SUPER_FOOD = 3
+	self.NUM_FIRE_ELEMENTAL = 3
 
 	self.leadingTeam = -1
 	self.runnerupTeam = -1
@@ -117,17 +121,22 @@ function CWormWarGameMode:InitGameMode()
 
 	--- Spawn initial Food
 	for i = 1, self.FOOD_LIMIT do
-		CWormWarGameMode:SpawnFoodEntity(1, false )
+		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_sheep", false )
 	end
 
 	-- Spawn inital food in centre
 	for i = 1, self.NUM_CENTRE_FOOD do
-		CWormWarGameMode:SpawnFoodEntity(1, true )
+		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_sheep", true )
 	end
 
 	-- Spawn inital pigs
 	for i = 1, self.NUM_SUPER_FOOD do
-		CWormWarGameMode:SpawnFoodEntity(2, false )
+		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_pig", false )
+	end
+
+	-- Spawn inital Fire Elementals
+	for i = 1, self.NUM_FIRE_ELEMENTAL do
+		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_fire_elemental", true )
 	end
 
 end
@@ -333,7 +342,7 @@ end
 ---------------------------------------------------------------------------
 -- Event: Spawn Sheep
 ---------------------------------------------------------------------------
-function CWormWarGameMode:SpawnFoodLocation(foodType, centre)
+function CWormWarGameMode:SpawnFoodLocation(centre)
 	local r1 = RandomInt( -40, 40 )
 	local r2 = RandomInt( -40, 40 )
 	local xpos = 0
@@ -343,8 +352,8 @@ function CWormWarGameMode:SpawnFoodLocation(foodType, centre)
 		xpos = r1*100; -- Coordinates within centre of arena
 		ypos = r2*100;
 	else
-		xpos = r1*200; -- Coordinates within arena
-		ypos = r2*200;
+		xpos = r1*150; -- Coordinates within arena (depends on map size)
+		ypos = r2*150;
 	end
 
 	local spawnPoint = Vector(xpos, ypos, 0)
@@ -353,16 +362,13 @@ function CWormWarGameMode:SpawnFoodLocation(foodType, centre)
 end
 
 function CWormWarGameMode:SpawnFoodEntity(foodType, centre)
-	local spawnPoint = CWormWarGameMode:SpawnFoodLocation(foodType, centre)
-	--print( spawnPoint )
-	if foodType == 1 then
-		local sheep = CreateUnitByName( "npc_dota_creature_sheep", spawnPoint, true, nil, nil, DOTA_TEAM_NEUTRALS )
-	elseif foodType == 2 then
-		--EmitGlobalSound("General.Pig")
-		local sheep = CreateUnitByName( "npc_dota_creature_pig", spawnPoint, true, nil, nil, DOTA_TEAM_NEUTRALS )
-	elseif foodType == 3 then
-		--EmitGlobalSound("Item.PickUpGemWorld")
-		local sheep = CreateUnitByName( "npc_dota_creature_gold_sheep", spawnPoint, true, nil, nil, DOTA_TEAM_NEUTRALS )
-	end
 	
+	local spawnPoint = CWormWarGameMode:SpawnFoodLocation(centre)
+	local hFood = CreateUnitByName( foodType, spawnPoint, true, nil, nil, DOTA_TEAM_NEUTRALS )
+	
+	--print(hFood:GetUnitName())
+	if centre and hFood ~= nil then
+		--print("respawning centre food")
+		hFood.centreFlag = 1;
+	end
 end

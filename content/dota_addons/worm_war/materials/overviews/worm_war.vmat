@@ -3,5 +3,5 @@
 	"Shader"	"ui.vfx"
 	"F_STENCIL_MASKING"	"1"
 	"F_TRANSLUCENT"	"0"
-	"Texture"	"materials/overviews/forest_solo.tga"
+	"Texture"	"materials/overviews/worm_war.tga"
 }

@@ -16,6 +16,7 @@
 		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
 		"AbilityUnitTargetTeam"     			"DOTA_UNIT_TARGET_TEAM_ENEMY"
     	"AbilityUnitTargetType"    			 	"DOTA_UNIT_TARGET_CREEP"
+    	"SpellImmunityType"						"SPELL_IMMUNITY_ENEMIES_NO"
 
     	// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -53,6 +54,7 @@
 				"Aura_Radius" 	"%devour_aura_range"
 				"Aura_Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
 				"Aura_Types" 	"DOTA_UNIT_TARGET_CREEP"
+				//"Aura_Flags"	"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
 			}
 
 			"modifier_devour_debuff_datadriven"
@@ -82,15 +84,15 @@
 				}
 			}
 
-		"modifier_devour_aura_debuff_visibility"
-		{
-			"IsDebuff"		"1"
-			"IsHidden"		"0"
-			"IsPurgable" 	"0"
-			"Passive"		"0"
+			"modifier_devour_aura_debuff_visibility"
+			{
+				"IsDebuff"		"1"
+				"IsHidden"		"0"
+				"IsPurgable" 	"0"
+				"Passive"		"0"
+			}
 		}
 	}
-}
 
 	//=================================================================================================================
 	// Nyx Assassin: Tail Growth
@@ -163,7 +165,6 @@
 					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
 				}
 			}
-		
 		}
 	}
 	
@@ -240,14 +241,40 @@
 				}
 			}
 
-		"modifier_death_aura_debuff_visibility"
-		{
-			"IsDebuff"		"1"
-			"IsHidden"		"0"
-			"IsPurgable" 	"0"
-			"Passive"		"0"
+			"modifier_death_aura_debuff_visibility"
+			{
+				"IsDebuff"		"1"
+				"IsHidden"		"0"
+				"IsPurgable" 	"0"
+				"Passive"		"0"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Fire elemental: Spell Immunity
+	//=================================================================================================================
+	"magic_immune_passive"
+	{
+ 		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"								"ability_datadriven"
+		"AbilityTextureName"					"modifier_magicimmune"
+		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		//"AbilityUnitTargetTeam"     			"DOTA_UNIT_TARGET_TEAM_BOTH"
+    	//"AbilityUnitTargetType"    			 "DOTA_UNIT_TARGET_HERO"
+
+    	"Modifiers"
+    	{    		
+    		"modifier_magic_immune"
+    		{
+    			"Passive"	"1"
+    			
+    			"States"
+				{
+					"MODIFIER_STATE_MAGIC_IMMUNE"	"MODIFIER_STATE_VALUE_ENABLED" 
+				}
+			}
 		}
 	}
 }
-
-

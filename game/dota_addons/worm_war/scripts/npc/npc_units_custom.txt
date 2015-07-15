@@ -59,7 +59,6 @@
 		"BountyXP"					"0"
 		"StatusHealth"				"100"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
-		"BaseClass"					"npc_dota_creature"
 		//"SoundSet"					"n_creep_Ranged"
 		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
@@ -79,7 +78,6 @@
 		"BountyXP"					"0"
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 		"StatusHealth"				"100"
-		"BaseClass"					"npc_dota_creature"
 		//"SoundSet"					"n_creep_Ranged"
 		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
@@ -90,6 +88,35 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"Ability1"					"death_aura"			// Ability 1
+
+	}
+
+	//=================================================================================	
+	// Creature: Fire Elemental
+	//=================================================================================
+	"npc_dota_creature_fire_elemental"	
+	{
+		// General
+		//----------------------------------------------------------------
+		"BaseClass"					"npc_dota_creature"
+		"Model"						"models/heroes/invoker/forge_spirit.vmdl"
+		"MinimapIcon"               "minimap_enemyicon"
+		"MinimapIconSize"           "500"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"BountyXP"					"0"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"StatusHealth"				"100"
+		"TeamName"					"DOTA_TEAM_NEUTRALS"
+
+		//"SoundSet"				"n_creep_Ranged"
+		//"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
+		"Level"						"1"
+		"ModelScale" 				"1.1"
+
+		// Abilities
+		//----------------------------------------------------------------
+		"Ability1"					"magic_immune_passive"			// Ability 1
+		"Ability2"					"death_aura"					// Ability 2
 
 	}
 

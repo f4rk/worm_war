@@ -56,11 +56,14 @@ function CWormWarGameMode:OnNPCSpawned(keys)
         local Ability1 = hero:FindAbilityByName("devour_aura")
         local Ability2 = hero:FindAbilityByName("tail_growth")
 		local Ability3 = hero:FindAbilityByName("worm_war_phase")
+		--local Ability4 = hero:FindAbilityByName("lina_dragon_slave")
         if Ability1 and Ability2 and Ability3 then
             print('hero Spawned leveling spells')
             Ability1:SetLevel(1)
             Ability2:SetLevel(1)
 			Ability3:SetLevel(1)
+			--Ability4:SetLevel(1)
+
         end
     end
 end
@@ -111,6 +114,8 @@ function CWormWarGameMode:OnEntityKilled( event )
 	local killedTeam = killedUnit:GetTeam()
 	local hero = EntIndexToHScript( event.entindex_attacker )
 	local heroTeam = hero:GetTeam()
+
+	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
 		self.allSpawned = true
 		--print("Hero has been killed")
@@ -132,6 +137,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 			end
 		end
 	else
+		-- Unit deaths (food, fire elementals etc.)
 		-- HANDLE LENGTH addition + win condition
 		local nSegments = 0
 		if hero.tailLength ~= null then
@@ -152,5 +158,9 @@ function CWormWarGameMode:OnEntityKilled( event )
 			--broadcast_kill_event.close_to_victory = 1
 		end
 
+		--Respawn food in appropriate area, dont respawn when tail bug dies
+		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" then
+			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
+		end
 	end
 end
