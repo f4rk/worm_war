@@ -12,6 +12,7 @@
 		"Ability1"					"devour_aura"						// Ability 1
 		"Ability2"					"tail_growth"						// Ability 2
 		"Ability3"					"worm_war_phase"
+		//"Ability4"					"worm_war_movement"
 		//"Ability4"					"lina_dragon_slave" //Testing magic immunity
 		
 		"MovementSpeed"				"500"	

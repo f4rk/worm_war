@@ -56,15 +56,19 @@ function CWormWarGameMode:OnNPCSpawned(keys)
         local Ability1 = hero:FindAbilityByName("devour_aura")
         local Ability2 = hero:FindAbilityByName("tail_growth")
 		local Ability3 = hero:FindAbilityByName("worm_war_phase")
+		-- local Ability4 = hero:FindAbilityByName("worm_war_movement")
 		--local Ability4 = hero:FindAbilityByName("lina_dragon_slave")
         if Ability1 and Ability2 and Ability3 then
             print('hero Spawned leveling spells')
             Ability1:SetLevel(1)
             Ability2:SetLevel(1)
 			Ability3:SetLevel(1)
+			-- Ability4:SetLevel(1)
 			--Ability4:SetLevel(1)
 
         end
+
+		hero.dest = nil
     end
 end
 
@@ -118,6 +122,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
 		self.allSpawned = true
+		killedUnit.dest = nil
 		--print("Hero has been killed")
 		if hero:IsRealHero() and heroTeam ~= killedTeam then
 			--print("Granting killer xp")
@@ -163,4 +168,12 @@ function CWormWarGameMode:OnEntityKilled( event )
 			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
 		end
 	end
+end
+
+function CWormWarGameMode:OnAbilityUsed(keys)
+    local player = EntIndexToHScript(keys.PlayerID)
+    local abilityname = keys.abilityname
+    local hero = player:GetAssignedHero()
+    hero.justUsedAbility = true
+        -- this should always fire an OnOrder event too, since casting an ability is an order.
 end
