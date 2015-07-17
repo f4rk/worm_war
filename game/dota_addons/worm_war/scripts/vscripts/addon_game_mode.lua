@@ -11,7 +11,6 @@ end
 --require( "os" )
 require( "events" )
 require( "utility_functions")
-require("FlashUtil")
 
 function Precache( context )
 	--[[
@@ -118,7 +117,6 @@ function CWormWarGameMode:InitGameMode()
 	spawnListener = ListenToGameEvent("npc_spawned", Dynamic_Wrap(CWormWarGameMode, "OnNPCSpawned"), self) 
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CWormWarGameMode, 'OnEntityKilled' ), self )
 	-- ListenToGameEvent( "dota_npc_goal_reached", Dynamic_Wrap( CWormWarGameMode, "OnNpcGoalReached" ), self )
-	ListenToGameEvent('dota_player_used_ability', Dynamic_Wrap(CWormWarGameMode, 'OnAbilityUsed'), self)
 
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
 	GameMode:SetThink( "MovementThink", self, "MovementThink")
@@ -194,84 +192,31 @@ end
 function CWormWarGameMode:MovementThink()
 	local allHeroes = HeroList:GetAllHeroes()
 	for _,entity in pairs( allHeroes) do
-
-		local origin = entity:GetAbsOrigin()
 		local do_move = false
-
-		if entity.dest ~= nil then
-			-- print((origin - entity.dest):Length2D())
-		end
-
-		if entity.dest == nil then
+		local origin = entity:GetAbsOrigin()
+		local forwardVector = entity:GetForwardVector()
+		if entity.lastOrigin == nil or entity.lastForwardVector == nil then
 			do_move = true
-			entity.reached = true
-			print("No target")
-		elseif (origin - entity.dest):Length2D() <= 50 then
-			do_move = true
-			entity.reached = true
-			print("Reached move target")
 		else
-			entity.reached = false
+			local displacement = origin - entity.lastOrigin
+			local distance = displacement:Length2D()
+			if distance <= 0.0001 and entity.lastForwardVector:Cross(forwardVector):Length() < 0.0001  then
+				do_move = true
+			end
 		end
 
-		FlashUtil:GetCursorWorldPos(entity:GetPlayerID(),function(PlayerID, cursorPos)
-			-- print(cursorPos)
-			if  entity.orderDetected and not entity.moveDetected then
-				entity.justUsedAbility = false
-		        entity.orderDetected = false
-		        entity.moveDetected = false
-		        print("order but no move")
-			elseif entity.orderDetected and entity.moveDetected and entity:IsAlive() then
-			    if entity.justUsedAbility then
-			        print("hero.justUsedAbility, returning")
-			        entity.justUsedAbility = false
-			        entity.orderDetected = false
-			        entity.moveDetected = false
-			    else
-				    entity.orderDetected = false
-				    entity.moveDetected = false
-
-				    local validPos = true
-				    -- make sure the cursor isn't on the UI
-				    if cursorPos.x > 30000 or cursorPos.y > 30000 or cursorPos.z > 30000 then
-				        validPos = false
-				    end
-				    if validPos and not entity.reached then
-				    	if entity.last_moved ~= nil then
-				    		print(Time() - entity.last_moved)
-				    		if Time() - entity.last_moved > 0.3 then
-						        local possibleRightClickVector = cursorPos
-						        
-						        -- at this point the player did not use an ability, but either used right click move, stop, or hold position.
-						        print("moveOrderDetected")
-						        print(possibleRightClickVector)
-						        entity.dest = possibleRightClickVector
-						        entity.last_moved = Time()	
-				        	end
-				        end
-				    end
-				end
-			end
-		end)
+		entity.lastOrigin = origin
+		entity.lastForwardVector = forwardVector
 
 		if do_move then
 			local forwardVector = entity:GetForwardVector()
-			local newMoveLocation = origin + (forwardVector * 1000)
+			local newMoveLocation = origin + (forwardVector * 500)
 			
 			entity.dest = newMoveLocation
-			ExecuteOrderFromTable({	
-				UnitIndex = entity:GetEntityIndex(),
-				OrderType = DOTA_UNIT_ORDER_MOVE_TO_POSITION,
-				Position = newMoveLocation,
-				Queue = true})
-			
-			entity.last_moved = Time()			
-			print("setting new move target")
+			entity:MoveToPosition(newMoveLocation)
 		end
-
-		
 	end
-	return 0.016
+	return 0.005
 end
 
 ---------------------------------------------------------------------------

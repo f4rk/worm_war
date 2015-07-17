@@ -165,30 +165,6 @@
 					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
 				}
 			}
-
-			"modifier_worm_passive"
-	        {
-	            "Passive"                        "1"
-	            "IsHidden"                       "1"
-	            "OnUnitMoved"
-	            // Triggers on Move/Casting/Hold/Stop
-	            {
-	                "RunScript"
-	                {
-	                    "ScriptFile"    "scripts/vscripts/movement.lua"
-	                    "Function"      "MoveDetected"
-	                }
-	            }
-	            "OnOrder"
-	            // Triggers on Move/Casting/Hold/Stop
-	            {
-	                "RunScript"
-	                {
-	                    "ScriptFile"    "scripts/vscripts/movement.lua"
-	                    "Function"      "OrderDetected"
-	                }
-	            }
-	        }
 		}
 	}
 	

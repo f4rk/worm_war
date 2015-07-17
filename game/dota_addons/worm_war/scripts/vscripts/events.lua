@@ -169,11 +169,3 @@ function CWormWarGameMode:OnEntityKilled( event )
 		end
 	end
 end
-
-function CWormWarGameMode:OnAbilityUsed(keys)
-    local player = EntIndexToHScript(keys.PlayerID)
-    local abilityname = keys.abilityname
-    local hero = player:GetAssignedHero()
-    hero.justUsedAbility = true
-        -- this should always fire an OnOrder event too, since casting an ability is an order.
-end
