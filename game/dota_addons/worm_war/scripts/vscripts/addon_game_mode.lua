@@ -120,6 +120,7 @@ function CWormWarGameMode:InitGameMode()
 
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
 	GameMode:SetThink( "MovementThink", self, "MovementThink")
+	--GameMode:SetThink( "BoundaryThink", self, "BoundaryThink")
 
 	--- Spawn initial Food
 	for i = 1, self.FOOD_LIMIT do
@@ -195,6 +196,12 @@ function CWormWarGameMode:MovementThink()
 		local do_move = false
 		local origin = entity:GetAbsOrigin()
 		local forwardVector = entity:GetForwardVector()
+		
+		if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
+			entity:ForceKill(true)
+			return 0.005
+		end
+
 		if entity.lastOrigin == nil or entity.lastForwardVector == nil then
 			do_move = true
 		else
@@ -380,11 +387,11 @@ function CWormWarGameMode:SpawnFoodLocation(centre)
 	local ypos = 0
 	
 	if centre then
-		xpos = r1*100; -- Coordinates within centre of arena
-		ypos = r2*100;
+		xpos = r1*50; -- Coordinates within centre of arena
+		ypos = r2*50;
 	else
-		xpos = r1*150; -- Coordinates within arena (depends on map size)
-		ypos = r2*150;
+		xpos = r1*100; -- Coordinates within arena (depends on map size)
+		ypos = r2*100;
 	end
 
 	local spawnPoint = Vector(xpos, ypos, 0)
