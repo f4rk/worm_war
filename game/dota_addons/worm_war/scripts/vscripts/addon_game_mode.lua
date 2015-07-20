@@ -112,6 +112,7 @@ function CWormWarGameMode:InitGameMode()
 	GameMode:SetFogOfWarDisabled(true)
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesOverride( true )
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesVisible( false )
+	GameRules:SetSameHeroSelectionEnabled(true)
 	
 	ListenToGameEvent( "game_rules_state_change", Dynamic_Wrap( CWormWarGameMode, 'OnGameRulesStateChange' ), self )
 	spawnListener = ListenToGameEvent("npc_spawned", Dynamic_Wrap(CWormWarGameMode, "OnNPCSpawned"), self) 
