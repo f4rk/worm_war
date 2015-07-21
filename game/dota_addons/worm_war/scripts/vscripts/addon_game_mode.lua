@@ -200,7 +200,6 @@ function CWormWarGameMode:MovementThink()
 		
 		if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
 			entity:ForceKill(true)
-			return 0.005
 		end
 
 		if entity.lastOrigin == nil or entity.lastForwardVector == nil then

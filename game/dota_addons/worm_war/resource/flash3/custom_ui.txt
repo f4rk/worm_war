@@ -7,7 +7,7 @@
 
 	"1"
 	{
-		"File"		"PlaceHold"
+		"File"		""
 		"Depth"		"50"
 	}
 }

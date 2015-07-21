@@ -51,6 +51,41 @@ end
 
 function CWormWarGameMode:OnNPCSpawned(keys)
     local hero = EntIndexToHScript(keys.entindex)
+    
+    if hero:IsHero() then
+    	local player = hero:GetOwnerEntity()
+	    local teamN = player:GetTeamNumber()
+
+	    --Team 4 and 5 are neitrals and no team, offset by 2 for direction on spawn
+	    if teamN > 5 then 
+	    	teamN = teamN - 2
+	    end
+
+    	local direction = Vector (math.cos((90 - (teamN-2)*36)*math.pi/180), math.sin((90 - (teamN-2)*36)*math.pi/180), 0)
+    	direction = direction:Normalized()
+    	hero:SetForwardVector(direction) 
+
+   		hero:SetAbilityPoints(0)
+    	local Ability1 = hero:FindAbilityByName("devour_aura")
+    	local Ability2 = hero:FindAbilityByName("tail_growth")
+		local Ability3 = hero:FindAbilityByName("worm_war_phase")
+		-- local Ability4 = hero:FindAbilityByName("worm_war_movement")
+		--local Ability4 = hero:FindAbilityByName("lina_dragon_slave")
+   		if Ability1 and Ability2 and Ability3 then
+    		print('hero Spawned leveling spells')
+   	    	Ability1:SetLevel(1)
+    	    Ability2:SetLevel(1)
+			Ability3:SetLevel(1)
+			-- Ability4:SetLevel(1)
+			--Ability4:SetLevel(1)
+    	end
+    end
+
+	hero.dest = nil
+end
+
+--[[function CWormWarGameMode:OnHeroPicked(keys)
+	local hero = EntIndexToHScript(keys.entindex)
     if hero:IsHero() then
     	hero:SetAbilityPoints(0)
         local Ability1 = hero:FindAbilityByName("devour_aura")
@@ -70,7 +105,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 
 		hero.dest = nil
     end
-end
+end]]--
 
 ---------------------------------------------------------------------------
 -- Event: OnTeamKillCredit, see if anyone won
