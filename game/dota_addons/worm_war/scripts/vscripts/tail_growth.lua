@@ -1,6 +1,5 @@
 function TailSpawn(keys)
 	local caster = keys.caster
-	local ability = keys.ability
 	local unit = keys.unit
 	local unitName = unit:GetUnitName()
 	
@@ -12,8 +11,15 @@ function TailSpawn(keys)
 		numToSpawn = 2
 	elseif unitName == "npc_dota_creature_gold_sheep" then
 		numToSpawn = 5
+	else
+		numToSpawn = 0
 	end
 
+	DoTailSpawn(caster,numToSpawn)
+end
+
+
+function DoTailSpawn(caster, numToSpawn)
 
 	for i=1,numToSpawn do
 		if caster.tailLength == nil then

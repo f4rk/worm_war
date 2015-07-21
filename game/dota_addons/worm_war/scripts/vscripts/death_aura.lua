@@ -1,3 +1,5 @@
+require("tail_growth")
+
 function DeathAura( keys )
 	local caster = keys.caster
 	local ability = keys.ability
@@ -22,4 +24,10 @@ function DeathAura( keys )
 	damage_table.damage = aura_damage;
 
 	ApplyDamage(damage_table)
+
+	if target:IsHero() then
+		if target ~= caster:GetOwner() then
+			DoTailSpawn(caster:GetOwner(),5)
+		end
+	end
 end

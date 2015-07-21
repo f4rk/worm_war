@@ -6,6 +6,12 @@ function DevourAura( keys )
 	local aura_damage = target_max_hp
 	local aura_damage_interval = ability:GetLevelSpecialValueFor("aura_damage_interval", (ability:GetLevel() - 1))
 
+	local name = target:GetUnitName()
+	print(name)
+	if name ~= "npc_dota_creature_sheep" and name ~= "npc_dota_creature_pig" and name ~= "npc_dota_creature_gold_sheep" then
+		return
+	end
+
 	local visibility_modifier = keys.visibility_modifier
 	if target:CanEntityBeSeenByMyTeam(caster) then
 		ability:ApplyDataDrivenModifier(caster, target, visibility_modifier, {})
