@@ -56,6 +56,10 @@ function DoTailSpawn(caster, numToSpawn)
 			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_fleshheap_count.vpcf", PATTACH_OVERHEAD_FOLLOW, caster )
 			ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
 			ParticleManager:ReleaseParticleIndex( nFXIndex )
+
+			local playerID = caster:GetPlayerID()
+			caster:IncrementKills(playerID)
+
 		end
 	end
 end

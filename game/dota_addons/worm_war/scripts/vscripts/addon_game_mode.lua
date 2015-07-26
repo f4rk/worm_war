@@ -71,6 +71,11 @@ function CWormWarGameMode:InitGameMode()
 		end
 	end
 
+	--self.TailLength = {}
+	--for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
+   	-- 	self.TailLength[i] = 0
+	--end
+
 	self.m_VictoryMessages = {}
 	self.m_VictoryMessages[DOTA_TEAM_GOODGUYS] = "#VictoryMessage_GoodGuys"
 	self.m_VictoryMessages[DOTA_TEAM_BADGUYS]  = "#VictoryMessage_BadGuys"
@@ -119,9 +124,12 @@ function CWormWarGameMode:InitGameMode()
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CWormWarGameMode, 'OnEntityKilled' ), self )
 	-- ListenToGameEvent( "dota_npc_goal_reached", Dynamic_Wrap( CWormWarGameMode, "OnNpcGoalReached" ), self )
 
+	Convars:RegisterCommand( "wormwar_force_end_game", function(...) return self:EndGame( DOTA_TEAM_GOODGUYS ) end, "Force the game to end.", FCVAR_CHEAT )
+
+
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
 	GameMode:SetThink( "MovementThink", self, "MovementThink")
-	--GameMode:SetThink( "BoundaryThink", self, "BoundaryThink")
+	
 
 	--- Spawn initial Food
 	for i = 1, self.FOOD_LIMIT do
@@ -183,8 +191,8 @@ function CWormWarGameMode:OnThink()
 		--print( "Template addon script is running." )
 		
 		
-	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
-		return nil
+	--elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
+	--	return nil
 	end
 
 

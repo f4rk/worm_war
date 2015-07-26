@@ -4,7 +4,7 @@
 ---------------------------------------------------------------------------
 function CWormWarGameMode:OnGameRulesStateChange()
 	local nNewState = GameRules:State_Get()
-	--print( "OnGameRulesStateChange: " .. nNewState )
+	print( "OnGameRulesStateChange: " .. nNewState )
 
 	if nNewState == DOTA_GAMERULES_STATE_HERO_SELECTION then
 
@@ -84,28 +84,6 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 	hero.dest = nil
 end
 
---[[function CWormWarGameMode:OnHeroPicked(keys)
-	local hero = EntIndexToHScript(keys.entindex)
-    if hero:IsHero() then
-    	hero:SetAbilityPoints(0)
-        local Ability1 = hero:FindAbilityByName("devour_aura")
-        local Ability2 = hero:FindAbilityByName("tail_growth")
-		local Ability3 = hero:FindAbilityByName("worm_war_phase")
-		-- local Ability4 = hero:FindAbilityByName("worm_war_movement")
-		--local Ability4 = hero:FindAbilityByName("lina_dragon_slave")
-        if Ability1 and Ability2 and Ability3 then
-            print('hero Spawned leveling spells')
-            Ability1:SetLevel(1)
-            Ability2:SetLevel(1)
-			Ability3:SetLevel(1)
-			-- Ability4:SetLevel(1)
-			--Ability4:SetLevel(1)
-
-        end
-
-		hero.dest = nil
-    end
-end]]--
 
 ---------------------------------------------------------------------------
 -- Event: OnTeamKillCredit, see if anyone won
@@ -119,7 +97,7 @@ function CWormWarGameMode:OnTeamKillCredit( event )
 	--local nTeamKills = event.herokills
 	--local nKillsRemaining = self.TEAM_KILLS_TO_WIN - nTeamKills
 	
-	local broadcast_kill_event =
+	--[[local broadcast_kill_event =
 	{
 		killer_id = event.killer_userid,
 		team_id = event.teamnumber,
@@ -128,7 +106,7 @@ function CWormWarGameMode:OnTeamKillCredit( event )
 		victory = 0,
 		close_to_victory = 0,
 		very_close_to_victory = 0,
-	}
+	}--]]
 
 	--[[if nKillsRemaining <= 0 then
 		GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[nTeamID] )
@@ -142,7 +120,7 @@ function CWormWarGameMode:OnTeamKillCredit( event )
 		broadcast_kill_event.close_to_victory = 1
 	end]]--
 
-	CustomGameEventManager:Send_ServerToAllClients( "kill_event", broadcast_kill_event )
+	--CustomGameEventManager:Send_ServerToAllClients( "kill_event", broadcast_kill_event )
 end
 
 ---------------------------------------------------------------------------
@@ -153,6 +131,10 @@ function CWormWarGameMode:OnEntityKilled( event )
 	local killedTeam = killedUnit:GetTeam()
 	local hero = EntIndexToHScript( event.entindex_attacker )
 	local heroTeam = hero:GetTeam()
+
+	local nKillerID = event.killer_userid
+
+
 
 	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
@@ -186,21 +168,36 @@ function CWormWarGameMode:OnEntityKilled( event )
 		local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
 		print("Current Segments: ".. nSegments)
 		print("Segments Remaining: ".. nSegmentsRemaining)
+
+		local tail_growth_event =
+		{
+			killer_id = event.killer_userid,
+			team_id = event.teamnumber,
+			tail_length = nSegments,
+			kills_remaining = nSegmentsRemaining,
+			victory = 0,
+			close_to_victory = 0,
+			very_close_to_victory = 0,
+		}
+
 		if nSegmentsRemaining <= 0 then
-			GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[nTeamID] )
-			GameRules:SetGameWinner( nTeamID )
-			--broadcast_kill_event.victory = 1
+			GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[heroTeam] )
+			GameRules:SetGameWinner( heroTeam)
+			tail_growth_event.victory = 1
 		elseif nSegmentsRemaining == 1 then
 			EmitGlobalSound( "ui.npe_objective_complete" )
-			--broadcast_kill_event.very_close_to_victory = 1
+			tail_growth_event.very_close_to_victory = 1
 		elseif nSegmentsRemaining <= self.CLOSE_TO_VICTORY_THRESHOLD then
 			EmitGlobalSound( "ui.npe_objective_given" )
-			--broadcast_kill_event.close_to_victory = 1
+			tail_growth_event.close_to_victory = 1
 		end
 
+		CustomGameEventManager:Send_ServerToAllClients( "kill_event", tail_growth_event )
 		--Respawn food in appropriate area, dont respawn when tail bug dies
 		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" then
 			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
+
+
 		end
 	end
 end
