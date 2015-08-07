@@ -15,9 +15,37 @@ function TailSpawn(keys)
 		numToSpawn = 0
 	end
 
-	DoTailSpawn(caster,numToSpawn)
+	if caster:IsAlive() then
+		DoTailSpawn(caster,numToSpawn)
+	end
 end
 
+function GetTeamColor(teamNumber)
+	print(teamNumber)
+
+	-- teal 	->	2
+	-- yellow	->	3
+	-- pink		-> 	6
+	-- orange 	-> 	7
+	-- blue		->	8
+	-- green 	->  9
+	-- brown 	-> 10
+
+	if teamNumber == 2 then color = {61,210,150}			-- teal
+	elseif teamNumber == 3 then color ={ 243, 201, 9 }		-- yellow	
+	elseif teamNumber == 6 then color ={ 197, 77, 168 } 	-- pink
+	elseif teamNumber == 7 then color ={ 255, 108, 0 }		-- orange
+	elseif teamNumber == 8 then color ={ 52, 85, 255 }  	-- blue
+	elseif teamNumber == 9 then color ={ 101, 212, 19 } 	-- green
+	elseif teamNumber == 10 then color ={ 129, 83, 54 }		-- brown
+	elseif teamNumber == 11 then color ={ 27, 192, 216 } 	-- cyan
+	elseif teamNumber == 12 then color ={ 199, 228, 13 }	-- olive
+	elseif teamNumber == 13 then color ={ 140, 42, 244 }	-- purple
+	else color = {255,255,255}
+	end
+
+	return color
+end
 
 function DoTailSpawn(caster, numToSpawn)
 
@@ -34,6 +62,8 @@ function DoTailSpawn(caster, numToSpawn)
 		local spawnPoint = headPos - (dir * 150)
 		--print(spawnPoint)
 		local hBug = CreateUnitByName( "npc_dota_creature_tail_bug", spawnPoint, true, caster, caster:GetOwner(), caster:GetTeamNumber() )
+		local color = GetTeamColor(caster:GetTeamNumber())
+		hBug:SetRenderColor(color[1],color[2],color[3])
 		if hBug ~= nil then
 			table.insert(caster.followUnits, hBug)
 			caster.tailLength = caster.tailLength + 1
