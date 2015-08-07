@@ -85,5 +85,5 @@ function UpdateRecentScore()
 	var teamPanel = $.GetContextPanel();
 	teamPanel.SetAttributeInt( "recent_score_count", 0 );
 	teamPanel.SetAttributeInt( "ds_time_of_most_recent_score", 0 );
-	GameEvents.Subscribe( "kill_event", OnKillEvent );
+	GameEvents.Subscribe( "tail_growth_event", OnKillEvent );
 })();

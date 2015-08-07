@@ -71,10 +71,10 @@ function CWormWarGameMode:InitGameMode()
 		end
 	end
 
-	--self.TailLength = {}
-	--for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
-   	-- 	self.TailLength[i] = 0
-	--end
+	CWormWarGameMode.TailLengths = {}
+	for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
+   		CWormWarGameMode.TailLengths[i] = 0
+	end
 
 	self.m_VictoryMessages = {}
 	self.m_VictoryMessages[DOTA_TEAM_GOODGUYS] = "#VictoryMessage_GoodGuys"
@@ -188,11 +188,15 @@ function CWormWarGameMode:OnThink()
 	end
 
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-		--print( "Template addon script is running." )
-		
-		
-	--elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
-	--	return nil
+		local gameTime = GameRules:GetGameTime()
+
+		--print(gameTime)
+		if math.floor(gameTime) % 60 == 0 and math.floor(gameTime) ~= 0 then
+			CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_sheep", false )
+			--print("Spawning extra food")
+		end
+
+		return 1
 	end
 
 
@@ -201,6 +205,7 @@ end
 
 function CWormWarGameMode:MovementThink()
 	local allHeroes = HeroList:GetAllHeroes()
+
 	for _,entity in pairs( allHeroes) do
 		local do_move = false
 		local origin = entity:GetAbsOrigin()

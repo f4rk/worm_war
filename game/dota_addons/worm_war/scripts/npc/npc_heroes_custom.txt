@@ -15,7 +15,7 @@
 		//"Ability4"					"worm_war_movement"
 		//"Ability4"					"lina_dragon_slave" //Testing magic immunity
 		
-		"MovementSpeed"				"500"	
+		"MovementSpeed"				"400"	
 		"MovementTurnRate"			"0.25"	
 	}
 }

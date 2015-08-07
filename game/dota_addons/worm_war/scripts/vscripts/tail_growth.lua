@@ -37,7 +37,7 @@ function DoTailSpawn(caster, numToSpawn)
 		if hBug ~= nil then
 			table.insert(caster.followUnits, hBug)
 			caster.tailLength = caster.tailLength + 1
-		
+
 			hBug:SetForwardVector(dir)
 			hBug:SetTeam(caster:GetTeamNumber())
 			hBug:SetOwner( caster )
@@ -57,8 +57,9 @@ function DoTailSpawn(caster, numToSpawn)
 			ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
 			ParticleManager:ReleaseParticleIndex( nFXIndex )
 
-			local playerID = caster:GetPlayerID()
-			caster:IncrementKills(playerID)
+			--local playerID = caster:GetPlayerID()
+			--caster:IncrementKills(playerID)
+			CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
 
 		end
 	end
@@ -80,5 +81,8 @@ function TailCleanup(keys)
 		end
 		caster.followUnits = {caster}
 		caster.tailLength = 0
+		CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = 0
+
+		
 	end
 end

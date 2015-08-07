@@ -115,6 +115,11 @@
 				"Passive"	"1"
 				"IsHidden"	"0"
 
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT"      "-1.2"
+				}
+
 				"OnKill"
 				{
 					"RunScript"

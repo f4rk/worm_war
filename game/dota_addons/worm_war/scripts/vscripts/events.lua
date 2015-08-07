@@ -158,6 +158,17 @@ function CWormWarGameMode:OnEntityKilled( event )
 				hero:AddExperience( 50, 0, false, false )
 			end
 		end
+		local hero_death_event =
+			{
+				killer_id = event.killer_userid,
+				team_id = event.teamnumber,
+				tail_lengths = CWormWarGameMode.TailLengths,
+				victory = 0,
+				close_to_victory = 0,
+				very_close_to_victory = 0,
+			}
+
+		CustomGameEventManager:Send_ServerToAllClients( "hero_death_event", hero_death_event )
 	else
 		-- Unit deaths (food, fire elementals etc.)
 		-- HANDLE LENGTH addition + win condition
@@ -169,11 +180,18 @@ function CWormWarGameMode:OnEntityKilled( event )
 		print("Current Segments: ".. nSegments)
 		print("Segments Remaining: ".. nSegmentsRemaining)
 
+		--Fetch all team lengths to update scoreboard
+		--local teamLengths = {}
+		--for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
+		--	teamLengths[i] = nKillerID.tailLength
+		--	print(teamLengths[i])
+		--end
+		print(CWormWarGameMode.TailLengths)
 		local tail_growth_event =
 		{
 			killer_id = event.killer_userid,
 			team_id = event.teamnumber,
-			tail_length = nSegments,
+			tail_lengths = CWormWarGameMode.TailLengths,
 			kills_remaining = nSegmentsRemaining,
 			victory = 0,
 			close_to_victory = 0,
@@ -192,7 +210,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 			tail_growth_event.close_to_victory = 1
 		end
 
-		CustomGameEventManager:Send_ServerToAllClients( "kill_event", tail_growth_event )
+		CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 		--Respawn food in appropriate area, dont respawn when tail bug dies
 		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" then
 			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
