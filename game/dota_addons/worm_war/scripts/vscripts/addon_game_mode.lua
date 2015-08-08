@@ -256,6 +256,7 @@ end
 function CWormWarGameMode:EndGame( victoryTeam )
 	print("SETTING WINNER")
 	GameRules:SetGameWinner( victoryTeam )
+
 end
 
 function CWormWarGameMode:UpdatePlayerColor( nPlayerID )
