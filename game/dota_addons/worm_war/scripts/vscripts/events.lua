@@ -187,7 +187,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 		--	print(teamLengths[i])
 		--end
 		print(CWormWarGameMode.TailLengths)
-		local tail_growth_event =
+		local on_kill_event =
 		{
 			killer_id = event.killer_userid,
 			team_id = event.teamnumber,
@@ -210,7 +210,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 			tail_growth_event.close_to_victory = 1
 		end
 
-		CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
+		CustomGameEventManager:Send_ServerToAllClients( "on_kill_event", on_kill_event )
 		--Respawn food in appropriate area, dont respawn when tail bug dies
 		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" then
 			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)

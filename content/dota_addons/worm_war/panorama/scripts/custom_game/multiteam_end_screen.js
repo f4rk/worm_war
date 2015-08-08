@@ -10,10 +10,12 @@
 		"playerXmlName" : "file://{resources}/layout/custom_game/multiteam_end_screen_player.xml",
 	};
 
-	var endScoreboardHandle = ScoreboardUpdater_InitializeScoreboard( scoreboardConfig, $( "#TeamsContainer" ) );
+	var initTailLengths = "{\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0}";
+	initTailLengths = JSON.parse(initTailLengths);
+	var endScoreboardHandle = ScoreboardUpdater_InitializeScoreboard( scoreboardConfig, $( "#TeamsContainer" ), initTailLengths);
 	$.GetContextPanel().SetHasClass( "endgame", 1 );
-	
-	var teamInfoList = ScoreboardUpdater_GetSortedTeamInfoList( endScoreboardHandle );
+
+	var teamInfoList = ScoreboardUpdater_GetSortedTeamInfoList( endScoreboardHandle, initTailLengths );
 	var delay = 0.2;
 	var delay_per_panel = 1 / teamInfoList.length;
 	for ( var teamInfo of teamInfoList )

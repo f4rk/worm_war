@@ -122,6 +122,7 @@ function CWormWarGameMode:InitGameMode()
 	ListenToGameEvent( "game_rules_state_change", Dynamic_Wrap( CWormWarGameMode, 'OnGameRulesStateChange' ), self )
 	spawnListener = ListenToGameEvent("npc_spawned", Dynamic_Wrap(CWormWarGameMode, "OnNPCSpawned"), self) 
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CWormWarGameMode, 'OnEntityKilled' ), self )
+	ListenToGameEvent("tail_growth", Dynamic_Wrap( CWormWarGameMode, 'OnTailGrowth' ), self )
 	-- ListenToGameEvent( "dota_npc_goal_reached", Dynamic_Wrap( CWormWarGameMode, "OnNpcGoalReached" ), self )
 
 	Convars:RegisterCommand( "wormwar_force_end_game", function(...) return self:EndGame( DOTA_TEAM_GOODGUYS ) end, "Force the game to end.", FCVAR_CHEAT )
@@ -253,6 +254,7 @@ end
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 function CWormWarGameMode:EndGame( victoryTeam )
+	print("SETTING WINNER")
 	GameRules:SetGameWinner( victoryTeam )
 end
 

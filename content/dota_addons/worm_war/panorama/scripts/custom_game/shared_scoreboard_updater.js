@@ -1,6 +1,5 @@
 "use strict";
 
-
 //=============================================================================
 //=============================================================================
 function _ScoreboardUpdater_SetTextSafe( panel, childName, textValue )
@@ -362,10 +361,10 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
 		str = str.concat(",\"tail_length\":",tailLengths[teamId],"}");
 		
 		jsonObj = JSON.parse(str);
-		$.Msg(jsonObj);
 
 		teamsList.push( jsonObj);		
 	}
+	//$.Msg(teamsList);
 
 	// update/create team panels
 	var teamsInfo = { max_team_players: 0 };
@@ -419,7 +418,7 @@ function ScoreboardUpdater_InitializeScoreboard( scoreboardConfig, scoreboardPan
 		// default to true
 		scoreboardConfig.shouldSort = true;
 	}
-	$.Msg(initTailLengths)
+
 	_ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, scoreboardPanel, initTailLengths );
 	return { "scoreboardConfig": scoreboardConfig, "scoreboardPanel":scoreboardPanel }
 }
@@ -435,8 +434,7 @@ function ScoreboardUpdater_SetScoreboardActive( scoreboardHandle, isActive, tail
 	}
 	
 	if ( isActive )
-	{
-		$.Msg(tailLengths)
+	{	
 		_ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardHandle.scoreboardConfig, scoreboardHandle.scoreboardPanel, tailLengths );
 	}
 }
@@ -456,12 +454,21 @@ function ScoreboardUpdater_GetTeamPanel( scoreboardHandle, teamId )
 
 //=============================================================================
 //=============================================================================
-function ScoreboardUpdater_GetSortedTeamInfoList( scoreboardHandle )
+function ScoreboardUpdater_GetSortedTeamInfoList( scoreboardHandle, tailLengths )
 {
 	var teamsList = [];
 	for ( var teamId of Game.GetAllTeamIDs() )
 	{
-		teamsList.push( Game.GetTeamDetails( teamId ) );
+		var jsonObj = Game.GetTeamDetails( teamId );
+		var str = JSON.stringify(jsonObj);
+
+		str = str.substring(0, str.length-1);
+		str = str.concat(",\"tail_length\":",tailLengths[teamId],"}");
+		
+		jsonObj = JSON.parse(str);
+		
+
+		teamsList.push( jsonObj);
 	}
 
 	if ( teamsList.length > 1 )

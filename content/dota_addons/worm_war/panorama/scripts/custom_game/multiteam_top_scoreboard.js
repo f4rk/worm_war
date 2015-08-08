@@ -40,11 +40,14 @@ function UpdateScoreboard(event)
 		"shouldSort" : shouldSort
 	};
 
-	var initTailLengths = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var initTailLengths = "{\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0}";
+	initTailLengths = JSON.parse(initTailLengths);
+
 	g_ScoreboardHandle = ScoreboardUpdater_InitializeScoreboard( scoreboardConfig, $( "#MultiteamScoreboard" ), initTailLengths );
 
 	GameEvents.Subscribe( "tail_growth_event", UpdateScoreboard );
 	GameEvents.Subscribe( "hero_death_event", UpdateScoreboard );
+	GameEvents.Subscribe( "on_kill_event", UpdateScoreboard );
 	//UpdateScoreboard();
 })();
 

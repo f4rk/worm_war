@@ -59,6 +59,8 @@ function DoTailSpawn(caster, numToSpawn)
 
 			--local playerID = caster:GetPlayerID()
 			--caster:IncrementKills(playerID)
+
+			
 			CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
 			local tail_growth_event =
 			{
