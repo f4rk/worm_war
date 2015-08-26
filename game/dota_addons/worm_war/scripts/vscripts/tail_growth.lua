@@ -16,6 +16,7 @@ function TailSpawn(keys)
 	end
 
 	if caster:IsAlive() then
+		PopupGrowth(caster,numToSpawn)
 		DoTailSpawn(caster,numToSpawn)
 	end
 end
@@ -122,4 +123,19 @@ function TailCleanup(keys)
 
 
 	end
+end
+
+function PopupGrowth(caster, num)
+	local pfxPath = "particles/msg_fx/msg_damage.vpcf"
+	local pidx = ParticleManager:CreateParticle(pfxPath, PATTACH_OVERHEAD_FOLLOW, caster)
+	local colorTable = GetTeamColor(caster:GetTeamNumber())
+	local color = Vector(colorTable[1],colorTable[2],colorTable[3])
+	local lifetime = 3.0
+	local digits = 1 + #tostring(num)
+	
+	print("creating particle")
+	
+	ParticleManager:SetParticleControl(pidx, 1, Vector(0, num, 0))
+    ParticleManager:SetParticleControl(pidx, 2, Vector(lifetime, digits, 0))
+    ParticleManager:SetParticleControl(pidx, 3, color)
 end
