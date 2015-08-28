@@ -79,6 +79,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 			-- Ability4:SetLevel(1)
 			--Ability4:SetLevel(1)
     	end
+		hero:FindAbilityByName("fiery_growth"):SetLevel(1)
     end
 
 	hero.dest = nil

@@ -117,7 +117,7 @@
 
 		// Abilities
 		//----------------------------------------------------------------
-		"Ability1"					"magic_immune_passive"			// Ability 1
+		//"Ability1"					"magic_immune_passive"			// Ability 1
 		"Ability2"					"death_aura"					// Ability 2
 
 	}

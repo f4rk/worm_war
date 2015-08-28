@@ -11,18 +11,20 @@ function TailSpawn(keys)
 		numToSpawn = 2
 	elseif unitName == "npc_dota_creature_gold_sheep" then
 		numToSpawn = 5
+	elseif unitName == "npc_dota_creature_fire_elemental" then
+		numToSpawn = 5
 	else
 		numToSpawn = 0
 	end
 
 	if caster:IsAlive() then
-		PopupGrowth(caster,numToSpawn)
 		DoTailSpawn(caster,numToSpawn)
+		PopupGrowth(caster,numToSpawn)
 	end
 end
 
 function GetTeamColor(teamNumber)
-	print(teamNumber)
+	-- print(teamNumber)
 
 	-- teal 	->	2
 	-- yellow	->	3
@@ -57,6 +59,8 @@ function DoTailSpawn(caster, numToSpawn)
 		end
 		
 		local toFollow = caster.followUnits[caster.tailLength+1]
+		-- print(toFollow:GetUnitName())
+
 		local headPos = toFollow:GetAbsOrigin()
 		local dir = toFollow:GetForwardVector()
 		
@@ -72,21 +76,16 @@ function DoTailSpawn(caster, numToSpawn)
 			hBug:SetForwardVector(dir)
 			hBug:SetTeam(caster:GetTeamNumber())
 			hBug:SetOwner( caster )
-			
-			ExecuteOrderFromTable({	
-				UnitIndex = hBug:GetEntityIndex(),
-				OrderType = DOTA_UNIT_ORDER_MOVE_TO_TARGET,
-				TargetIndex = caster.followUnits[caster.tailLength]:GetEntityIndex(),
-				Queue = true	})
+
 			
 			local hBuff = caster:FindModifierByName( "modifier_tail_growth_datadriven" )
 			if hBuff ~= nil then
 				hBuff:SetStackCount( caster.tailLength )
 			end
 
-			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_fleshheap_count.vpcf", PATTACH_OVERHEAD_FOLLOW, caster )
-			ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
-			ParticleManager:ReleaseParticleIndex( nFXIndex )
+			-- local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_fleshheap_count.vpcf", PATTACH_OVERHEAD_FOLLOW, caster )
+			-- ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
+			-- ParticleManager:ReleaseParticleIndex( nFXIndex )
 
 			--local playerID = caster:GetPlayerID()
 			--caster:IncrementKills(playerID)
@@ -99,6 +98,11 @@ function DoTailSpawn(caster, numToSpawn)
 			}
 			CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 
+			ExecuteOrderFromTable({
+				UnitIndex = hBug:GetEntityIndex(),
+				OrderType = DOTA_UNIT_ORDER_MOVE_TO_TARGET,
+				TargetIndex = toFollow:GetEntityIndex(),
+				Queue = true})
 		end
 	end
 end
@@ -120,8 +124,6 @@ function TailCleanup(keys)
 		caster.followUnits = {caster}
 		caster.tailLength = 0
 		CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = 0
-
-
 	end
 end
 
@@ -132,9 +134,7 @@ function PopupGrowth(caster, num)
 	local color = Vector(colorTable[1],colorTable[2],colorTable[3])
 	local lifetime = 3.0
 	local digits = 1 + #tostring(num)
-	
-	print("creating particle")
-	
+
 	ParticleManager:SetParticleControl(pidx, 1, Vector(0, num, 0))
     ParticleManager:SetParticleControl(pidx, 2, Vector(lifetime, digits, 0))
     ParticleManager:SetParticleControl(pidx, 3, color)

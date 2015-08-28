@@ -9,8 +9,12 @@ function DevourAura( keys )
 	local name = target:GetUnitName()
 	print(name)
 	if name ~= "npc_dota_creature_sheep" and name ~= "npc_dota_creature_pig" and name ~= "npc_dota_creature_gold_sheep" then
-		return
+		if not (caster:HasModifier("modifier_fiery_jaw") and name == "npc_dota_creature_fire_elemental") then
+			return
+		end
 	end
+
+
 
 	local visibility_modifier = keys.visibility_modifier
 	if target:CanEntityBeSeenByMyTeam(caster) then

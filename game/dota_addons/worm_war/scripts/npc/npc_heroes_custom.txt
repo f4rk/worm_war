@@ -8,13 +8,19 @@
 	//=================================================================================================================
 	"npc_dota_hero_nyx_assassin_worm_war"
 	{
+		"AbilityLayout"				"4"
+
 		"override_hero"				"npc_dota_hero_nyx_assassin"			// Hero to override
-		"Ability1"					"devour_aura"						// Ability 1
-		"Ability2"					"tail_growth"						// Ability 2
-		"Ability3"					"worm_war_phase"
-		//"Ability4"					"worm_war_movement"
-		//"Ability4"					"lina_dragon_slave" //Testing magic immunity
-		
+		"Ability1"					"fiery_jaw"
+		"Ability2"					"empty2"
+		"Ability3"					"empty3"
+		"Ability4"					"empty4"
+		"Ability5"					"empty5"
+		"Ability6"					"empty6"
+		"Ability7"					"devour_aura"						// Ability 1
+		"Ability8"					"tail_growth"						// Ability 2
+		"Ability9"					"worm_war_phase"
+
 		"MovementSpeed"				"400"	
 		"MovementTurnRate"			"0.25"	
 	}
