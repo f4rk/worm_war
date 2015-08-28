@@ -383,17 +383,12 @@
 			"01"
 			{
 				"var_type"			"FIELD_FLOAT"
-				"fieryjaw_duration"		"10.0"
+				"fiery_jaw_duration"		"10.0"
 			}
 		}
 
 		"OnSpellStart"
 		{
-			"RunScript"
-			{
-				"ScriptFile"			"scripts/vscripts/pickups.lua"
-				"Function"				"FieryGrowth"
-			}
 
 			"ApplyModifier"
 			{
@@ -408,14 +403,6 @@
 			{
 				"Duration"		"%fiery_jaw_duration"
 
-				"OnCreated"
-				{
-					"RunScript"
-					{
-						"ScriptFile"			"scripts/vscripts/pickups.lua"
-						"Function"				"FieryGrowth"
-					}
-				}
 			}
 
 		}

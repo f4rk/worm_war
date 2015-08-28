@@ -12,7 +12,7 @@ function TailSpawn(keys)
 	elseif unitName == "npc_dota_creature_gold_sheep" then
 		numToSpawn = 5
 	elseif unitName == "npc_dota_creature_fire_elemental" then
-		numToSpawn = 5
+		numToSpawn = 4
 	else
 		numToSpawn = 0
 	end
