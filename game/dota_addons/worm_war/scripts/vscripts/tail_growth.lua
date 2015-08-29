@@ -91,18 +91,20 @@ function DoTailSpawn(caster, numToSpawn)
 			--caster:IncrementKills(playerID)
 
 			
-			CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
-			local tail_growth_event =
-			{
-				tail_lengths = CWormWarGameMode.TailLengths,
-			}
-			CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
+			
 
 			ExecuteOrderFromTable({
 				UnitIndex = hBug:GetEntityIndex(),
 				OrderType = DOTA_UNIT_ORDER_MOVE_TO_TARGET,
 				TargetIndex = toFollow:GetEntityIndex(),
 				Queue = true})
+
+			CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
+			local tail_growth_event =
+			{
+				tail_lengths = CWormWarGameMode.TailLengths,
+			}
+			CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 		end
 	end
 end
@@ -119,6 +121,10 @@ function TailCleanup(keys)
 			-- damage_table.ability = keys.ability
 			-- damage_table.damage = target:GetMaxHealth()
 			-- ApplyDamage(damage_table)
+			caster:EmitSound("Hero_Broodmother.SpawnSpiderlings")
+			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster.followUnits[i] )
+			ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
+			ParticleManager:ReleaseParticleIndex( nFXIndex )
 			caster.followUnits[i]:ForceKill(true)
 		end
 		caster.followUnits = {caster}

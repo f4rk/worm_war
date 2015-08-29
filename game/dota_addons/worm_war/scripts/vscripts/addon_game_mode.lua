@@ -38,6 +38,11 @@ function Precache( context )
 	
 	PrecacheUnitByNameAsync( "npc_dota_creature_fire_elemental", function(unit) end )
 	PrecacheModel( "models/heroes/invoker/forge_spirit.vmdl", context) 	-- Forge Spirit model
+
+	PrecacheResource( "particle", "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", context )
+	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_broodmother.vsndevts", context )
+
+
 end
 
 -- Create the game mode when we activate
