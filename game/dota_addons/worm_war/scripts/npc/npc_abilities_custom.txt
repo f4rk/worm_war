@@ -11,7 +11,7 @@
  		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"BaseClass"								"ability_datadriven"
-		"AbilityTextureName"					"doom_bringer_devour"
+		"AbilityTextureName"					"life_stealer_feast"
 		"ScriptFile"							"devour_aura"
 		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
 		"AbilityUnitTargetTeam"     			"DOTA_UNIT_TARGET_TEAM_ENEMY"
@@ -48,7 +48,7 @@
 			"modifier_devour_aura_datadriven"
 			{
 				"Passive"		"1"
-				"IsHidden"		"1"
+				"IsHidden"		"0"
 
 				"Aura" 			"modifier_devour_debuff_datadriven"
 				"Aura_Radius" 	"%devour_aura_range"
@@ -365,16 +365,29 @@
 		"AbilityTextureName"            "rubick_empty1"
 	}
 
+
 	//=================================================================================================================
-	// Pickups
+	// Powerups
+	//=================================================================================================================
+
+	//=================================================================================================================
+	// Fiery Jaw
 	//=================================================================================================================
 	"fiery_jaw"
 	{
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
-		"AbilityTextureName"            "invoker_forge_spirit"
+		"AbilityTextureName"            "doom_bringer_devour"
 
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_axe.vsndevts"
+			"particle"			"particles/units/heroes/hero_axe/axe_battle_hunger.vpcf"
+			"particle"			"particles/status_fx/status_effect_battle_hunger.vpcf"
+		}
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -389,6 +402,11 @@
 
 		"OnSpellStart"
 		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Axe.Battle_Hunger"
+				"Target" 		"CASTER"
+			}
 
 			"ApplyModifier"
 			{
@@ -403,14 +421,206 @@
 			{
 				"Duration"		"%fiery_jaw_duration"
 
+				"StatusEffectName" 		"particles/status_fx/status_effect_battle_hunger.vpcf" 	   
+				"StatusEffectPriority"  "9"
+
+				"OnCreated"
+            	{
+                	"AttachEffect"
+					{
+						"EffectName"        "particles/units/heroes/hero_axe/axe_battle_hunger.vpcf"
+						"EffectAttachType"  "follow_overhead"
+						"Target"            "CASTER"
+					}
+            	}
+			}
+
+		}
+	}
+	
+	//=================================================================================================================
+	// Goo Bomb
+	//=================================================================================================================
+	"goo_bomb"
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"MaxLevel"						"1"
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"            "bristleback_viscous_nasal_goo"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo.vpcf"
+			"particle"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf"
+			"particle"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_stack.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bristleback.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"goo_duration"		"4.0"
+			}
+			"02"
+			{
+				"var_type"		"FIELD_INTEGER"
+				"goo_slow"		"-70"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"ActOnTargets"
+			{
+				"Target"
+				{
+					"Center"  	"CASTER"
+					"Radius" 	"GLOBAL"
+					"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types" 	"DOTA_UNIT_TARGET_ALL"
+				}
+
+				"Action"
+				{
+					"FireSound"
+					{
+						"EffectName"		"Hero_Bristleback.ViscousGoo.Target"
+						"Target"			"TARGET"
+					}
+
+					"ApplyModifier"
+					{
+						"ModifierName"		"modifier_goo_bomb"
+						"Target"			"TARGET"
+					}
+				}
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_goo_bomb"
+			{
+				"IsDebuff"	"1"
+				"Duration"		"%goo_bomb_duration"
+
+				"OnCreated"
+            	{
+                	"AttachEffect"
+					{
+						"EffectName"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf"
+						"EffectAttachType"	"attach_hitloc"
+					}
+            	}
+
+            	"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%goo_slow"
+				}
 			}
 
 		}
 	}
 
+	//=================================================================================================================
+	// Crypt Craving
+	//=================================================================================================================
+	"crypt_craving"
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"MaxLevel"						"1"
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"            "crypt_craving"
+		"AOERadius"						"%radius"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_dark_seer.vsndevts"
+			"particle"			"particles/units/heroes/hero_dark_seer/dark_seer_vacuum.vpcf"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"radius"			"450"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"duration"			"1"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"FireEffect"
+			{	
+				"EffectName"        "particles/units/heroes/hero_dark_seer/dark_seer_vacuum.vpcf"
+				"EffectAttachType"  "attach_hitloc"
+				"Target"		   	"CASTER"
+
+				"ControlPoints"
+				{
+					"01"	"%radius 0 0"
+				}
+			}
+			
+			"CreateThinker"
+			{
+				"ModifierName"	"modifier_crypt_craving_thinker"
+				"Target" 		"CASTER"
+			}			
+		}
+
+		"Modifiers"
+		{
+			"modifier_crypt_craving_thinker"
+			{
+				"Duration"		"%duration"
+				"OnCreated"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Dark_Seer.Vacuum"
+						"Target" 		"CASTER"
+					}
+						
+				}
+
+				"ThinkInterval"  "0.05"
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/crypt_craving.lua"
+						"Function"				"CryptCraving"
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Reverse
+	//=================================================================================================================
 	"reverse_worm"
 	{
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+		"AbilityBehavior"				""DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_AOE"
+
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "vengefulspirit_nether_swap"
@@ -427,4 +637,5 @@
 			}
 		}
 	}
+
 }

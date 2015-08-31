@@ -67,20 +67,22 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 
    		hero:SetAbilityPoints(0)
     	local Ability1 = hero:FindAbilityByName("devour_aura")
-    	local Ability2 = hero:FindAbilityByName("tail_growth")
-		local Ability3 = hero:FindAbilityByName("worm_war_phase")
+    	local Ability7 = hero:FindAbilityByName("tail_growth")
+		local Ability8 = hero:FindAbilityByName("worm_war_phase")
 		-- local Ability4 = hero:FindAbilityByName("worm_war_movement")
 		--local Ability4 = hero:FindAbilityByName("lina_dragon_slave")
-   		if Ability1 and Ability2 and Ability3 then
+   		if Ability1 and Ability7 and Ability8 then
     		print('hero Spawned leveling spells')
    	    	Ability1:SetLevel(1)
-    	    Ability2:SetLevel(1)
-			Ability3:SetLevel(1)
+    	    Ability7:SetLevel(1)
+			Ability8:SetLevel(1)
 			-- Ability4:SetLevel(1)
 			--Ability4:SetLevel(1)
     	end
 		hero:FindAbilityByName("fiery_jaw"):SetLevel(1)
 		hero:FindAbilityByName("reverse_worm"):SetLevel(1)
+		hero:FindAbilityByName("goo_bomb"):SetLevel(1)
+    	hero:FindAbilityByName("crypt_craving"):SetLevel(1)
     end
 
 	hero.dest = nil
@@ -203,13 +205,13 @@ function CWormWarGameMode:OnEntityKilled( event )
 		if nSegmentsRemaining <= 0 then
 			GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[heroTeam] )
 			GameRules:SetGameWinner( heroTeam)
-			tail_growth_event.victory = 1
+			on_kill_event.victory = 1
 		elseif nSegmentsRemaining == 1 then
 			EmitGlobalSound( "ui.npe_objective_complete" )
-			tail_growth_event.very_close_to_victory = 1
+			on_kill_event.very_close_to_victory = 1
 		elseif nSegmentsRemaining <= self.CLOSE_TO_VICTORY_THRESHOLD then
 			EmitGlobalSound( "ui.npe_objective_given" )
-			tail_growth_event.close_to_victory = 1
+			on_kill_event.close_to_victory = 1
 		end
 
 		CustomGameEventManager:Send_ServerToAllClients( "on_kill_event", on_kill_event )
