@@ -12,7 +12,7 @@
 
 		"override_hero"				"npc_dota_hero_nyx_assassin"			// Hero to override
 		"Ability1"					"fiery_jaw"
-		"Ability2"					"empty2"
+		"Ability2"					"reverse_worm"
 		"Ability3"					"empty3"
 		"Ability4"					"empty4"
 		"Ability5"					"empty5"

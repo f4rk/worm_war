@@ -370,7 +370,7 @@
 	//=================================================================================================================
 	"fiery_jaw"
 	{
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | "
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "invoker_forge_spirit"
@@ -408,5 +408,23 @@
 		}
 	}
 
+	"reverse_worm"
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+		"MaxLevel"						"1"
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"            "vengefulspirit_nether_swap"
+
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"			"scripts/vscripts/reverse_worm.lua"
+				"Function"				"ReverseWorm"
+			}
+		}
 	}
 }
