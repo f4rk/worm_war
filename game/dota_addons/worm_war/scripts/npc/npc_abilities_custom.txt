@@ -614,5 +614,28 @@
 		}
 	}
 
+	//=================================================================================================================
+	// Reverse
+	//=================================================================================================================
+	"reverse_worm"
+	{
+		"AbilityBehavior"				""DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_AOE"
+
+		"MaxLevel"						"1"
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"            "vengefulspirit_nether_swap"
+
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"			"scripts/vscripts/reverse_worm.lua"
+				"Function"				"ReverseWorm"
+			}
+		}
+	}
 
 }

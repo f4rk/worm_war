@@ -15,7 +15,7 @@
 		"Ability2"					"goo_bomb"
 		"Ability3"					"crypt_craving"
 		"Ability4"					"devour_aura"
-		"Ability5"					"empty4"
+		"Ability5"					"reverse_worm"
 		"Ability6"					"empty5"
 		"Ability7"					"empty6"							// Ability 1
 		"Ability8"					"tail_growth"						// Ability 2

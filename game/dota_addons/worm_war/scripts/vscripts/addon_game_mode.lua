@@ -39,8 +39,14 @@ function Precache( context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", context )
 	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_broodmother.vsndevts", context )
 
+
 	PrecacheResource( "particle", "particles/units/heroes/hero_lion/lion_spell_mana_drain.vpcf", context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_wisp/wisp_tether.vpcf", context )
+
+	PrecacheResource( "particle", "particles/units/heroes/hero_vengeful/vengeful_nether_swap_b.vpcf", context )
+	PrecacheResource( "particle", "particles/units/heroes/hero_vengeful/vengeful_nether_swap_pink.vpcf", context )
+	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_vengefulspirit.vsndevts", context )
+
 
 
 end
@@ -242,7 +248,7 @@ function CWormWarGameMode:MovementThink()
 			entity:MoveToPosition(newMoveLocation)
 		end
 	end
-	return 0.005
+	return 0.001
 end
 
 ---------------------------------------------------------------------------
