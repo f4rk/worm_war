@@ -47,6 +47,15 @@ function CWormWarGameMode:OnGameRulesStateChange()
 		CustomGameEventManager:Send_ServerToAllClients( "show_timer", {} )
 		--DoEntFire( "center_experience_ring_particles", "Start", "0", 0, self, self  )
 	end
+
+	if nNewState == DOTA_GAMERULES_STATE_POST_GAME then
+		print("sending final scores")
+		local final_scores =
+		{
+			tail_lengths = CWormWarGameMode.TailLengths,
+		}
+		CustomGameEventManager:Send_ServerToAllClients( "end_screen", final_scores )
+	end
 end
 
 function CWormWarGameMode:OnNPCSpawned(keys)
@@ -56,7 +65,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     	local player = hero:GetOwnerEntity()
 	    local teamN = player:GetTeamNumber()
 
-	    --Team 4 and 5 are neitrals and no team, offset by 2 for direction on spawn
+	    --Team 4 and 5 are neutrals and no team, offset by 2 for direction on spawn
 	    if teamN > 5 then 
 	    	teamN = teamN - 2
 	    end
@@ -65,7 +74,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     	direction = direction:Normalized()
     	hero:SetForwardVector(direction) 
 
-   		hero:SetAbilityPoints(0)
+    	hero:SetAbilityPoints(0)
     	local Ability1 = hero:FindAbilityByName("devour_aura")
     	local Ability7 = hero:FindAbilityByName("tail_growth")
 		local Ability8 = hero:FindAbilityByName("worm_war_phase")
@@ -83,6 +92,9 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 		hero:FindAbilityByName("reverse_worm"):SetLevel(1)
 		hero:FindAbilityByName("goo_bomb"):SetLevel(1)
     	hero:FindAbilityByName("crypt_craving"):SetLevel(1)
+	   	hero:FindAbilityByName("segment_bomb"):SetLevel(1)
+
+
     end
 
 	hero.dest = nil

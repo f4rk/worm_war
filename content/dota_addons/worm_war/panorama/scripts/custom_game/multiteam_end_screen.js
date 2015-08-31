@@ -2,6 +2,9 @@
 
 (function()
 {
+	
+	//$.Msg("Entering end screen Javascript!");
+
 	if ( ScoreboardUpdater_InitializeScoreboard === null ) { $.Msg( "WARNING: This file requires shared_scoreboard_updater.js to be included." ); }
 
 	var scoreboardConfig =
@@ -12,6 +15,7 @@
 
 	var initTailLengths = "{\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0}";
 	initTailLengths = JSON.parse(initTailLengths);
+	
 	var endScoreboardHandle = ScoreboardUpdater_InitializeScoreboard( scoreboardConfig, $( "#TeamsContainer" ), initTailLengths);
 	$.GetContextPanel().SetHasClass( "endgame", 1 );
 

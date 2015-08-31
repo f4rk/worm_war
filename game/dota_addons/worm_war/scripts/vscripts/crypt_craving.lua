@@ -38,7 +38,7 @@ function CryptCraving( keys )
 			
 			--Attach lion mana drain particles
 			if caster.initialrun == true then
-				local cryptParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_wisp/wisp_tether.vpcf", DOTA_PROJECTILE_ATTACHMENT_HITLOCATION, unit)
+				local cryptParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_lion/lion_spell_mana_drain.vpcf", DOTA_PROJECTILE_ATTACHMENT_HITLOCATION, unit)
 				ParticleManager:SetParticleControl(cryptParticle, 1, caster:GetAbsOrigin())
 				ParticleManager:SetParticleControl(cryptParticle, 0, unit:GetAbsOrigin())
 				

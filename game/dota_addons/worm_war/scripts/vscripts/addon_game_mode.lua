@@ -46,6 +46,10 @@ function Precache( context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_vengeful/vengeful_nether_swap_pink.vpcf", context )
 	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_vengefulspirit.vsndevts", context )
 
+	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_techies.vsndevts", context )
+	PrecacheResource( "particle", "particles/units/heroes/hero_techies/techies_remote_mines_detonate_base.vpcf", context )
+
+
 
 
 end
@@ -99,7 +103,7 @@ function CWormWarGameMode:InitGameMode()
 	self.m_VictoryMessages[DOTA_TEAM_CUSTOM_8] = "#VictoryMessage_Custom8"
 
 	self.m_GatheredShuffledTeams = {}
-	self.SEGMENTS_TO_WIN = 20
+	self.SEGMENTS_TO_WIN = 60
 	self.CLOSE_TO_VICTORY_THRESHOLD = 5
 	self.SEGMENT_PER_KILL = 5
 	self.FOOD_LIMIT = 20
@@ -121,7 +125,7 @@ function CWormWarGameMode:InitGameMode()
 	--------------------------------------------------------------------------
 	-- Show the ending scoreboard immediately
 	GameRules:SetCustomGameEndDelay( 0 )
-	GameRules:SetCustomVictoryMessageDuration( 10 )
+	GameRules:SetCustomVictoryMessageDuration( 20 )
 	GameRules:SetPreGameTime( 10 )
 	GameMode:SetFixedRespawnTime( 1 )
 	GameMode:SetFogOfWarDisabled(true)
@@ -264,9 +268,7 @@ end
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 function CWormWarGameMode:EndGame( victoryTeam )
-	print("SETTING WINNER")
 	GameRules:SetGameWinner( victoryTeam )
-
 end
 
 function CWormWarGameMode:UpdatePlayerColor( nPlayerID )

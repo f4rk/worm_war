@@ -34,6 +34,7 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 	var isTeammate = false;
 
 	var playerInfo = Game.GetPlayerInfo( playerId );
+
 	if ( playerInfo )
 	{
 		isTeammate = ( playerInfo.player_team_id == localPlayerTeamId );
@@ -218,7 +219,7 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
 			_ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, playerId, localPlayerTeamId )
 			var playerInfo = Game.GetPlayerInfo( playerId );
 			//_ScoreboardUpdater_SetTextSafe( teamPanel, "TeamScore", playerInfo.player_kills)
-			$.Msg( tailLength );
+			//$.Msg( tailLength );
 			_ScoreboardUpdater_SetTextSafe( teamPanel, "TeamScore", tailLength)
 	
 		}
@@ -419,6 +420,16 @@ function ScoreboardUpdater_InitializeScoreboard( scoreboardConfig, scoreboardPan
 		scoreboardConfig.shouldSort = true;
 	}
 
+	if (JSON.stringify(initTailLengths) == "{\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0}") 
+	{
+		//$.Msg("Got it")
+		initTailLengths = ScoreboardUpdater_CalculateTailLengths();
+	}
+	//$.Msg("Tail legnths COMPARE:");
+	//$.Msg("{\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":0,\"7\":0,\"8\":0,\"9\":0,\"10\":0,\"11\":0,\"12\":0,\"13\":0}");
+//	$.Msg("Variable: ")
+//	$.Msg(initTailLengths);
+
 	_ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, scoreboardPanel, initTailLengths );
 	return { "scoreboardConfig": scoreboardConfig, "scoreboardPanel":scoreboardPanel }
 }
@@ -477,4 +488,31 @@ function ScoreboardUpdater_GetSortedTeamInfoList( scoreboardHandle, tailLengths 
 	}
 	
 	return teamsList;
+}
+
+//Used for EndScreen, could update topscoreboar to also use this (performance?)
+function ScoreboardUpdater_CalculateTailLengths()
+{
+	var tailLengths = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var str = "";
+
+	//Find all tail bugs and count tail lengths for each team
+	for ( var tail_bug of Entities.GetAllEntities( ) )
+	{
+		if(Entities.GetUnitName(tail_bug) == "npc_dota_creature_tail_bug")
+			tailLengths[Entities.GetTeamNumber(tail_bug)] = tailLengths[Entities.GetTeamNumber(tail_bug)] + 1;
+	}
+
+	//Construct JSON str of tail lengths
+	for ( var teamID of Game.GetAllTeamIDs())
+	{
+		str = str.concat("\"",teamID,"\":",tailLengths[teamID],",");
+	}
+	str = str.substring(0,str.length-1); //Pop off last comma
+
+	var str2 = "{";
+	str2 = str2.concat(str,"}");
+
+	var jsonObj = JSON.parse(str2);
+	return jsonObj;
 }

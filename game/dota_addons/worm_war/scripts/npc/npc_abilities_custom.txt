@@ -483,7 +483,7 @@
 					"Center"  	"CASTER"
 					"Radius" 	"GLOBAL"
 					"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
-					"Types" 	"DOTA_UNIT_TARGET_ALL"
+					"Types" 	"DOTA_UNIT_TARGET_HERO"
 				}
 
 				"Action"
@@ -508,7 +508,7 @@
 			"modifier_goo_bomb"
 			{
 				"IsDebuff"	"1"
-				"Duration"		"%goo_bomb_duration"
+				"Duration"		"%goo_duration"
 
 				"OnCreated"
             	{
@@ -556,12 +556,12 @@
 			"01"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"radius"			"450"
+				"radius"			"650"
 			}
 			"02"
 			{
-				"var_type"			"FIELD_INTEGER"
-				"duration"			"1"
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"1.5"
 			}
 		}
 
@@ -635,6 +635,26 @@
 			{
 				"ScriptFile"			"scripts/vscripts/reverse_worm.lua"
 				"Function"				"ReverseWorm"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Segment Bomb
+	//=================================================================================================================
+	"segment_bomb"
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"MaxLevel"						"1"
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"            "techies_minefield_sign"
+
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"			"scripts/vscripts/segment_bomb.lua"
+				"Function"				"SegmentBomb"
 			}
 		}
 	}
