@@ -3,6 +3,8 @@ function TailSpawn(keys)
 	local unit = keys.unit
 	local unitName = unit:GetUnitName()
 	
+	print("here2")
+
 	local numToSpawn = 0
 
 	if unitName == "npc_dota_creature_sheep" then
@@ -12,7 +14,7 @@ function TailSpawn(keys)
 	elseif unitName == "npc_dota_creature_gold_sheep" then
 		numToSpawn = 5
 	elseif unitName == "npc_dota_creature_fire_elemental" then
-		numToSpawn = 4
+		numToSpawn = 5
 	else
 		numToSpawn = 0
 	end
@@ -81,23 +83,15 @@ function DoTailSpawn(caster, numToSpawn)
 			local hBuff = caster:FindModifierByName( "modifier_tail_growth_datadriven" )
 			if hBuff ~= nil then
 				hBuff:SetStackCount( caster.tailLength )
-			end
+			end		
 
-			-- local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_fleshheap_count.vpcf", PATTACH_OVERHEAD_FOLLOW, caster )
-			-- ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
-			-- ParticleManager:ReleaseParticleIndex( nFXIndex )
-
-			--local playerID = caster:GetPlayerID()
-			--caster:IncrementKills(playerID)
-
-			
-			
-
-			ExecuteOrderFromTable({
+			local orderFollow = {
 				UnitIndex = hBug:GetEntityIndex(),
 				OrderType = DOTA_UNIT_ORDER_MOVE_TO_TARGET,
 				TargetIndex = toFollow:GetEntityIndex(),
-				Queue = true})
+				Queue = true}
+
+			ExecuteOrderFromTable(orderFollow)
 
 			CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
 			local tail_growth_event =

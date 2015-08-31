@@ -12,12 +12,12 @@
 
 		"override_hero"				"npc_dota_hero_nyx_assassin"			// Hero to override
 		"Ability1"					"fiery_jaw"
-		"Ability2"					"empty2"
-		"Ability3"					"empty3"
-		"Ability4"					"empty4"
-		"Ability5"					"empty5"
-		"Ability6"					"empty6"
-		"Ability7"					"devour_aura"						// Ability 1
+		"Ability2"					"goo_bomb"
+		"Ability3"					"crypt_craving"
+		"Ability4"					"devour_aura"
+		"Ability5"					"empty4"
+		"Ability6"					"empty5"
+		"Ability7"					"empty6"							// Ability 1
 		"Ability8"					"tail_growth"						// Ability 2
 		"Ability9"					"worm_war_phase"
 
