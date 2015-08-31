@@ -3,8 +3,6 @@ function TailSpawn(keys)
 	local unit = keys.unit
 	local unitName = unit:GetUnitName()
 	
-	print("here2")
-
 	local numToSpawn = 0
 
 	if unitName == "npc_dota_creature_sheep" then
@@ -57,58 +55,9 @@ function DoTailSpawn(caster, numToSpawn)
 		return 1
 	end
 
-<<<<<<< HEAD
-	for i=1,numToSpawn do
-		if caster.tailLength == nil then
-			caster.tailLength = 0
-			caster.followUnits = {caster}
-		end
-		
-		local toFollow = caster.followUnits[caster.tailLength+1]
-		-- print(toFollow:GetUnitName())
-
-		local headPos = toFollow:GetAbsOrigin()
-		local dir = toFollow:GetForwardVector()
-		
-		local spawnPoint = headPos - (dir * 150)
-		--print(spawnPoint)
-		local hBug = CreateUnitByName( "npc_dota_creature_tail_bug", spawnPoint, true, caster, caster:GetOwner(), caster:GetTeamNumber() )
-		local color = GetTeamColor(caster:GetTeamNumber())
-		hBug:SetRenderColor(color[1],color[2],color[3])
-		if hBug ~= nil then
-			table.insert(caster.followUnits, hBug)
-			caster.tailLength = caster.tailLength + 1
-
-			hBug:SetForwardVector(dir)
-			hBug:SetTeam(caster:GetTeamNumber())
-			hBug:SetOwner( caster )
-
-			
-			local hBuff = caster:FindModifierByName( "modifier_tail_growth_datadriven" )
-			if hBuff ~= nil then
-				hBuff:SetStackCount( caster.tailLength )
-			end		
-
-			local orderFollow = {
-				UnitIndex = hBug:GetEntityIndex(),
-				OrderType = DOTA_UNIT_ORDER_MOVE_TO_TARGET,
-				TargetIndex = toFollow:GetEntityIndex(),
-				Queue = true}
-
-			ExecuteOrderFromTable(orderFollow)
-
-			CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
-			local tail_growth_event =
-			{
-				tail_lengths = CWormWarGameMode.TailLengths,
-			}
-			CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
-		end
-=======
 	if caster.tailLength == nil then
 		caster.tailLength = 0
 		caster.followUnits = {caster}
->>>>>>> 7ecfa86c1e327bec9930c2374ea5d08450422b83
 	end
 
 	local toFollow = caster.followUnits[caster.tailLength+1]
