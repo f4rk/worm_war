@@ -4,13 +4,10 @@ if CWormWarGameMode == nil then
 	_G.CWormWarGameMode = class({})
 end
 
-
---package.path = package.path .. "../?.lua"
---print(package.path)
-
 --require( "os" )
 require( "events" )
 require( "utility_functions")
+
 
 function Precache( context )
 	--[[
@@ -41,6 +38,9 @@ function Precache( context )
 
 	PrecacheResource( "particle", "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", context )
 	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_broodmother.vsndevts", context )
+
+	PrecacheResource( "particle", "particles/units/heroes/hero_lion/lion_spell_mana_drain.vpcf", context )
+	PrecacheResource( "particle", "particles/units/heroes/hero_wisp/wisp_tether.vpcf", context )
 
 
 end
