@@ -48,14 +48,6 @@ function CWormWarGameMode:OnGameRulesStateChange()
 		--DoEntFire( "center_experience_ring_particles", "Start", "0", 0, self, self  )
 	end
 
-	if nNewState == DOTA_GAMERULES_STATE_POST_GAME then
-		print("sending final scores")
-		local final_scores =
-		{
-			tail_lengths = CWormWarGameMode.TailLengths,
-		}
-		CustomGameEventManager:Send_ServerToAllClients( "end_screen", final_scores )
-	end
 end
 
 function CWormWarGameMode:OnNPCSpawned(keys)
@@ -151,6 +143,14 @@ function CWormWarGameMode:OnEntityKilled( event )
 	local nKillerID = event.killer_userid
 
 
+	local nSegments = 0
+	if hero.tailLength ~= null then
+		nSegments = hero.tailLength
+	end
+	local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
+	
+	--print("Current Segments: ".. nSegments)
+	--print("Segments Remaining: ".. nSegmentsRemaining)
 
 	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
@@ -174,36 +174,16 @@ function CWormWarGameMode:OnEntityKilled( event )
 				hero:AddExperience( 50, 0, false, false )
 			end
 		end
-		local hero_death_event =
-			{
-				killer_id = event.killer_userid,
-				team_id = event.teamnumber,
-				tail_lengths = CWormWarGameMode.TailLengths,
-				victory = 0,
-				close_to_victory = 0,
-				very_close_to_victory = 0,
-			}
-
-		CustomGameEventManager:Send_ServerToAllClients( "hero_death_event", hero_death_event )
 	else
 		-- Unit deaths (food, fire elementals etc.)
 		-- HANDLE LENGTH addition + win condition
-		local nSegments = 0
-		if hero.tailLength ~= null then
-			nSegments = hero.tailLength
+		
+		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" then
+			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
 		end
-		local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
-		print("Current Segments: ".. nSegments)
-		print("Segments Remaining: ".. nSegmentsRemaining)
+	end
 
-		--Fetch all team lengths to update scoreboard
-		--local teamLengths = {}
-		--for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
-		--	teamLengths[i] = nKillerID.tailLength
-		--	print(teamLengths[i])
-		--end
-		print(CWormWarGameMode.TailLengths)
-		local on_kill_event =
+	local on_kill_event =
 		{
 			killer_id = event.killer_userid,
 			team_id = event.teamnumber,
@@ -227,11 +207,5 @@ function CWormWarGameMode:OnEntityKilled( event )
 		end
 
 		CustomGameEventManager:Send_ServerToAllClients( "on_kill_event", on_kill_event )
-		--Respawn food in appropriate area, dont respawn when tail bug dies
-		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" then
-			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
 
-
-		end
-	end
 end

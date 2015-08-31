@@ -104,7 +104,7 @@ function CWormWarGameMode:InitGameMode()
 
 	self.m_GatheredShuffledTeams = {}
 	self.SEGMENTS_TO_WIN = 60
-	self.CLOSE_TO_VICTORY_THRESHOLD = 5
+	self.CLOSE_TO_VICTORY_THRESHOLD = 10
 	self.SEGMENT_PER_KILL = 5
 	self.FOOD_LIMIT = 20
 	self.NUM_CENTRE_FOOD = 5

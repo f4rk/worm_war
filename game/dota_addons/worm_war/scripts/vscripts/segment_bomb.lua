@@ -2,7 +2,7 @@ function SegmentBomb (keys)
 	local caster = keys.caster
 
 	for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
-		if i ~= caster:GetTeamNumber()
+		if i ~= caster:GetTeamNumber() then
 				 local playerID = PlayerResource:GetNthPlayerIDOnTeam(i, 1)
 				 if PlayerResource:IsValidPlayerID(playerID) then
 				 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
