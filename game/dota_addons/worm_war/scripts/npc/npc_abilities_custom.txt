@@ -514,8 +514,9 @@
             	{
                 	"AttachEffect"
 					{
-						"EffectName"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf"
-						"EffectAttachType"	"attach_hitloc"
+						"EffectName"		"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf"
+						"EffectAttachType"	"follow_hitloc"
+						"Target"			"TARGET"
 					}
             	}
 
@@ -570,7 +571,7 @@
 			"FireEffect"
 			{	
 				"EffectName"        "particles/units/heroes/hero_dark_seer/dark_seer_vacuum.vpcf"
-				"EffectAttachType"  "attach_hitloc"
+				"EffectAttachType"  "follow_hitloc"
 				"Target"		   	"CASTER"
 
 				"ControlPoints"
