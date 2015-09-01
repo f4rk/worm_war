@@ -11,8 +11,10 @@ function CWormWarGameMode:OnGameRulesStateChange()
 	end
 
 	if nNewState == DOTA_GAMERULES_STATE_PRE_GAME then
+		
+		EmitGlobalSound("WormWar.WelcometoWormWar01")
 		local numberOfPlayers = PlayerResource:GetPlayerCount()
-		nCOUNTDOWNTIMER = 601
+		nCOUNTDOWNTIMER = 1201
 		--[[if numberOfPlayers > 7 then
 			--self.TEAM_KILLS_TO_WIN = 25
 			nCOUNTDOWNTIMER = 901
@@ -32,7 +34,7 @@ function CWormWarGameMode:OnGameRulesStateChange()
 		end]]--
 		--print( "Kills to win = " .. tostring(self.TEAM_KILLS_TO_WIN) )
 
-		CustomNetTables:SetTableValue( "game_state", "victory_condition", { kills_to_win = self.SEGMENT_TO_WIN } );
+		CustomNetTables:SetTableValue( "game_state", "victory_condition", { kills_to_win = self.SEGMENTS_TO_WIN } );
 
 		self._fPreGameStartTime = GameRules:GetGameTime()
 	end
@@ -85,6 +87,8 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 		hero:FindAbilityByName("goo_bomb"):SetLevel(1)
     	hero:FindAbilityByName("crypt_craving"):SetLevel(1)
 	   	hero:FindAbilityByName("segment_bomb"):SetLevel(1)
+
+	   	hero:ModifyGold(-625, true, 0)
 
 
     end
@@ -201,8 +205,11 @@ function CWormWarGameMode:OnEntityKilled( event )
 		elseif nSegmentsRemaining == 1 then
 			EmitGlobalSound( "ui.npe_objective_complete" )
 			on_kill_event.very_close_to_victory = 1
-		elseif nSegmentsRemaining <= self.CLOSE_TO_VICTORY_THRESHOLD then
-			EmitGlobalSound( "ui.npe_objective_given" )
+		elseif nSegmentsRemaining == self.CLOSE_TO_VICTORY_THRESHOLD then
+			EmitGlobalSound( "WormWar.Warning10SegmentsRemaining01")
+			on_kill_event.close_to_victory = 1
+		elseif nSegmentsRemaining < self.CLOSE_TO_VICTORY_THRESHOLD then
+			EmitGlobalSound("ui.npe_objective_given")
 			on_kill_event.close_to_victory = 1
 		end
 

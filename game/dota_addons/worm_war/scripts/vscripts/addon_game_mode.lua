@@ -49,6 +49,8 @@ function Precache( context )
 	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_techies.vsndevts", context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_techies/techies_remote_mines_detonate_base.vpcf", context )
 
+	PrecacheResource( "soundfile", "soundevents/wormwar_sounds.vsndevts", context )
+
 
 
 
@@ -126,12 +128,14 @@ function CWormWarGameMode:InitGameMode()
 	-- Show the ending scoreboard immediately
 	GameRules:SetCustomGameEndDelay( 0 )
 	GameRules:SetCustomVictoryMessageDuration( 20 )
-	GameRules:SetPreGameTime( 10 )
+	GameRules:SetPreGameTime( 5 )
 	GameMode:SetFixedRespawnTime( 1 )
 	GameMode:SetFogOfWarDisabled(true)
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesOverride( true )
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesVisible( false )
 	GameRules:SetSameHeroSelectionEnabled(true)
+	GameRules:SetHeroSelectionTime(15.0)
+	GameRules:SetGoldPerTick(0)
 	
 	ListenToGameEvent( "game_rules_state_change", Dynamic_Wrap( CWormWarGameMode, 'OnGameRulesStateChange' ), self )
 	spawnListener = ListenToGameEvent("npc_spawned", Dynamic_Wrap(CWormWarGameMode, "OnNPCSpawned"), self) 
