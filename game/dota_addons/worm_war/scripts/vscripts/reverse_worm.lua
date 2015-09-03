@@ -40,6 +40,14 @@ function ReverseWorm(keys)
 
 	caster.dest = newMoveLocation
 	caster:MoveToPosition(newMoveLocation)
+
+	local playerID = caster:GetPlayerID()
+	PlayerResource:SetCameraTarget(playerID, caster)
+	Timers:CreateTimer(0.5, function()
+    	PlayerResource:SetCameraTarget(playerID, nil)
+    	return nil
+	end)
+    
 end
 
 function ReverseSwap(entity1, entity2)

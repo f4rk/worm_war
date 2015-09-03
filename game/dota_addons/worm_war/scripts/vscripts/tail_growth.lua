@@ -9,12 +9,12 @@ function TailSpawn(keys)
 		numToSpawn = 1
 	elseif unitName == "npc_dota_creature_pig" then
 		numToSpawn = 2
-	elseif unitName == "npc_dota_creature_gold_sheep" then
-		numToSpawn = 5
 	elseif unitName == "npc_dota_creature_fire_elemental" then
 		numToSpawn = 5
-	else
-		numToSpawn = 0
+	elseif unitName == "npc_dota_hero_nyx_assassin_worm_war" then
+		if unit:GetTeamNumber() ~= caster:GetTeamNumber() then
+			numToSpawn = math.ceil(unit.tailLength*CWormWarGameMode.SEGMENT_PER_KILL/100); --Spawn 5% of enemies tail on kill.
+		end		
 	end
 
 	if caster:IsAlive() then
@@ -109,11 +109,22 @@ function DoTailSpawn(caster, numToSpawn)
 				CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 				return DoTailSpawn(caster,numToSpawn-1)
 			end )
+
+	
+	local playerLongestTail = PlayerResource:GetGold(caster:GetPlayerID())
+	print("Tail length: ", caster.tailLength)
+	print("longest: ", playerLongestTail)
+
+		if caster.tailLength  > playerLongestTail then -- THere is a +1 oddity for taillength... same with win condition, need 61?
+			caster:SetGold(caster.tailLength, true)
+		end
+
 end
 
 function TailCleanup(keys)
 	local caster = keys.caster
 	if caster.tailLength ~= nil then
+		caster:EmitSound("Hero_Broodmother.SpawnSpiderlings")
 		for i=2,caster.tailLength+1 do
 			-- local damage_table = {}
 			-- local target = caster.followUnits[i]
@@ -123,7 +134,6 @@ function TailCleanup(keys)
 			-- damage_table.ability = keys.ability
 			-- damage_table.damage = target:GetMaxHealth()
 			-- ApplyDamage(damage_table)
-			caster:EmitSound("Hero_Broodmother.SpawnSpiderlings")
 			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster.followUnits[i] )
 			ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
 			ParticleManager:ReleaseParticleIndex( nFXIndex )

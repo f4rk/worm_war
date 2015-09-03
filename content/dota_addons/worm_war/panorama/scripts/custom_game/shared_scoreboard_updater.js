@@ -358,6 +358,8 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
 		var jsonObj = Game.GetTeamDetails( teamId );
 		var str = JSON.stringify(jsonObj);
 		
+		//$.Msg(tailLengths)
+
 		str = str.substring(0, str.length-1);
 		str = str.concat(",\"tail_length\":",tailLengths[teamId],"}");
 		
@@ -444,8 +446,14 @@ function ScoreboardUpdater_SetScoreboardActive( scoreboardHandle, isActive, tail
 		return;
 	}
 	
+
 	if ( isActive )
 	{	
+		//$.Msg("taillengths: ");
+		//$.Msg(tailLengths);
+		if (typeof tailLengths === 'undefined')
+			tailLengths = ScoreboardUpdater_CalculateTailLengths();
+
 		_ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardHandle.scoreboardConfig, scoreboardHandle.scoreboardPanel, tailLengths );
 	}
 }
@@ -491,6 +499,7 @@ function ScoreboardUpdater_GetSortedTeamInfoList( scoreboardHandle, tailLengths 
 }
 
 //Used for EndScreen, could update topscoreboar to also use this (performance?)
+//Shoudl switch to GetModifierStackCOunt for big performance increase when syntax is clear
 function ScoreboardUpdater_CalculateTailLengths()
 {
 	var tailLengths = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -499,7 +508,7 @@ function ScoreboardUpdater_CalculateTailLengths()
 	//Find all tail bugs and count tail lengths for each team
 	for ( var tail_bug of Entities.GetAllEntities( ) )
 	{
-		if(Entities.GetUnitName(tail_bug) == "npc_dota_creature_tail_bug")
+		if(Entities.GetUnitName(tail_bug) == "npc_dota_creature_tail_bug" && Entities.IsAlive(tail_bug))
 			tailLengths[Entities.GetTeamNumber(tail_bug)] = tailLengths[Entities.GetTeamNumber(tail_bug)] + 1;
 	}
 

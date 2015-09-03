@@ -299,11 +299,38 @@
 		//"AbilityUnitTargetTeam"     			"DOTA_UNIT_TARGET_TEAM_BOTH"
     	//"AbilityUnitTargetType"    			 "DOTA_UNIT_TARGET_HERO"
 
+    	"precache"
+		{
+			"particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"3.0"
+			}
+		}
+
     	"Modifiers"
     	{    		
     		"modifier_magic_immune"
     		{
     			"Passive"	"1"
+    			"IsBuff"	"1"
+
+    			"Duration"		"%duration"
+
+    			"OnCreated"
+            	{
+                	"AttachEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf"
+						"EffectAttachType"	"follow_hitloc"
+						"Target"			"CASTER"
+					}
+            	}
     			
     			"States"
 				{

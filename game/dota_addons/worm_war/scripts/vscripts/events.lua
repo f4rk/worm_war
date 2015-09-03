@@ -88,8 +88,12 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     	hero:FindAbilityByName("crypt_craving"):SetLevel(1)
 	   	hero:FindAbilityByName("segment_bomb"):SetLevel(1)
 
-	   	hero:ModifyGold(-625, true, 0)
+	   	hero:AddNewModifier(hero, self, "modifier_magic_immune", {duration = 3.0})
 
+	   	if hero:GetDeaths() == 0 then
+	   		print("gold should be 0")
+	   		hero:SetGold(0, false)		-- Set starting gold to 0, will be used to track longest tail achieved 
+	   	end
 
     end
 
@@ -146,7 +150,6 @@ function CWormWarGameMode:OnEntityKilled( event )
 
 	local nKillerID = event.killer_userid
 
-
 	local nSegments = 0
 	if hero.tailLength ~= null then
 		nSegments = hero.tailLength
@@ -158,12 +161,20 @@ function CWormWarGameMode:OnEntityKilled( event )
 
 	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
+
+		print("Killed unit: ", killedUnit)
+		print("Killed team: ", killedTeam)
+		print("hero: ", hero)
+		print("heroTeam: ", heroTeam)
+
 		self.allSpawned = true
 		killedUnit.dest = nil
 		--print("Hero has been killed")
-		if hero:IsRealHero() and heroTeam ~= killedTeam then
+		if heroTeam ~= killedTeam and heroTeam ~= DOTA_TEAM_NEUTRALS then
+			print("squish")
+			EmitGlobalSound("WormWar.Squish01") 
 			--print("Granting killer xp")
-			if killedUnit:GetTeam() == self.leadingTeam and self.isGameTied == false then
+			--[[if killedUnit:GetTeam() == self.leadingTeam and self.isGameTied == false then
 				local memberID = hero:GetPlayerID()
 				PlayerResource:ModifyGold( memberID, 500, true, 0 )
 				hero:AddExperience( 100, 0, false, false )
@@ -174,9 +185,20 @@ function CWormWarGameMode:OnEntityKilled( event )
 						hero_id = hero:GetClassname()
 					}
 				CustomGameEventManager:Send_ServerToAllClients( "kill_alert", kill_alert )
+			end]]--
+		elseif heroTeam == killedTeam then
+			print("Suicide")
+
+			local origin = hero:GetAbsOrigin()
+			if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
+				EmitGlobalSound("WormWar.Noob01")
 			else
-				hero:AddExperience( 50, 0, false, false )
+				EmitGlobalSound("WormWar.Humiliation01")
 			end
+
+		elseif heroTeam == DOTA_TEAM_NEUTRALS then
+			print("FE death")
+			EmitGlobalSound("WormWar.Whoopsie01") 
 		end
 	else
 		-- Unit deaths (food, fire elementals etc.)

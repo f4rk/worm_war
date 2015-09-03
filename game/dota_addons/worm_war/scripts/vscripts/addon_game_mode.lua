@@ -17,6 +17,9 @@ function Precache( context )
 			PrecacheResource( "particle", "*.vpcf", context )
 			PrecacheResource( "particle_folder", "particles/folder", context )
 	]]
+
+	PrecacheResource( "particle", "particles/leader/leader_overhead.vpcf", context )
+	
 	PrecacheUnitByNameAsync( "npc_dota_creature_sheep", function(unit) end )
 	PrecacheModel( "models/items/hex/sheep_hex/sheep_hex.vmdl", context)	 	-- Sheep Model
 	--PrecacheScriptSound("Hero_ShadowShaman.SheepHex.Target")
@@ -232,6 +235,8 @@ function CWormWarGameMode:MovementThink()
 		
 		if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
 			entity:ForceKill(true)
+			-- moved to OnEntityKilled event  
+			--EmitGlobalSound("WormWar.Noob01")
 		end
 
 		if entity.lastOrigin == nil or entity.lastForwardVector == nil then
@@ -293,7 +298,11 @@ end
 function CWormWarGameMode:UpdateScoreboard()
 	local sortedTeams = {}
 	for _, team in pairs( self.m_GatheredShuffledTeams ) do
-		table.insert( sortedTeams, { teamID = team, teamScore = team } )
+		local tScore = 0
+		if self.TailLengths[team] ~= nil then
+			tScore = self.TailLengths[team]
+		end
+		table.insert( sortedTeams, { teamID = team, teamScore = tScore } )
 	end
 
 	-- reverse-sort by score
@@ -312,7 +321,7 @@ function CWormWarGameMode:UpdateScoreboard()
 	end
 	-- Leader effects (moved from OnTeamKillCredit)
 	local leader = sortedTeams[1].teamID
-	--print("Leader = " .. leader)
+	print("Leader = " .. leader)
 	self.leadingTeam = leader
 	self.runnerupTeam = sortedTeams[2].teamID
 	self.leadingTeamScore = sortedTeams[1].teamScore
