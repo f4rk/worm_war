@@ -11,16 +11,20 @@
 		"AbilityLayout"				"4"
 
 		"override_hero"				"npc_dota_hero_nyx_assassin"			// Hero to override
-		//"Ability1"					"fiery_jaw"
-		"Ability1"					"segment_bomb"
-		"Ability2"					"goo_bomb"
-		"Ability3"					"crypt_craving"
-		"Ability4"					"reverse_worm"
-		"Ability5"					"devour_aura"
-		"Ability6"					"fiery_jaw"
-		"Ability7"					"empty6"							// Ability 1
-		"Ability8"					"tail_growth"						// Ability 2
-		"Ability9"					"worm_war_phase"
+		
+		//"Ability1"					"segment_bomb"
+		//"Ability2"					"goo_bomb"
+		//"Ability3"					"crypt_craving"
+		//"Ability4"					"reverse_worm"
+		//"Ability5"					"fiery_jaw"
+		//"Ability7"					"empty6"							// Ability 1
+
+		"Ability1"					""
+		"Ability2"					""
+		"Ability3"					""
+		"Ability4"					"devour_aura"
+		"Ability5"					"tail_growth"						// Ability 2
+		"Ability6"					"worm_war_phase"
 
 		"MovementSpeed"				"400"	
 		"MovementTurnRate"			"0.25"	

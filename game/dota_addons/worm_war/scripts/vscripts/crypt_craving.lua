@@ -12,7 +12,6 @@ function CryptCraving( keys )
 
 	if caster.initialrun == nil then
 		caster.initialrun = true
-		caster.crypt_start_time =  GameRules:GetGameTime()
 	else
 		caster.initialrun = false
 	end
@@ -65,10 +64,17 @@ function CryptCraving( keys )
 			unit:SetAbsOrigin(unit_location + direction * unit.crypt_caster.pull_speed)
 		end
 	end
-
-	--Smaller than Thinker step size (0.05), should be on last step
-	if remaining_duration < 0.03 then
-		caster.initialrun = nil
-	end
-
+	
 end
+
+function CryptCravingStart(keys)
+	local caster = keys.caster
+	caster.crypt_start_time =  GameRules:GetGameTime()
+	caster.initialrun = nil
+end
+
+function CryptCravingCleanUp(keys)
+	local caster = keys.caster
+	caster:RemoveAbility("crypt_craving")
+end
+

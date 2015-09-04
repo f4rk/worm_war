@@ -69,26 +69,42 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     	hero:SetForwardVector(direction) 
 
     	hero:SetAbilityPoints(0)
-    	local Ability1 = hero:FindAbilityByName("devour_aura")
-    	local Ability7 = hero:FindAbilityByName("tail_growth")
-		local Ability8 = hero:FindAbilityByName("worm_war_phase")
-		-- local Ability4 = hero:FindAbilityByName("worm_war_movement")
-		--local Ability4 = hero:FindAbilityByName("lina_dragon_slave")
-   		if Ability1 and Ability7 and Ability8 then
-    		print('hero Spawned leveling spells')
-   	    	Ability1:SetLevel(1)
-    	    Ability7:SetLevel(1)
-			Ability8:SetLevel(1)
-			-- Ability4:SetLevel(1)
-			--Ability4:SetLevel(1)
-    	end
-		hero:FindAbilityByName("fiery_jaw"):SetLevel(1)
-		hero:FindAbilityByName("reverse_worm"):SetLevel(1)
-		hero:FindAbilityByName("goo_bomb"):SetLevel(1)
-    	hero:FindAbilityByName("crypt_craving"):SetLevel(1)
-	   	hero:FindAbilityByName("segment_bomb"):SetLevel(1)
+    	hero:FindAbilityByName("devour_aura"):SetLevel(1)
+    	hero:FindAbilityByName("tail_growth"):SetLevel(1)
+		hero:FindAbilityByName("worm_war_phase"):SetLevel(1)
+	
+		if 	hero:FindAbilityByName("fiery_jaw") then
+			hero:RemoveAbility("fiery_jaw")
+		end
+
+		if 	hero:FindAbilityByName("crypt_craving") then
+			hero:RemoveAbility("crypt_craving")
+		end
+
+		if 	hero:FindAbilityByName("reverse_worm") then
+			hero:RemoveAbility("reverse_worm")
+		end
+
+		if 	hero:FindAbilityByName("goo_bomb") then
+			hero:RemoveAbility("goo_bomb")
+		end
+
+		if 	hero:FindAbilityByName("segment_bomb") then
+			hero:RemoveAbility("segment_bomb")
+		end
+	
+		--hero:FindAbilityByName("reverse_worm"):SetLevel(1)
+--		hero:FindAbilityByName("goo_bomb"):SetLevel(1)
+  --  	hero:FindAbilityByName("crypt_craving"):SetLevel(1)
+	--   	hero:FindAbilityByName("segment_bomb"):SetLevel(1)
 
 	   	hero:AddNewModifier(hero, self, "modifier_magic_immune", {duration = 3.0})
+	   	local repelParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf", PATTACH_ABSORIGIN_FOLLOW, hero)
+	   	Timers:CreateTimer( 3.0, function()
+				ParticleManager:DestroyParticle( repelParticle, false )
+			   		ParticleManager:ReleaseParticleIndex( repelParticle )
+			   		return nil
+			   	end)
 
 	   	if hero:GetDeaths() == 0 then
 	   		print("gold should be 0")
@@ -137,6 +153,47 @@ function CWormWarGameMode:OnTeamKillCredit( event )
 	end]]--
 
 	--CustomGameEventManager:Send_ServerToAllClients( "kill_event", broadcast_kill_event )
+end
+
+function CWormWarGameMode:OnItemPickUp( event )
+	local item = EntIndexToHScript( event.ItemEntityIndex )
+	local owner = EntIndexToHScript( event.HeroEntityIndex )
+	
+	local r = RandomInt(1, 9)
+	local powerUp = ""
+	
+	print("Random num: ", r)
+	if event.itemname == "item_powerup" then
+		if r == 1 then
+			powerUp = "segment_bomb"
+		elseif r == 2 or r == 3 then
+			powerUp = "fiery_jaw"
+		elseif r == 4 or r == 5 then
+			powerUp = "crypt_craving"
+		elseif r == 6 or r == 7 then
+			powerUp = "goo_bomb"
+		elseif r == 8 or r == 9 then
+			powerUp = "reverse_worm"
+		end
+		print("Power up picked up: ", powerUp )
+		owner:AddAbility(powerUp)
+		owner:FindAbilityByName(powerUp):SetLevel(1)
+		--SendOverheadEventMessage( owner, OVERHEAD_ALERT_GOLD, owner, r, nil )
+		UTIL_Remove( item ) -- otherwise it pollutes the player inventory
+	end
+
+	local units = FindUnitsInRadius(DOTA_TEAM_NEUTRALS, owner:GetAbsOrigin(), nil, 600, DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_ALL, DOTA_UNIT_TARGET_FLAG_NONE, FIND_CLOSEST, false)
+	
+	for _,unit in ipairs(units) do
+		if unit:GetUnitName() == "npc_powerup_icon" then
+			unit:ForceKill(false)
+			break
+		end
+	end
+
+	CWormWarGameMode.nSpawnedPowerUps = CWormWarGameMode.nSpawnedPowerUps - 1
+	print("PowerUps Spawned: ", CWormWarGameMode.nSpawnedPowerUps)
+
 end
 
 ---------------------------------------------------------------------------
@@ -204,7 +261,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 		-- Unit deaths (food, fire elementals etc.)
 		-- HANDLE LENGTH addition + win condition
 		
-		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" then
+		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" and killedUnit:GetUnitName() ~= "npc_powerup_icon" then
 			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
 		end
 	end

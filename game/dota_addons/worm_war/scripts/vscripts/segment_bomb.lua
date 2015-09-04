@@ -37,6 +37,8 @@ function SegmentBomb (keys)
 	}
 	CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 
+	caster:RemoveAbility("segment_bomb")
+
 end
 
 function PopupLoss(hero, num)

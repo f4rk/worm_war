@@ -47,6 +47,8 @@ function ReverseWorm(keys)
     	PlayerResource:SetCameraTarget(playerID, nil)
     	return nil
 	end)
+
+	caster:RemoveAbility("reverse_worm")
     
 end
 

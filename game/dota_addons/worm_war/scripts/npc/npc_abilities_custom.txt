@@ -48,7 +48,7 @@
 			"modifier_devour_aura_datadriven"
 			{
 				"Passive"		"1"
-				"IsHidden"		"0"
+				"IsHidden"		"1"
 
 				"Aura" 			"modifier_devour_debuff_datadriven"
 				"Aura_Radius" 	"%devour_aura_range"
@@ -104,9 +104,10 @@
 		"BaseClass"								"ability_datadriven"
 		"AbilityTextureName"					"weaver_the_swarm"
 		"ScriptFile"							"tail_growth"
-		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityUnitTargetType"    			 	"DOTA_UNIT_TARGET_ALL"
 		"AbilityUnitTargetTeam"					"DOTA_UNIT_TARGET_TEAM_BOTH"
+
 		
 		"Modifiers"
 		{
@@ -156,7 +157,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"BaseClass"								"ability_datadriven"
 		"AbilityTextureName"					"nyx_assassin_vendetta"
-		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		
 		"Modifiers"
 		{
@@ -215,6 +216,7 @@
 		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
 		"AbilityUnitTargetTeam"     			"DOTA_UNIT_TARGET_TEAM_BOTH"
     	"AbilityUnitTargetType"    			 	"DOTA_UNIT_TARGET_HERO"
+    	"SpellImmunityType"						"SPELL_IMMUNITY_ENEMIES_NO"
 
     	// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -297,7 +299,7 @@
 		"AbilityTextureName"					"modifier_magicimmune"
 		"AbilityBehavior"						"DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		//"AbilityUnitTargetTeam"     			"DOTA_UNIT_TARGET_TEAM_BOTH"
-    	//"AbilityUnitTargetType"    			 "DOTA_UNIT_TARGET_HERO"
+    	//"AbilityUnitTargetType"    			"DOTA_UNIT_TARGET_HERO"
 
     	"precache"
 		{
@@ -319,6 +321,7 @@
     		{
     			"Passive"	"1"
     			"IsBuff"	"1"
+    			"TextureName"      "modifier_magicimmune"
 
     			"Duration"		"%duration"
 
@@ -328,7 +331,7 @@
 					{
 						"EffectName"		"particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf"
 						"EffectAttachType"	"follow_hitloc"
-						"Target"			"CASTER"
+						"Target"			"TARGET"
 					}
             	}
     			
@@ -440,6 +443,8 @@
 				"ModifierName"		"modifier_fiery_jaw"
 				"Target"			"CASTER"
 			}
+
+
 		}
 
 		"Modifiers"
@@ -448,6 +453,7 @@
 			{
 				"Duration"		"%fiery_jaw_duration"
 
+				"TextureName"      		"doom_bringer_devour"
 				"StatusEffectName" 		"particles/status_fx/status_effect_battle_hunger.vpcf" 	   
 				"StatusEffectPriority"  "9"
 
@@ -459,6 +465,13 @@
 						"EffectAttachType"  "follow_overhead"
 						"Target"            "CASTER"
 					}
+
+					"RemoveAbility"
+					{
+						"Target"			"CASTER"
+						"AbilityName"		"fiery_jaw"
+					}
+
             	}
 			}
 
@@ -474,6 +487,7 @@
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "bristleback_viscous_nasal_goo"
+		"AbilityCooldown"				"4"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -528,14 +542,16 @@
 					}
 				}
 			}
+
 		}
 
 		"Modifiers"
 		{
 			"modifier_goo_bomb"
 			{
-				"IsDebuff"	"1"
-				"Duration"		"%goo_duration"
+				"IsDebuff"			"1"
+				"Duration"			"%goo_duration"
+				"TextureName"   	"bristleback_viscous_nasal_goo"
 
 				"OnCreated"
             	{
@@ -544,6 +560,12 @@
 						"EffectName"		"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf"
 						"EffectAttachType"	"follow_hitloc"
 						"Target"			"TARGET"
+					}
+
+					"RemoveAbility"
+					{	
+						"Target"			"CASTER"
+						"AbilityName"		"goo_bomb"
 					}
             	}
 
@@ -567,6 +589,7 @@
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "crypt_craving"
+		"AbilityCooldown"				"4"
 		"AOERadius"						"%radius"
 
 		// Precache
@@ -612,6 +635,13 @@
 				"ModifierName"	"modifier_crypt_craving_thinker"
 				"Target" 		"CASTER"
 			}			
+
+			"RunScript"
+			{
+				"ScriptFile"		"scripts/vscripts/crypt_craving.lua"
+				"Function"			"CryptCravingStart"
+			}
+			
 		}
 
 		"Modifiers"
@@ -637,6 +667,16 @@
 						"ScriptFile"			"scripts/vscripts/crypt_craving.lua"
 						"Function"				"CryptCraving"
 					}
+				}
+
+				"OnDestroy"
+				{
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/crypt_craving.lua"
+						"Function"				"CryptCravingCleanUp"
+					}
+
 				}
 			}
 		}
@@ -664,6 +704,7 @@
 				"ScriptFile"			"scripts/vscripts/reverse_worm.lua"
 				"Function"				"ReverseWorm"
 			}
+
 		}
 	}
 

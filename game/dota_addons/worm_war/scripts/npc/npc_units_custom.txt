@@ -122,6 +122,21 @@
 
 	}
 
+	"npc_powerup_icon"
+	{
+		"BaseClass"					"npc_dota_creature"
+		"Model"						"models/development/invisiblebox.vmdl"
+		
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"BountyXP"					"0"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_NONE"
+		"StatusHealth"				"5000"
+		"TeamName"					"DOTA_TEAM_NEUTRALS"
+		"MinimapIcon"				"minimap_rune_bounty"
+		"MinimapIconSize"			"500"
+		"MinimapDisableTint"		"1"
+	}
+
 	//=================================================================================	
 	// Creature: Gnoll Assassin
 	//=================================================================================

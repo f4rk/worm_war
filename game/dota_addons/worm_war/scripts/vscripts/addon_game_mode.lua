@@ -7,6 +7,7 @@ end
 --require( "os" )
 require( "events" )
 require( "utility_functions")
+require( "timers" )
 
 
 function Precache( context )
@@ -54,6 +55,12 @@ function Precache( context )
 
 	PrecacheResource( "soundfile", "soundevents/wormwar_sounds.vsndevts", context )
 
+	PrecacheResource( "particle", "particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf", context )
+
+
+	PrecacheItemByNameSync( "item_powerup", context )
+	PrecacheModel("models/props_gameplay/rune_goldxp.vmdl", context)
+
 
 
 
@@ -95,6 +102,8 @@ function CWormWarGameMode:InitGameMode()
    		CWormWarGameMode.TailLengths[i] = 0
 	end
 
+	CWormWarGameMode.nSpawnedPowerUps = 0
+
 	self.m_VictoryMessages = {}
 	self.m_VictoryMessages[DOTA_TEAM_GOODGUYS] = "#VictoryMessage_GoodGuys"
 	self.m_VictoryMessages[DOTA_TEAM_BADGUYS]  = "#VictoryMessage_BadGuys"
@@ -110,11 +119,12 @@ function CWormWarGameMode:InitGameMode()
 	self.m_GatheredShuffledTeams = {}
 	self.SEGMENTS_TO_WIN = 60
 	self.CLOSE_TO_VICTORY_THRESHOLD = 10
-	self.SEGMENT_PER_KILL = 5
+	self.SEGMENT_PER_KILL = 5 		--Percentage
 	self.FOOD_LIMIT = 20
 	self.NUM_CENTRE_FOOD = 5
 	self.NUM_SUPER_FOOD = 3
 	self.NUM_FIRE_ELEMENTAL = 3
+	self.NUM_POWERUPS = 3
 
 	self.leadingTeam = -1
 	self.runnerupTeam = -1
@@ -125,7 +135,7 @@ function CWormWarGameMode:InitGameMode()
 
 	self:GatherAndRegisterValidTeams()
 
-	GameRules:GetGameModeEntity().COverthrowGameMode = self
+	GameRules:GetGameModeEntity().CWormWarGameMode = self
 
 	--------------------------------------------------------------------------
 	-- Show the ending scoreboard immediately
@@ -139,11 +149,14 @@ function CWormWarGameMode:InitGameMode()
 	GameRules:SetSameHeroSelectionEnabled(true)
 	GameRules:SetHeroSelectionTime(15.0)
 	GameRules:SetGoldPerTick(0)
+	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
+	GameRules:GetGameModeEntity():SetExecuteOrderFilter( Dynamic_Wrap( CWormWarGameMode, "ExecuteOrderFilter" ), self )
 	
 	ListenToGameEvent( "game_rules_state_change", Dynamic_Wrap( CWormWarGameMode, 'OnGameRulesStateChange' ), self )
 	spawnListener = ListenToGameEvent("npc_spawned", Dynamic_Wrap(CWormWarGameMode, "OnNPCSpawned"), self) 
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CWormWarGameMode, 'OnEntityKilled' ), self )
 	ListenToGameEvent("tail_growth", Dynamic_Wrap( CWormWarGameMode, 'OnTailGrowth' ), self )
+	ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap( CWormWarGameMode, "OnItemPickUp"), self )
 	-- ListenToGameEvent( "dota_npc_goal_reached", Dynamic_Wrap( CWormWarGameMode, "OnNpcGoalReached" ), self )
 
 	Convars:RegisterCommand( "wormwar_force_end_game", function(...) return self:EndGame( DOTA_TEAM_GOODGUYS ) end, "Force the game to end.", FCVAR_CHEAT )
@@ -172,6 +185,7 @@ function CWormWarGameMode:InitGameMode()
 	for i = 1, self.NUM_FIRE_ELEMENTAL do
 		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_fire_elemental", true )
 	end
+	
 
 end
 
@@ -196,7 +210,7 @@ function CWormWarGameMode:OnThink()
 			--Check to see if there's a tie
 			if self.isGameTied == false then
 				GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[self.leadingTeam] )
-				COverthrowGameMode:EndGame( self.leadingTeam )
+				CWormWarGameMode:EndGame( self.leadingTeam )
 				self.countdownEnabled = false
 			--[[else
 				self.TEAM_KILLS_TO_WIN = self.leadingTeamScore + 1
@@ -216,6 +230,12 @@ function CWormWarGameMode:OnThink()
 		if math.floor(gameTime) % 60 == 0 and math.floor(gameTime) ~= 0 then
 			CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_sheep", false )
 			--print("Spawning extra food")
+		end
+
+		if math.floor(gameTime) > 30 then
+			if CWormWarGameMode:SpawnPowerUp() then
+				CWormWarGameMode.nSpawnedPowerUps = CWormWarGameMode.nSpawnedPowerUps + 1
+			end
 		end
 
 		return 1
@@ -321,7 +341,7 @@ function CWormWarGameMode:UpdateScoreboard()
 	end
 	-- Leader effects (moved from OnTeamKillCredit)
 	local leader = sortedTeams[1].teamID
-	print("Leader = " .. leader)
+	--print("Leader = " .. leader)
 	self.leadingTeam = leader
 	self.runnerupTeam = sortedTeams[2].teamID
 	self.leadingTeamScore = sortedTeams[1].teamScore
@@ -427,6 +447,9 @@ function CWormWarGameMode:SpawnFoodLocation(centre)
 	local xpos = 0
 	local ypos = 0
 	
+	print(centre)
+	print(r1)
+	print(r2)
 	if centre then
 		xpos = r1*50; -- Coordinates within centre of arena
 		ypos = r2*50;
@@ -448,6 +471,66 @@ function CWormWarGameMode:SpawnFoodEntity(foodType, centre)
 	--print(hFood:GetUnitName())
 	if centre and hFood ~= nil then
 		--print("respawning centre food")
-		hFood.centreFlag = 1;
+		hFood.centreFlag = true;
 	end
+end
+
+function CWormWarGameMode:SpawnPowerUp()
+	--print(CWormWarGameMode.nSpawnedPowerUps)
+	--print(self.NUM_POWERUPS)
+	if 	CWormWarGameMode.nSpawnedPowerUps < 3 then
+		local spawnPoint = CWormWarGameMode:SpawnFoodLocation(false)
+		print("PowerUp location: ", spawnPoint)
+		local newItem = CreateItem( "item_powerup", nil, nil )
+		local item = CreateItemOnPositionSync(spawnPoint, newItem)
+		local minimapUnit = CreateUnitByName("npc_powerup_icon", spawnPoint, false, nil, nil, DOTA_TEAM_NEUTRALS)
+
+		return true
+	else
+		return false
+	end
+
+end
+
+function CWormWarGameMode:ExecuteOrderFilter( filterTable )
+	--[[
+	for k, v in pairs( filterTable ) do
+		print("EO: " .. k .. " " .. tostring(v) )
+	end
+	]]
+
+	local orderType = filterTable["order_type"]
+	if ( orderType ~= DOTA_UNIT_ORDER_PICKUP_ITEM or filterTable["issuer_player_id_const"] == -1 ) then
+		return true
+	else
+		print("Order filter")
+		local item = EntIndexToHScript( filterTable["entindex_target"] )
+		if item == nil then
+			return true
+		end
+		local pickedItem = item:GetContainedItem()
+		--print(pickedItem:GetAbilityName())
+		if pickedItem == nil then
+			return true
+		end
+		if pickedItem:GetAbilityName() == "item_powerup" then
+			local player = PlayerResource:GetPlayer(filterTable["issuer_player_id_const"])
+			local hero = player:GetAssignedHero()
+			
+			if hero:FindAbilityByName("fiery_jaw") or hero:FindAbilityByName("crypt_craving") or hero:FindAbilityByName("reverse_worm") or hero:FindAbilityByName("goo_bomb") or hero:FindAbilityByName("segment_bomb") then
+				print("Moving to target instead")
+
+				local position = item:GetAbsOrigin()
+				filterTable["position_x"] = position.x
+				filterTable["position_y"] = position.y
+				filterTable["position_z"] = position.z
+				filterTable["order_type"] = DOTA_UNIT_ORDER_MOVE_TO_POSITION
+				return true
+			else
+				print("has no ability")
+				return true
+			end
+		end
+	end
+	return true
 end
