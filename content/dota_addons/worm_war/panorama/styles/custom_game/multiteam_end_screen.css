@@ -243,7 +243,7 @@
 #LevelContainer,
 #KillsContainer,
 #DeathsContainer,
-#AssistsContainer
+#SuicidesContainer
 {
 	height: 100%;
 }
@@ -290,7 +290,7 @@
 
 #Kills,
 #Deaths,
-#Assists,
+#Suicides,
 #PlayerGoldAmount
 {
 	horizontal-align: center;
@@ -384,7 +384,7 @@
 
 .ScoreCol_Kills,
 .ScoreCol_Deaths,
-.ScoreCol_Assists
+.ScoreCol_Suicides
 {
 	width: 50px;
 	text-align: center;

@@ -158,7 +158,7 @@
 #LevelContainer,
 #KillsContainer,
 #DeathsContainer,
-#AssistsContainer
+#SuicidesContainer
 {
 	height: 100%;
 }
@@ -208,7 +208,7 @@
 
 #Kills,
 #Deaths,
-#Assists
+#Suicides
 {
 	vertical-align: center;
 	font-size: 18px;
@@ -294,7 +294,7 @@
 
 .is_local_player #Kills,
 .is_local_player #Deaths,
-.is_local_player #Assists,
+.is_local_player #Suicides,
 .is_local_player #Level,
 .is_local_player #HeroName
 {
@@ -324,7 +324,7 @@
 
 .ScoreCol_Kills,
 .ScoreCol_Deaths,
-.ScoreCol_Assists
+.ScoreCol_Suicides
 {
 	width: 50px;
 	text-align: center;

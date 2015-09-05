@@ -3,12 +3,13 @@ require( "timers" )
 
 function CryptCraving( keys )
 	local caster = keys.caster
-	local centerPos = caster:GetAbsOrigin()
+	
 	local ability = keys.ability
+	local centerPos = caster:GetAbsOrigin()
+
 
 	-- Ability variables
 	local duration = ability:GetSpecialValueFor("duration")
-	local radius = ability:GetSpecialValueFor("radius")
 
 	if caster.initialrun == nil then
 		caster.initialrun = true
@@ -18,7 +19,7 @@ function CryptCraving( keys )
 
 	local remaining_duration = duration - (GameRules:GetGameTime() - caster.crypt_start_time)
 
-	print("Initial run: ", caster.initialrun)	
+	--print("Initial run: ", caster.initialrun)	
 	--local vacuum_modifier = keys.vacuum_modifier
 	
 
@@ -27,13 +28,13 @@ function CryptCraving( keys )
 	local target_types = ability:GetAbilityTargetType() 
 	--local target_flags = ability:GetAbilityTargetFlags() 
 
-	local units = FindUnitsInRadius(DOTA_TEAM_NEUTRALS, centerPos, nil, radius, DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_ALL, DOTA_UNIT_TARGET_FLAG_NONE, FIND_CLOSEST, false)
+	
 
 	
 	-- Calculate the position of each found unit
-	for _,unit in ipairs(units) do
+	for _,unit in ipairs(caster.units) do
 		
-		if unit:GetUnitName() ~= "npc_dota_creature_fire_elemental" then
+		if unit:GetUnitName() ~= "npc_dota_creature_fire_elemental" and unit:GetUnitName() ~= "npc_powerup_icon" then
 			
 			--Attach lion mana drain particles
 			if caster.initialrun == true then
@@ -69,6 +70,12 @@ end
 
 function CryptCravingStart(keys)
 	local caster = keys.caster
+	local centerPos = caster:GetAbsOrigin()
+	local ability = keys.ability
+	local radius = ability:GetSpecialValueFor("radius")
+
+	caster.units = FindUnitsInRadius(DOTA_TEAM_NEUTRALS, centerPos, nil, radius, DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_ALL, DOTA_UNIT_TARGET_FLAG_NONE, FIND_CLOSEST, false)
+
 	caster.crypt_start_time =  GameRules:GetGameTime()
 	caster.initialrun = nil
 end
@@ -76,5 +83,6 @@ end
 function CryptCravingCleanUp(keys)
 	local caster = keys.caster
 	caster:RemoveAbility("crypt_craving")
+	caster.units = nil
 end
 

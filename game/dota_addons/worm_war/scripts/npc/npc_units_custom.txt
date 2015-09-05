@@ -135,6 +135,8 @@
 		"MinimapIcon"				"minimap_rune_bounty"
 		"MinimapIconSize"			"500"
 		"MinimapDisableTint"		"1"
+
+		"Ability1"					"no_health_bar"
 	}
 
 	//=================================================================================	

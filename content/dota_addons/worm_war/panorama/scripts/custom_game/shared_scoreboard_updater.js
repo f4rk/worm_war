@@ -52,7 +52,7 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Level", playerInfo.player_level );
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Kills", playerInfo.player_kills );
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Deaths", playerInfo.player_deaths );
-		_ScoreboardUpdater_SetTextSafe( playerPanel, "Assists", playerInfo.player_assists );
+		_ScoreboardUpdater_SetTextSafe( playerPanel, "Suicides", Players.GetDenies( playerId ) );
 
 		var playerPortrait = playerPanel.FindChildInLayoutFile( "HeroIcon" );
 		if ( playerPortrait )

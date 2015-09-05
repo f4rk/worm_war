@@ -150,6 +150,10 @@ function CWormWarGameMode:InitGameMode()
 	GameRules:SetHeroSelectionTime(15.0)
 	GameRules:SetGoldPerTick(0)
 	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
+	GameRules:SetUseBaseGoldBountyOnHeroes(true)
+	GameRules:SetFirstBloodActive(false)
+
+
 	GameRules:GetGameModeEntity():SetExecuteOrderFilter( Dynamic_Wrap( CWormWarGameMode, "ExecuteOrderFilter" ), self )
 	
 	ListenToGameEvent( "game_rules_state_change", Dynamic_Wrap( CWormWarGameMode, 'OnGameRulesStateChange' ), self )
@@ -500,8 +504,27 @@ function CWormWarGameMode:ExecuteOrderFilter( filterTable )
 	]]
 
 	local orderType = filterTable["order_type"]
-	if ( orderType ~= DOTA_UNIT_ORDER_PICKUP_ITEM or filterTable["issuer_player_id_const"] == -1 ) then
+	
+	if orderType == DOTA_UNIT_ORDER_ATTACK_TARGET then
+		local unit = EntIndexToHScript( filterTable["entindex_target"] )
+
+		if unit ~= nil then
+			print("Moving to target instead")
+
+				local position = unit:GetAbsOrigin()
+				filterTable["position_x"] = position.x
+				filterTable["position_y"] = position.y
+				filterTable["position_z"] = position.z
+				filterTable["order_type"] = DOTA_UNIT_ORDER_MOVE_TO_POSITION
+		end
 		return true
+
+	elseif orderType == DOTA_UNIT_ORDER_HOLD_POSITION or orderType == DOTA_UNIT_ORDER_STOP or orderType == DOTA_UNIT_ORDER_TAUNT then
+		filterTable["order_type"] = DOTA_UNIT_ORDER_NONE
+
+	elseif ( orderType ~= DOTA_UNIT_ORDER_PICKUP_ITEM or filterTable["issuer_player_id_const"] == -1 ) then
+		return true
+	
 	else
 		print("Order filter")
 		local item = EntIndexToHScript( filterTable["entindex_target"] )

@@ -109,6 +109,8 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 	   	if hero:GetDeaths() == 0 then
 	   		print("gold should be 0")
 	   		hero:SetGold(0, false)		-- Set starting gold to 0, will be used to track longest tail achieved 
+	   		hero:SetMaximumGoldBounty(0)
+	   		hero:SetMinimumGoldBounty(0)
 	   	end
 
     end
@@ -219,17 +221,22 @@ function CWormWarGameMode:OnEntityKilled( event )
 	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
 
-		print("Killed unit: ", killedUnit)
-		print("Killed team: ", killedTeam)
-		print("hero: ", hero)
-		print("heroTeam: ", heroTeam)
+		--print("Killed unit: ", killedUnit)
+		--print("Killed team: ", killedTeam)
+		--print("hero: ", hero)
+		--print("heroTeam: ", heroTeam)
 
 		self.allSpawned = true
 		killedUnit.dest = nil
 		--print("Hero has been killed")
 		if heroTeam ~= killedTeam and heroTeam ~= DOTA_TEAM_NEUTRALS then
-			print("squish")
-			EmitGlobalSound("WormWar.Squish01") 
+			
+			if killedUnit.tailLength ~= nil and (self.SEGMENTS_TO_WIN - killedUnit.tailLength) < self.CLOSE_TO_VICTORY_THRESHOLD then
+				EmitGlobalSound("WormWar.Denied01") 
+			else
+				print("squish")
+				EmitGlobalSound("WormWar.Squish01") 
+			end
 			--print("Granting killer xp")
 			--[[if killedUnit:GetTeam() == self.leadingTeam and self.isGameTied == false then
 				local memberID = hero:GetPlayerID()
@@ -250,6 +257,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 			if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
 				EmitGlobalSound("WormWar.Noob01")
 			else
+				PlayerResource:IncrementDenies(hero:GetPlayerOwnerID()) 
 				EmitGlobalSound("WormWar.Humiliation01")
 			end
 
@@ -278,6 +286,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 		}
 
 		if nSegmentsRemaining <= 0 then
+			EmitGlobalSound("WormWar.Wormtastic01")
 			GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[heroTeam] )
 			GameRules:SetGameWinner( heroTeam)
 			on_kill_event.victory = 1

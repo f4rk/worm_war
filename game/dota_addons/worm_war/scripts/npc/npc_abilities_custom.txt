@@ -395,6 +395,30 @@
 		"AbilityTextureName"            "rubick_empty1"
 	}
 
+	"no_health_bar"
+	{
+        "BaseClass"                     "ability_datadriven"
+        "MaxLevel"                      "1"
+
+        "AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+        "Modifiers"
+        {
+            "modifier_no_health_bar"
+            {
+                "Passive"           "1"
+
+                "States"
+                {
+                    "MODIFIER_STATE_NO_HEALTH_BAR"      "MODIFIER_STATE_VALUE_ENABLED"
+                    "MODIFIER_STATE_UNSELECTABLE"       "MODIFIER_STATE_VALUE_ENABLED"
+                    "MODIFIER_STATE_NO_UNIT_COLLISION"  "MODIFIER_STATE_VALUE_ENABLED"
+                }
+            }
+        }
+    }
+
+
 
 	//=================================================================================================================
 	// Powerups
@@ -409,6 +433,7 @@
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "doom_bringer_devour"
+		"AbilityCooldown"				"10"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -465,13 +490,15 @@
 						"EffectAttachType"  "follow_overhead"
 						"Target"            "CASTER"
 					}
+            	}
 
-					"RemoveAbility"
+            	"OnDestroy"
+            	{
+            		"RemoveAbility"
 					{
 						"Target"			"CASTER"
 						"AbilityName"		"fiery_jaw"
 					}
-
             	}
 			}
 
