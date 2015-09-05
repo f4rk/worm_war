@@ -43,6 +43,8 @@ function Precache( context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", context )
 	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_broodmother.vsndevts", context )
 
+
+--	Power Up Precaching
 	PrecacheResource( "particle", "particles/units/heroes/hero_lion/lion_spell_mana_drain.vpcf", context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_wisp/wisp_tether.vpcf", context )
 
@@ -53,13 +55,24 @@ function Precache( context )
 	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_techies.vsndevts", context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_techies/techies_remote_mines_detonate_base.vpcf", context )
 
+	PrecacheResource( "particle", "particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf", context )
+	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_bristleback.vsndevts", context )
+
+	PrecacheResource( "particle", "particles/units/heroes/hero_axe/axe_battle_hunger.vpcf", context )
+	PrecacheResource( "particle", "particles/status_fx/status_effect_battle_hunger.vpcf", context )
+	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_axe.vsndevts", context )
+
+	PrecacheItemByNameSync( "item_powerup", context )
+	PrecacheModel("models/props_gameplay/rune_goldxp.vmdl", context)
+--
+	
+
 	PrecacheResource( "soundfile", "soundevents/wormwar_sounds.vsndevts", context )
 
 	PrecacheResource( "particle", "particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf", context )
 
 
-	PrecacheItemByNameSync( "item_powerup", context )
-	PrecacheModel("models/props_gameplay/rune_goldxp.vmdl", context)
+	
 
 
 

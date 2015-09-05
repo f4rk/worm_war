@@ -101,10 +101,10 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 	   	hero:AddNewModifier(hero, self, "modifier_magic_immune", {duration = 3.0})
 	   	local repelParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf", PATTACH_ABSORIGIN_FOLLOW, hero)
 	   	Timers:CreateTimer( 3.0, function()
-				ParticleManager:DestroyParticle( repelParticle, false )
-			   		ParticleManager:ReleaseParticleIndex( repelParticle )
-			   		return nil
-			   	end)
+			ParticleManager:DestroyParticle( repelParticle, false )
+			ParticleManager:ReleaseParticleIndex( repelParticle )
+			return nil
+		end)
 
 	   	if hero:GetDeaths() == 0 then
 	   		print("gold should be 0")

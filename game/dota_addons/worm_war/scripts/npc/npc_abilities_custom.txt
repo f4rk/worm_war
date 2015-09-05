@@ -433,7 +433,7 @@
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "doom_bringer_devour"
-		"AbilityCooldown"				"10"
+		//"AbilityCooldown"				"10"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -457,49 +457,25 @@
 
 		"OnSpellStart"
 		{
-			"FireSound"
+			
+			"RunScript"
 			{
-				"EffectName"	"Hero_Axe.Battle_Hunger"
-				"Target" 		"CASTER"
+				"ScriptFile"		"scripts/vscripts/fiery_jaw.lua"
+				"Function"			"FieryJaw"
 			}
-
-			"ApplyModifier"
-			{
-				"ModifierName"		"modifier_fiery_jaw"
-				"Target"			"CASTER"
-			}
-
-
+			
 		}
 
 		"Modifiers"
 		{
 			"modifier_fiery_jaw"
 			{
-				"Duration"		"%fiery_jaw_duration"
+				"IsBuff"	"1"
+    			"Duration"		"%fiery_jaw_duration"
 
 				"TextureName"      		"doom_bringer_devour"
 				"StatusEffectName" 		"particles/status_fx/status_effect_battle_hunger.vpcf" 	   
 				"StatusEffectPriority"  "9"
-
-				"OnCreated"
-            	{
-                	"AttachEffect"
-					{
-						"EffectName"        "particles/units/heroes/hero_axe/axe_battle_hunger.vpcf"
-						"EffectAttachType"  "follow_overhead"
-						"Target"            "CASTER"
-					}
-            	}
-
-            	"OnDestroy"
-            	{
-            		"RemoveAbility"
-					{
-						"Target"			"CASTER"
-						"AbilityName"		"fiery_jaw"
-					}
-            	}
 			}
 
 		}
@@ -514,18 +490,9 @@
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "bristleback_viscous_nasal_goo"
-		"AbilityCooldown"				"4"
+		//"AbilityCooldown"				"4"
 
-		// Precache
-		//-------------------------------------------------------------------------------------------------------------
-		"precache"
-		{
-			"particle"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo.vpcf"
-			"particle"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf"
-			"particle"	"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_stack.vpcf"
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bristleback.vsndevts"
-		}
-
+		
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
@@ -544,32 +511,11 @@
 
 		"OnSpellStart"
 		{
-			"ActOnTargets"
+			"RunScript"
 			{
-				"Target"
-				{
-					"Center"  	"CASTER"
-					"Radius" 	"GLOBAL"
-					"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
-					"Types" 	"DOTA_UNIT_TARGET_HERO"
-				}
-
-				"Action"
-				{
-					"FireSound"
-					{
-						"EffectName"		"Hero_Bristleback.ViscousGoo.Target"
-						"Target"			"TARGET"
-					}
-
-					"ApplyModifier"
-					{
-						"ModifierName"		"modifier_goo_bomb"
-						"Target"			"TARGET"
-					}
-				}
+				"ScriptFile"		"scripts/vscripts/goo_bomb.lua"
+				"Function"			"GooBomb"
 			}
-
 		}
 
 		"Modifiers"
@@ -579,22 +525,6 @@
 				"IsDebuff"			"1"
 				"Duration"			"%goo_duration"
 				"TextureName"   	"bristleback_viscous_nasal_goo"
-
-				"OnCreated"
-            	{
-                	"AttachEffect"
-					{
-						"EffectName"		"particles/units/heroes/hero_bristleback/bristleback_viscous_nasal_goo_debuff.vpcf"
-						"EffectAttachType"	"follow_hitloc"
-						"Target"			"TARGET"
-					}
-
-					"RemoveAbility"
-					{	
-						"Target"			"CASTER"
-						"AbilityName"		"goo_bomb"
-					}
-            	}
 
             	"Properties"
 				{
@@ -616,7 +546,7 @@
 		"MaxLevel"						"1"
 		"BaseClass" 					"ability_datadriven"
 		"AbilityTextureName"            "crypt_craving"
-		"AbilityCooldown"				"4"
+		"AbilityCooldown"				"2"
 		"AOERadius"						"%radius"
 
 		// Precache
