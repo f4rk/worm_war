@@ -46,7 +46,7 @@ function Precache( context )
 
 --	Power Up Precaching
 	PrecacheResource( "particle", "particles/units/heroes/hero_lion/lion_spell_mana_drain.vpcf", context )
-	PrecacheResource( "particle", "particles/units/heroes/hero_wisp/wisp_tether.vpcf", context )
+	PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_dark_seer.vsndevts", context )
 
 	PrecacheResource( "particle", "particles/units/heroes/hero_vengeful/vengeful_nether_swap_b.vpcf", context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_vengeful/vengeful_nether_swap_pink.vpcf", context )
@@ -164,8 +164,12 @@ function CWormWarGameMode:InitGameMode()
 	GameRules:SetGoldPerTick(0)
 	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
 	GameRules:SetUseBaseGoldBountyOnHeroes(true)
-	GameRules:SetFirstBloodActive(false)
+	GameRules:SetFirstBloodActive(true)				--Weird, bool is whether first blood has been triggered
 
+	GameMode:SetCustomHeroMaxLevel(1)
+	GameMode:SetGoldSoundDisabled(true)
+	GameMode:SetModifyGoldFilter( Dynamic_Wrap( self, "FilterModifyGold" ), self )
+	GameMode:SetAnnouncerDisabled(true)
 
 	GameRules:GetGameModeEntity():SetExecuteOrderFilter( Dynamic_Wrap( CWormWarGameMode, "ExecuteOrderFilter" ), self )
 	
@@ -441,19 +445,6 @@ function CWormWarGameMode:GatherAndRegisterValidTeams()
 		GameRules:SetCustomGameTeamMaxPlayers( team, maxPlayers )
 	end
 end
----------------------------------------------------------------------------
--- Event: Determine animal to spawn
----------------------------------------------------------------------------
-function CWormWarGameMode:DetermineAnimalSpawn()
-	local r = RandomInt( 1, 100 )
-	if r > 25 then
-		CWormWarGameMode:SpawnFoodLocation(1) -- Regular Sheep
-	elseif r > 5 and r <=25 then
-		CWormWarGameMode:SpawnFoodLocation(2) -- Pig
-	else
-		CWormWarGameMode:SpawnFoodLocation(3) -- Golden Sheep
-	end
-end
 
 ---------------------------------------------------------------------------
 -- Event: Spawn Sheep
@@ -464,9 +455,7 @@ function CWormWarGameMode:SpawnFoodLocation(centre)
 	local xpos = 0
 	local ypos = 0
 	
-	print(centre)
-	print(r1)
-	print(r2)
+	--print(centre)
 	if centre then
 		xpos = r1*50; -- Coordinates within centre of arena
 		ypos = r2*50;
@@ -476,7 +465,7 @@ function CWormWarGameMode:SpawnFoodLocation(centre)
 	end
 
 	local spawnPoint = Vector(xpos, ypos, 0)
-	print("sheep position: " .. xpos..", ".. ypos)
+	--print("sheep position: " .. xpos..", ".. ypos)
 	return spawnPoint
 end
 
@@ -488,7 +477,9 @@ function CWormWarGameMode:SpawnFoodEntity(foodType, centre)
 	--print(hFood:GetUnitName())
 	if centre and hFood ~= nil then
 		--print("respawning centre food")
-		hFood.centreFlag = true;
+		hFood.centreFlag = true
+	else
+		hFood.centreFlag = false
 	end
 end
 
@@ -569,4 +560,22 @@ function CWormWarGameMode:ExecuteOrderFilter( filterTable )
 		end
 	end
 	return true
+end
+
+function CWormWarGameMode:FilterModifyGold( filterTable )
+
+	--print("[addon_game_mode.lua] ModifyGoldFilter")
+
+	--Disable gold gain from hero kills
+	if filterTable["reason_const"] == DOTA_ModifyGold_HeroKill then
+		filterTable["gold"] = 0
+		return true
+	elseif filterTable["gold"] > 10 then
+		filterTable["gold"] = 0
+		return true
+	end
+
+	--Otherwise use normal logic
+	return false
+
 end

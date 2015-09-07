@@ -19,17 +19,6 @@ function CryptCraving( keys )
 
 	local remaining_duration = duration - (GameRules:GetGameTime() - caster.crypt_start_time)
 
-	--print("Initial run: ", caster.initialrun)	
-	--local vacuum_modifier = keys.vacuum_modifier
-	
-
-	-- Targeting variables
-	local target_teams = ability:GetAbilityTargetTeam() 
-	local target_types = ability:GetAbilityTargetType() 
-	--local target_flags = ability:GetAbilityTargetFlags() 
-
-	
-
 	
 	-- Calculate the position of each found unit
 	for _,unit in ipairs(caster.units) do
@@ -38,6 +27,7 @@ function CryptCraving( keys )
 			
 			--Attach lion mana drain particles
 			if caster.initialrun == true then
+				caster:EmitSound("Hero_Dark_Seer.Vacuum")
 				local cryptParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_lion/lion_spell_mana_drain.vpcf", DOTA_PROJECTILE_ATTACHMENT_HITLOCATION, unit)
 				ParticleManager:SetParticleControl(cryptParticle, 1, caster:GetAbsOrigin())
 				ParticleManager:SetParticleControl(cryptParticle, 0, unit:GetAbsOrigin())

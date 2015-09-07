@@ -11,13 +11,14 @@ function TailSpawn(keys)
 		numToSpawn = 2
 	elseif unitName == "npc_dota_creature_fire_elemental" then
 		numToSpawn = 5
-	elseif unitName == "npc_dota_hero_nyx_assassin_worm_war" then
+	elseif unitName == "npc_dota_hero_nyx_assassin" then
 		if unit:GetTeamNumber() ~= caster:GetTeamNumber() then
-			numToSpawn = math.ceil(unit.tailLength*CWormWarGameMode.SEGMENT_PER_KILL/100); --Spawn 5% of enemies tail on kill.
+			numToSpawn = math.ceil(unit.tailLength*CWormWarGameMode.SEGMENT_PER_KILL/100 + 1); --Spawn 5% of enemies tail on kill.
 		end		
 	end
 
 	if caster:IsAlive() then
+		CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + numToSpawn
 		DoTailSpawn(caster,numToSpawn)
 		PopupGrowth(caster,numToSpawn)
 	end
@@ -51,6 +52,8 @@ function GetTeamColor(teamNumber)
 end
 
 function DoTailSpawn(caster, numToSpawn)
+	print("START of DoTailSpawn")
+
 	if numToSpawn <= 0 then
 		return 1
 	end
@@ -67,16 +70,22 @@ function DoTailSpawn(caster, numToSpawn)
 	local dir = toFollow:GetForwardVector()
 
 	local spawnPoint = headPos - (dir * 150)
+
 	--print(spawnPoint)
 	local success =
 		CreateUnitByNameAsync(
 			"npc_dota_creature_tail_bug", spawnPoint, true, caster, caster:GetOwner(), caster:GetTeamNumber(),
 			function(hBug)
+				--caster.tailLength = caster.tailLength + 1
+				--CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
+
 				local color = GetTeamColor(caster:GetTeamNumber())
 				hBug:SetRenderColor(color[1],color[2],color[3])
 
 				table.insert(caster.followUnits, hBug)
+				
 				caster.tailLength = caster.tailLength + 1
+				print("Tail length: ", caster.tailLength)
 
 				hBug:SetForwardVector(dir)
 				hBug:SetTeam(caster:GetTeamNumber())
@@ -88,42 +97,37 @@ function DoTailSpawn(caster, numToSpawn)
 					hBuff:SetStackCount( caster.tailLength )
 				end
 
-				-- local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_fleshheap_count.vpcf", PATTACH_OVERHEAD_FOLLOW, caster )
-				-- ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
-				-- ParticleManager:ReleaseParticleIndex( nFXIndex )
-
-				--local playerID = caster:GetPlayerID()
-				--caster:IncrementKills(playerID)
-
 				ExecuteOrderFromTable({
 					UnitIndex = hBug:GetEntityIndex(),
 					OrderType = DOTA_UNIT_ORDER_MOVE_TO_TARGET,
 					TargetIndex = toFollow:GetEntityIndex(),
 					Queue = true})
 
-				CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
 				local tail_growth_event =
 				{
 					tail_lengths = CWormWarGameMode.TailLengths,
 				}
 				CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
+
+				local playerLongestTail = PlayerResource:GetGold(caster:GetPlayerID())
+				print("longest: ", playerLongestTail)
+
+				if caster.tailLength  > playerLongestTail then
+					caster:SetGold(caster.tailLength, true)
+				end
+
 				return DoTailSpawn(caster,numToSpawn-1)
 			end )
-
-	
-	local playerLongestTail = PlayerResource:GetGold(caster:GetPlayerID())
-	print("Tail length: ", caster.tailLength)
-	print("longest: ", playerLongestTail)
-
-		if caster.tailLength  > playerLongestTail then -- THere is a +1 oddity for taillength... same with win condition, need 61?
-			caster:SetGold(caster.tailLength, true)
-		end
 
 end
 
 function TailCleanup(keys)
 	local caster = keys.caster
 	if caster.tailLength ~= nil then
+		if caster.tailLength >=50 then
+			EmitGlobalSound("WormWar.Denied01") 
+		end
+
 		caster:EmitSound("Hero_Broodmother.SpawnSpiderlings")
 		for i=2,caster.tailLength+1 do
 			-- local damage_table = {}
