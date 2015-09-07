@@ -118,7 +118,7 @@
 
 				"Properties"
 				{
-					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT"      "-1.2"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT"      "-1"
 				}
 
 				//"OnKill"
