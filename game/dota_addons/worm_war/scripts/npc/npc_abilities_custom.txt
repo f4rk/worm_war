@@ -121,14 +121,14 @@
 					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT"      "-1.2"
 				}
 
-				"OnKill"
-				{
-					"RunScript"
-					{
-						"ScriptFile"			"scripts/vscripts/tail_growth.lua"
-						"Function"				"TailSpawn"
-					}
-				}
+				//"OnKill"
+				//{
+				//	"RunScript"
+				//	{
+				//		"ScriptFile"			"scripts/vscripts/tail_growth.lua"
+				//		"Function"				"TailSpawn"
+				//	}
+				//}
 			}
 			
 			"modifier_tail_kill_datadriven"
@@ -136,14 +136,14 @@
 				"Passive"	"1"
 				"IsHidden"	"1"
 				
-				"OnDeath"
-				{
-					"RunScript"
-					{
-						"ScriptFile"		"scripts/vscripts/tail_growth.lua"
-						"Function"			"TailCleanup"
-					}
-				}
+				//"OnDeath"
+				//{
+				//	"RunScript"
+				//	{
+				//		"ScriptFile"		"scripts/vscripts/tail_growth.lua"
+				//		"Function"			"TailCleanup"
+				//	}
+				//}
 			}
 		}
 	}

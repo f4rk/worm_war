@@ -183,7 +183,7 @@ function CWormWarGameMode:InitGameMode()
 	Convars:RegisterCommand( "wormwar_force_end_game", function(...) return self:EndGame( DOTA_TEAM_GOODGUYS ) end, "Force the game to end.", FCVAR_CHEAT )
 
 
-	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
+	GameMode:SetThink( "OnThink", self, "GlobalThink", 1 )
 	GameMode:SetThink( "MovementThink", self, "MovementThink")
 	
 
@@ -217,6 +217,7 @@ function CWormWarGameMode:OnThink()
 	end
 
 	self:UpdateScoreboard()
+
 	-- Stop thinking if game is paused
 	if GameRules:IsGamePaused() == true then
         return 1
@@ -367,6 +368,7 @@ function CWormWarGameMode:UpdateScoreboard()
 	self.runnerupTeam = sortedTeams[2].teamID
 	self.leadingTeamScore = sortedTeams[1].teamScore
 	self.runnerupTeamScore = sortedTeams[2].teamScore
+
 	if sortedTeams[1].teamScore == sortedTeams[2].teamScore then
 		self.isGameTied = true
 	else

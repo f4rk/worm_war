@@ -1,6 +1,6 @@
-function TailSpawn(keys)
-	local caster = keys.caster
-	local unit = keys.unit
+function TailSpawn(hero, unit, killedTail)
+	--local caster = keys.caster
+	--local unit = keys.unit
 	local unitName = unit:GetUnitName()
 	
 	local numToSpawn = 0
@@ -12,15 +12,15 @@ function TailSpawn(keys)
 	elseif unitName == "npc_dota_creature_fire_elemental" then
 		numToSpawn = 5
 	elseif unitName == "npc_dota_hero_nyx_assassin" then
-		if unit:GetTeamNumber() ~= caster:GetTeamNumber() then
-			numToSpawn = math.ceil(unit.tailLength*CWormWarGameMode.SEGMENT_PER_KILL/100 + 1); --Spawn 5% of enemies tail on kill.
+		print("Killed Hero!!")
+		if unit:GetTeamNumber() ~= hero:GetTeamNumber() then
+			numToSpawn = math.ceil(killedTail*0.05 + 1); --Spawn 5% of enemies tail on kill.
 		end		
 	end
 
-	if caster:IsAlive() then
-		CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + numToSpawn
-		DoTailSpawn(caster,numToSpawn)
-		PopupGrowth(caster,numToSpawn)
+	if hero:IsAlive() then
+		DoTailSpawn(hero,numToSpawn)
+		PopupGrowth(hero,numToSpawn)
 	end
 end
 
@@ -85,7 +85,13 @@ function DoTailSpawn(caster, numToSpawn)
 				table.insert(caster.followUnits, hBug)
 				
 				caster.tailLength = caster.tailLength + 1
+				CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
+
 				print("Tail length: ", caster.tailLength)
+
+				if caster.tailLength == 60 then
+					EmitGlobalSound("WormWar.Wormtastic01")
+				end
 
 				hBug:SetForwardVector(dir)
 				hBug:SetTeam(caster:GetTeamNumber())
@@ -121,15 +127,15 @@ function DoTailSpawn(caster, numToSpawn)
 
 end
 
-function TailCleanup(keys)
-	local caster = keys.caster
-	if caster.tailLength ~= nil then
-		if caster.tailLength >=50 then
+function TailCleanup(killedHero)
+	--local caster = keys.caster
+	if killedHero.tailLength ~= nil then
+		if killedHero.tailLength >=50 then
 			EmitGlobalSound("WormWar.Denied01") 
 		end
 
-		caster:EmitSound("Hero_Broodmother.SpawnSpiderlings")
-		for i=2,caster.tailLength+1 do
+		killedHero:EmitSound("Hero_Broodmother.SpawnSpiderlings")
+		for i=2,killedHero.tailLength+1 do
 			-- local damage_table = {}
 			-- local target = caster.followUnits[i]
 			-- damage_table.attacker = caster
@@ -138,14 +144,14 @@ function TailCleanup(keys)
 			-- damage_table.ability = keys.ability
 			-- damage_table.damage = target:GetMaxHealth()
 			-- ApplyDamage(damage_table)
-			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster.followUnits[i] )
+			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, killedHero.followUnits[i] )
 			ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
 			ParticleManager:ReleaseParticleIndex( nFXIndex )
-			caster.followUnits[i]:ForceKill(true)
+			killedHero.followUnits[i]:ForceKill(true)
 		end
-		caster.followUnits = {caster}
-		caster.tailLength = 0
-		CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = 0
+		killedHero.followUnits = {killedHero}
+		killedHero.tailLength = 0
+		CWormWarGameMode.TailLengths[killedHero:GetTeamNumber()] = 0
 	end
 end
 

@@ -1,4 +1,6 @@
 --[[ events.lua ]]
+
+require("tail_growth")
 ---------------------------------------------------------------------------
 -- Event: Game state change handler
 ---------------------------------------------------------------------------
@@ -213,18 +215,19 @@ function CWormWarGameMode:OnEntityKilled( event )
 		
 	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
-
 		--print("Killed unit: ", killedUnit)
 		--print("Killed team: ", killedTeam)
 		--print("hero: ", hero)
 		--print("heroTeam: ", heroTeam)
-
+		local killedTail = killedUnit.tailLength
+		TailCleanup(killedUnit)
 		self.allSpawned = true
 		killedUnit.dest = nil
 		--print("Hero has been killed")
 		if heroTeam ~= killedTeam and heroTeam ~= DOTA_TEAM_NEUTRALS then
 			print("squish")
-			EmitGlobalSound("WormWar.Squish01") 
+			EmitGlobalSound("WormWar.Squish01")
+			TailSpawn(hero, killedUnit, killedTail)
 			
 		elseif heroTeam == killedTeam then
 			print("Suicide")
@@ -232,6 +235,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 			local origin = hero:GetAbsOrigin()
 			if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
 				EmitGlobalSound("WormWar.Noob01")
+				--Send Chat message
 			else
 				PlayerResource:IncrementDenies(hero:GetPlayerOwnerID()) 
 				EmitGlobalSound("WormWar.Humiliation01")
@@ -246,23 +250,23 @@ function CWormWarGameMode:OnEntityKilled( event )
 		-- HANDLE LENGTH addition + win condition
 		
 		if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" and killedUnit:GetUnitName() ~= "npc_powerup_icon" then
+			TailSpawn(hero, killedUnit, 0)
 			CWormWarGameMode:SpawnFoodEntity(killedUnit:GetUnitName(), killedUnit.centreFlag)
 		end
 	end
 
-	-- Use CWormWarGameMode.TaiLLengths for nSegments since it's pre incremented, caster.tailLength is used in DoTailSpawn
-	-- (This is from the timing of the events, OnEntityKilled and OnKill from the datadriven spell, should be cleaned up)
-	local nSegments = 0
-	if hero.tailLength ~= null then
-		nSegments = CWormWarGameMode.TailLengths[hero:GetTeamNumber()]
-	end
-	local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
+	--Waits for tail spawning to be complete
+	Timers:CreateTimer( 0.5, function()
+		local nSegments = 0
+		if hero.tailLength ~= null then
+			nSegments = hero.tailLength
+		end
 	
-	
-	print("nSegments: ", nSegments)
-	print("nSegments Remaining: ", nSegmentsRemaining)
+		local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
+		print("nSegments: ", nSegments)
+		print("nSegments Remaining: ", nSegmentsRemaining)
 
-	local on_kill_event =
+		local on_kill_event =
 		{
 			killer_id = event.killer_userid,
 			team_id = event.teamnumber,
@@ -273,8 +277,8 @@ function CWormWarGameMode:OnEntityKilled( event )
 			very_close_to_victory = 0,
 		}
 
+
 		if nSegmentsRemaining <= 0 then
-			EmitGlobalSound("WormWar.Wormtastic01")
 			GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[heroTeam] )
 			GameRules:SetGameWinner(heroTeam)
 			on_kill_event.victory = 1
@@ -290,5 +294,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 		end
 		
 		CustomGameEventManager:Send_ServerToAllClients( "on_kill_event", on_kill_event )
+	end)
+	
 
 end
