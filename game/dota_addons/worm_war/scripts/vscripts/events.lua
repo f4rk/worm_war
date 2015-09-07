@@ -240,10 +240,10 @@ function CWormWarGameMode:OnEntityKilled( event )
 				local playerID = killedUnit:GetPlayerOwnerID()
 				local playerName = PlayerResource:GetPlayerName(playerID)
 				local color = self.m_TeamColors[ killedTeam ]
-				print(playerID)
-				print("playerName: ", playerName)
+				print("color1: ", color[1])
+				print("color1 hex: "..string.format("%X", color[1]))
 				--print(color)
-				GameRules:SendCustomMessage("<font color='rgb("..color[1]..", "..color[2]..", "..color[3].."'>" .. playerName .. " (Nyx Assassin) </font> just electrocuted himself!", 0, 0)
+				GameRules:SendCustomMessage("<font color='#"..string.format("%X", color[1])..string.format("%X", color[2])..string.format("%X", color[3]).."'>" .. playerName .. " (Nyx Assassin) </font> just electrocuted himself!", 0, 0)
 			else
 				PlayerResource:IncrementDenies(hero:GetPlayerOwnerID()) 
 				EmitGlobalSound("WormWar.Humiliation01")
