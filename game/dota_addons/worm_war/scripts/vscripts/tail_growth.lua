@@ -51,10 +51,20 @@ function GetTeamColor(teamNumber)
 	return color
 end
 
-function DoTailSpawn(caster, numToSpawn)
+function DoTailSpawn(caster,numToSpawn)
 	print("START of DoTailSpawn")
+	print(GetSystemTime())
 
-	if numToSpawn <= 0 then
+
+	if caster.isSpawning == nil or caster.isSpawning == false then
+		caster.isSpawning = true
+		print("before1",caster.numToSpawn)
+		caster.numToSpawn = caster.numToSpawn + numToSpawn
+		print("after1",caster.numToSpawn)
+	elseif numToSpawn ~= 0 then
+		print("before2",caster.numToSpawn)
+		caster.numToSpawn = caster.numToSpawn + numToSpawn
+		print("after2",caster.numToSpawn)
 		return 1
 	end
 
@@ -116,7 +126,13 @@ function DoTailSpawn(caster, numToSpawn)
 					caster:SetGold(caster.tailLength, true)
 				end
 
-				return DoTailSpawn(caster,numToSpawn-1)
+				caster.numToSpawn = caster.numToSpawn - 1
+				if caster.numToSpawn <= 0 then
+					caster.isSpawning = false
+					return 1
+				else
+					return DoTailSpawn(caster,0)
+				end
 			end )
 
 end
