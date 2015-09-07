@@ -2,7 +2,7 @@
 @define TimingFunc: linear;
 @define IterationCount: 1;
 
-.OverthrowLoadingRoot
+.WormWarLoadingRoot
 {
     width: 100%;
     height: 100%;
@@ -50,7 +50,7 @@
 	margin-right: 15px;
 }
 
-#OverthrowTitle
+#WormWarTitle
 {
 	margin-bottom: -15px;
 	vertical-align: center;
@@ -64,20 +64,20 @@
 {
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
-	background-size: 100% 100%;
+	background-size: 50% 50%;
 }
 
 .SeqBg
 {
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
-	background-size: 100% 100%;
+	background-size: 50% 50%;
 }
 
 #seq
 {
     overflow: clip;
-	pre-transform-scale2d: 1.35, 1.35;
+	pre-transform-scale2d: 1.00, 1.00;
 }
 
 @keyframes 'x' {}
@@ -102,115 +102,103 @@
 	}
 }
 
-#seq_beastmaster_pets
+
+#seq_bug3
 {
-	margin-left: 1015px;
-	margin-top: 120px;
-	animation-name: seq_beastmaster_pets_anim;
-	animation-duration: TotalLength;
-	animation-timing-function: TimingFunc;
-	animation-iteration-count: IterationCount;
-}
-
-@keyframes 'seq_beastmaster_pets_anim'
-{
-	0%
-	{
-		transform: translateX( 50px ) translateY( 10px );
-        pre-transform-scale2d: 0.90;
-	}
-
-	100%
-	{
-	}
-}
-
-#seq_beastmaster
-{
-	margin-left: 435px;
-	margin-top: 140px;
-	animation-name: seq_beastmaster_anim;
-	animation-duration: TotalLength;
-	animation-timing-function: TimingFunc;
-	animation-iteration-count: IterationCount;
-}
-
-@keyframes 'seq_beastmaster_anim'
-{
-	0%
-	{
-		transform: translateX( 80px ) translateY( -20px );
-	}
-
-	100%
-	{
-	}
-}
-
-#seq_juggernaut
-{
-	margin-left: 400px;
-	margin-top: 325px;
-	animation-name: seq_juggernaut_anim;
-	animation-duration: TotalLength;
-	animation-timing-function: TimingFunc;
-	animation-iteration-count: IterationCount;
-	pre-transform-scale2d: 0.90;
-}
-
-@keyframes 'seq_juggernaut_anim'
-{
-	0%
-	{
-		transform: translateX( 120px ) translateY( 20px );
-	}
-
-	100%
-	{
-	}
-}
-
-#seq_luna
-{
-	margin-left: 8px;
+	margin-left: -50px;
 	margin-top: 0px;
-	animation-name: seq_luna_anim;
-	animation-duration: TotalLength;
-	animation-timing-function: TimingFunc;
-	animation-iteration-count: IterationCount;
-	pre-transform-scale2d: 1.05;
-}
-
-@keyframes 'seq_luna_anim'
-{
-	0%
-	{
-		transform: translateX( 120px ) translateY( 50px );
-	}
-
-	100%
-	{
-	}
-}
-
-#seq_coins
-{
-	margin-left: -150px;
-	margin-top: 200px;
-	animation-name: seq_coins_anim;
+	animation-name: seq_bug3_anim;
 	animation-duration: TotalLength;
 	animation-timing-function: TimingFunc;
 	animation-iteration-count: IterationCount;
 }
 
-@keyframes 'seq_coins_anim'
+@keyframes 'seq_bug3_anim'
 {
 	0%
 	{
-		transform: translateX( 200px ) translateY( -100px );
+		transform: translateX( 100px ) translateY( -130px );
+        pre-transform-scale2d: 0.80;
 	}
 
 	100%
 	{
+		transform: translateX( -100px ) translateY( 0px );
 	}
 }
+
+#seq_bug2
+{
+	margin-left: -50px;
+	margin-top: 0px;
+	animation-name: seq_bug2_anim;
+	animation-duration: TotalLength;
+	animation-timing-function: TimingFunc;
+	animation-iteration-count: IterationCount;
+}
+
+@keyframes 'seq_bug2_anim'
+{
+	0%
+	{
+		transform: translateX( 50px ) translateY( -120px );
+        pre-transform-scale2d: 0.80;
+	}
+
+	100%
+	{
+		transform: translateX( -100px ) translateY( 0px );
+	}
+}
+
+
+#seq_bug1
+{
+	margin-left: -50px;
+	margin-top: 0px;
+	animation-name: seq_bug1_anim;
+	animation-duration: TotalLength;
+	animation-timing-function: TimingFunc;
+	animation-iteration-count: IterationCount;
+}
+
+@keyframes 'seq_bug1_anim'
+{
+	0%
+	{
+		transform: translateX( 50px ) translateY( -110px );
+        pre-transform-scale2d: 0.80;
+	}
+
+	100%
+	{
+		transform: translateX( -100px ) translateY( 0px );
+	}
+}
+
+
+#seq_hero
+{
+	margin-left: -50px;
+	margin-top: 0px;
+	animation-name: seq_hero_anim;
+	animation-duration: TotalLength;
+	animation-timing-function: TimingFunc;
+	animation-iteration-count: IterationCount;
+}
+
+@keyframes 'seq_hero_anim'
+{
+	0%
+	{
+		transform: translateX( 50px ) translateY( -100px );
+        pre-transform-scale2d: 0.80;
+	}
+
+	100%
+	{
+		transform: translateX( -100px ) translateY( 0px );
+	}
+}
+
+

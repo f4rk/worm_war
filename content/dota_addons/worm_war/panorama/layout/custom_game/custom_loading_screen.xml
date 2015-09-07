@@ -3,17 +3,16 @@
 		<include src="file://{resources}/styles/dotastyles.css" />
 		<include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
 	</styles>
-	<Panel class="OverthrowLoadingRoot">
+	<Panel class="WormWarLoadingRoot">
 		<Panel id="seq" >
-			<Image id="seq_bg" class="SeqBg" src="file://{images}/custom_game/loading_screen/loading_seq_bg.psd" />
-			<Image id="seq_beastmaster_pets" class="SeqImg" src="file://{images}/custom_game/loading_screen/loading_seq_beastmaster_pets.psd" />
-			<Image id="seq_beastmaster" class="SeqImg" src="file://{images}/custom_game/loading_screen/loading_seq_beastmaster.psd" />
-			<Image id="seq_luna" class="SeqImg" src="file://{images}/custom_game/loading_screen/loading_seq_luna.psd" />
-			<Image id="seq_juggernaut" class="SeqImg" src="file://{images}/custom_game/loading_screen/loading_seq_juggernaut.psd" />
-			<Image id="seq_coins" class="SeqImg" src="file://{images}/custom_game/loading_screen/loading_seq_coins.psd" />
+			<Image id="seq_bg" class="SeqBg" src="file://{images}/custom_game/loading_screen/bg.psd" />
+			<Image id="seq_bug3" class="SeqImg" src="file://{images}/custom_game/loading_screen/bug3.psd" />
+			<Image id="seq_bug2" class="SeqImg" src="file://{images}/custom_game/loading_screen/bug2.psd" />
+			<Image id="seq_bug1" class="SeqImg" src="file://{images}/custom_game/loading_screen/bug1.psd" />
+			<Image id="seq_hero" class="SeqImg" src="file://{images}/custom_game/loading_screen/hero.psd" />
 		</Panel>
 		<Panel id="TitlePanel">
-			<Label id="OverthrowTitle" text="#addon_game_name" style="" />
+			<Label id="WormWarTitle" text="#addon_game_name" style="" />
 		</Panel>
 	</Panel>
 </root>
