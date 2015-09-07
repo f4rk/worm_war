@@ -118,6 +118,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     end
 
 	hero.dest = nil
+	hero.numToSpawn = 0
 end
 
 
