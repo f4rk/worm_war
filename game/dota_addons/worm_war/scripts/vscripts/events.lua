@@ -209,8 +209,9 @@ function CWormWarGameMode:OnEntityKilled( event )
 	local killedTeam = killedUnit:GetTeam()
 	local hero = EntIndexToHScript( event.entindex_attacker )
 	local heroTeam = hero:GetTeam()
-	local nKillerID = event.killer_userid
+	local nKillerID = hero:GetPlayerOwnerID() 
 
+	print("nKillerID: ", nKillerID)
 	
 	print("START of OnEntityKilled")
 		
@@ -236,8 +237,10 @@ function CWormWarGameMode:OnEntityKilled( event )
 			local origin = hero:GetAbsOrigin()
 			if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
 				EmitGlobalSound("WormWar.Noob01")
-				local playerName = PlayerResource:GetNthPlayerIDOnTeam(killedTeam, 1)
+				local playerID = killedUnit:GetPlayerOwnerID()
+				local playerName = PlayerResource:GetPlayerName(playerID)
 				local color = self.m_TeamColors[ killedTeam ]
+				print(playerID)
 				print("playerName: ", playerName)
 				--print(color)
 				GameRules:SendCustomMessage("<font color='rgb("..color[1]..", "..color[2]..", "..color[3].."'>" .. playerName .. " (Nyx Assassin) </font> just electrocuted himself!", 0, 0)
