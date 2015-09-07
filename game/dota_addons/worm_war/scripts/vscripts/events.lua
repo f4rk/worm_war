@@ -236,7 +236,11 @@ function CWormWarGameMode:OnEntityKilled( event )
 			local origin = hero:GetAbsOrigin()
 			if (origin.x > 4000 or origin.x < -4000) or (origin.y > 4000 or origin.y < -4000) then
 				EmitGlobalSound("WormWar.Noob01")
-				--Send Chat message
+				local playerName = PlayerResource:GetNthPlayerIDOnTeam(killedTeam, 1)
+				local color = self.m_TeamColors[ killedTeam ]
+				print("playerName: ", playerName)
+				--print(color)
+				GameRules:SendCustomMessage("<font color='rgb("..color[1]..", "..color[2]..", "..color[3].."'>" .. playerName .. " (Nyx Assassin) </font> just electrocuted himself!", 0, 0)
 			else
 				PlayerResource:IncrementDenies(hero:GetPlayerOwnerID()) 
 				EmitGlobalSound("WormWar.Humiliation01")

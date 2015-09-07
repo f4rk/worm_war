@@ -169,6 +169,7 @@ function CWormWarGameMode:InitGameMode()
 	GameMode:SetCustomHeroMaxLevel(1)
 	GameMode:SetGoldSoundDisabled(true)
 	GameMode:SetModifyGoldFilter( Dynamic_Wrap( self, "FilterModifyGold" ), self )
+	GameMode:SetModifyExperienceFilter( Dynamic_Wrap( self, "FilterModifyXP" ), self )
 	GameMode:SetAnnouncerDisabled(true)
 
 	GameRules:GetGameModeEntity():SetExecuteOrderFilter( Dynamic_Wrap( CWormWarGameMode, "ExecuteOrderFilter" ), self )
@@ -567,13 +568,31 @@ end
 function CWormWarGameMode:FilterModifyGold( filterTable )
 
 	--print("[addon_game_mode.lua] ModifyGoldFilter")
-
+	--for k, v in pairs( filterTable ) do
+	--	print("Key: ", k)
+	--		print("Value: ", v)
+	--	end
 	--Disable gold gain from hero kills
 	if filterTable["reason_const"] == DOTA_ModifyGold_HeroKill then
 		filterTable["gold"] = 0
 		return true
 	elseif filterTable["gold"] > 10 then
 		filterTable["gold"] = 0
+		return true
+	end
+
+	--Otherwise use normal logic
+	return false
+
+end
+
+function CWormWarGameMode:FilterModifyXP( filterTable )
+
+	--print("[addon_game_mode.lua] ModifyGoldFilter")
+	
+	--Disable xp gain from hero kills
+	if filterTable["experience"] > 0 then
+		filterTable["experience"] = 0
 		return true
 	end
 

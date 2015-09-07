@@ -34,7 +34,7 @@
 		"Ability5"					"tail_growth"						// Ability 2
 		"Ability6"					"worm_war_phase"
 
-		"MovementSpeed"				"400"	
+		"MovementSpeed"				"450"	
 		"MovementTurnRate"			"0.25"	
 	}
 }
