@@ -207,9 +207,11 @@ end
 function CWormWarGameMode:OnEntityKilled( event )
 	local killedUnit = EntIndexToHScript( event.entindex_killed )
 	local killedTeam = killedUnit:GetTeam()
-	local hero = EntIndexToHScript( event.entindex_attacker )
+	local attacker = EntIndexToHScript( event.entindex_attacker )
+	local nAttackerID = attacker:GetPlayerOwnerID() 
+	local hero = PlayerResource:GetSelectedHeroEntity(nAttackerID)
 	local heroTeam = hero:GetTeam()
-	local nKillerID = hero:GetPlayerOwnerID() 
+
 
 	print("nKillerID: ", nKillerID)
 	
