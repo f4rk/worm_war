@@ -10,6 +10,7 @@
 			<Image id="seq_bug2" class="SeqImg" src="file://{images}/custom_game/loading_screen/bug2.psd" />
 			<Image id="seq_bug1" class="SeqImg" src="file://{images}/custom_game/loading_screen/bug1.psd" />
 			<Image id="seq_hero" class="SeqImg" src="file://{images}/custom_game/loading_screen/hero.psd" />
+			<Image id="seq_forge_spirit" class="SeqImg" src="file://{images}/custom_game/loading_screen/forge_spirit.psd" />
 		</Panel>
 		<Panel id="TitlePanel">
 			<Label id="WormWarTitle" text="#addon_game_name" style="" />

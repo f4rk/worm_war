@@ -118,7 +118,7 @@
 	0%
 	{
 		transform: translateX( 100px ) translateY( -130px );
-        pre-transform-scale2d: 0.80;
+        pre-transform-scale2d: 0.50;
 	}
 
 	100%
@@ -142,7 +142,7 @@
 	0%
 	{
 		transform: translateX( 50px ) translateY( -120px );
-        pre-transform-scale2d: 0.80;
+        pre-transform-scale2d: 0.65;
 	}
 
 	100%
@@ -201,4 +201,27 @@
 	}
 }
 
+#seq_forge_spirit
+{
+	margin-left: -50px;
+	margin-top: 0px;
+	animation-name: seq_forge_spirit_anim;
+	animation-duration: TotalLength;
+	animation-timing-function: TimingFunc;
+	animation-iteration-count: IterationCount;
+}
+
+@keyframes 'seq_forge_spirit_anim'
+{
+	0%
+	{
+		transform: translateX( 50px ) translateY( 100px );
+        pre-transform-scale2d: 1.0;
+	}
+
+	100%
+	{
+		transform: translateX( -200px ) translateY( 0px );
+	}
+}
 
