@@ -186,6 +186,7 @@ function CWormWarGameMode:InitGameMode()
 
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 1 )
 	GameMode:SetThink( "MovementThink", self, "MovementThink")
+	GameMode:SetThink( "RoamingThink", self, "RoamingThink")
 	
 
 	--- Spawn initial Food
@@ -304,6 +305,35 @@ function CWormWarGameMode:MovementThink()
 		end
 	end
 	return 0.001
+end
+
+function CWormWarGameMode:RoamingThink()
+	local units = FindUnitsInRadius( DOTA_TEAM_NEUTRALS, Vector(0, 0, 0), nil, 6000, DOTA_UNIT_TARGET_TEAM_FRIENDLY, DOTA_UNIT_TARGET_ALL, DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false)
+
+	if units ~= nil then
+		for _, entity in pairs(units) do
+			if entity:GetUnitName() == "npc_dota_creature_fire_elemental" then
+				print(entity:GetUnitName())
+				print(entity:GetAbsOrigin())
+				entity:Stop()
+				local curPos = entity:GetAbsOrigin() 
+				local rAngle = RandomInt(0, 359)
+				local newPos = curPos + Vector(1250*math.cos(math.rad(rAngle)), 1250*math.sin(math.rad(rAngle)), 0)
+
+				for i = 1, 4 do
+					if math.abs(newPos.x) > 4000 or math.abs(newPos.y) > 4000 then
+						rAngle = rAngle + 90
+						newPos = curPos + Vector(1250*math.cos(math.rad(rAngle)), 1250*math.sin(math.rad(rAngle)), 0)
+					else
+						break
+					end
+				end
+				entity:MoveToPosition(newPos)
+			end
+		end
+	end
+
+	return RandomInt( 4, 6 )
 end
 
 ---------------------------------------------------------------------------

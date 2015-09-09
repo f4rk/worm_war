@@ -245,7 +245,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 				print("color1: ", color[1])
 				print("color1 hex: "..string.format("%X", color[1]))
 				--print(color)
-				GameRules:SendCustomMessage("<font color='#"..string.format("%X", color[1])..string.format("%X", color[2])..string.format("%X", color[3]).."'>" .. playerName .. " (Nyx Assassin) </font> just electrocuted himself!", 0, 0)
+				GameRules:SendCustomMessage("<font color='#"..string.format("%02X", color[1])..string.format("%02X", color[2])..string.format("%02X", color[3]).."'>" .. playerName .. " (Nyx Assassin) </font> just electrocuted himself!", 0, 0)
 			else
 				PlayerResource:IncrementDenies(hero:GetPlayerOwnerID()) 
 				EmitGlobalSound("WormWar.Humiliation01")
