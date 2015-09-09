@@ -1,0 +1,37 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/dotastyles.css" />
+		<include src="file://{resources}/styles/custom_game/worm_war_game_info.css" />
+	</styles>
+	<Panel class="WormWarGameInfo">
+		<Panel id="Title">
+			<Label id="TitleName" text="#addonname" />
+		</Panel>
+		<Label id="ObjectiveHeader" class="Header" html="true" text="#worm_war_game_info_header_objective" />
+		<Label id="BriefDescription" text="#worm_war_brief_description" />
+		<Label id="HowToPlayHeader" class="Header" html="true" text="#worm_war_game_info_header_how_to_play" />
+		<Panel id="PigRow" class="InfoRow">
+			<Label id="SheepText" html="true" text="#worm_war_game_info_sheep" />
+			<Image id="SheepImage" src="file://{images}/custom_game/game_info/sheep.psd" />
+		</Panel>
+		<Panel id="SheepRow" class="InfoRow">
+			<Image id="PigImage" src="file://{images}/custom_game/game_info/pig.psd" />
+			<Label id="PigText" html="true" text="#worm_war_game_info_pig" />
+		</Panel>
+		<Panel id="ForgeSpiritRow" class="InfoRow">
+			<Label id="ForgeSpiritText" html="true" text="#worm_war_game_info_forge_spirit" />
+			<Image id="ForgeSpiritImage" src="file://{images}/custom_game/game_info/forge_spirit.psd" />
+		</Panel>
+		<Panel id="PowerupRow" class="InfoRow">
+			<Image id="PowerupImage" src="file://{images}/custom_game/game_info/powerup.psd" />
+			<Label id="PowerupText" html="true" text="#worm_war_game_info_powerup" />
+		</Panel>
+		<Label id="TipsHeader" class="Header" html="true" text="#worm_war_game_info_tips_header" />
+		<Panel id="TipsRow" class="InfoRow">
+			<Label id="TipText01" class="TipText" html="true" text="#worm_war_game_info_tip01" />
+			<Label id="TipText02" class="TipText" html="true" text="#worm_war_game_info_tip02" />
+			<Label id="TipText03" class="TipText" html="true" text="#worm_war_game_info_tip03" />
+		</Panel>
+	</Panel>
+</root>
+

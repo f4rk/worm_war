@@ -187,6 +187,7 @@ function CWormWarGameMode:InitGameMode()
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 1 )
 	GameMode:SetThink( "MovementThink", self, "MovementThink")
 	GameMode:SetThink( "RoamingThink", self, "RoamingThink")
+	GameMode:SetThink( "ItemThink", self, "ItemThink")
 	
 
 	--- Spawn initial Food
@@ -334,6 +335,32 @@ function CWormWarGameMode:RoamingThink()
 	end
 
 	return RandomInt( 4, 6 )
+end
+
+function CWormWarGameMode:ItemThink()
+	local numItems = GameRules:NumDroppedItems()
+	-- print("Num dropped items",numItems)
+
+	for x = 0,numItems-1 do
+		local item = GameRules:GetDroppedItem(x)
+		-- print("item",item)
+		local origin = item:GetAbsOrigin()
+		local heroes = FindUnitsInRadius(0,origin,nil,50.0,DOTA_UNIT_TARGET_TEAM_BOTH,
+			DOTA_UNIT_TARGET_HERO,DOTA_UNIT_TARGET_FLAG_NONE,FIND_CLOSEST,false)
+
+		for _,hero in ipairs(heroes) do
+			if hero ~= nil and 
+					not (hero:FindAbilityByName("fiery_jaw") or
+							hero:FindAbilityByName("crypt_craving") or
+							hero:FindAbilityByName("reverse_worm") or
+							hero:FindAbilityByName("goo_bomb") or
+							hero:FindAbilityByName("segment_bomb")) then
+				hero:PickupDroppedItem(item)
+			end
+		end
+	end
+
+	return 0.1
 end
 
 ---------------------------------------------------------------------------
