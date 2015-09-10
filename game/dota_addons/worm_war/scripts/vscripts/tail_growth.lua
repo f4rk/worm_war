@@ -151,7 +151,15 @@ function TailCleanup(killedHero)
 		end
 
 		killedHero:EmitSound("Hero_Broodmother.SpawnSpiderlings")
-		for i=2,killedHero.tailLength+1 do
+
+		local toCleanup = killedHero.followUnits
+		local tailLength = killedHero.tailLength
+
+		killedHero.followUnits = {killedHero}
+		killedHero.tailLength = 0
+		CWormWarGameMode.TailLengths[killedHero:GetTeamNumber()] = 0
+
+		for i=2,tailLength+1 do
 			-- local damage_table = {}
 			-- local target = caster.followUnits[i]
 			-- damage_table.attacker = caster
@@ -160,14 +168,12 @@ function TailCleanup(killedHero)
 			-- damage_table.ability = keys.ability
 			-- damage_table.damage = target:GetMaxHealth()
 			-- ApplyDamage(damage_table)
-			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, killedHero.followUnits[i] )
+			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_broodmother/broodmother_spiderlings_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, toCleanup[i] )
 			ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 1, 0, 0 ) )
 			ParticleManager:ReleaseParticleIndex( nFXIndex )
-			killedHero.followUnits[i]:ForceKill(true)
+			toCleanup[i]:ForceKill(true)
 		end
-		killedHero.followUnits = {killedHero}
-		killedHero.tailLength = 0
-		CWormWarGameMode.TailLengths[killedHero:GetTeamNumber()] = 0
+
 	end
 end
 
