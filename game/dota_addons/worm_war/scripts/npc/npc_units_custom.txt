@@ -90,6 +90,7 @@
 		// Abilities
 		//----------------------------------------------------------------
 		"Ability1"					"death_aura"			// Ability 1
+		"Ability2"					"worm_war_phase"
 
 	}
 
