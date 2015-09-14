@@ -115,6 +115,7 @@
 			{
 				"Passive"	"1"
 				"IsHidden"	"0"
+				"MODIFIER_PROPERTY_DISABLE_AUTOATTACK" "1"
 
 				"Properties"
 				{

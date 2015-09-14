@@ -108,6 +108,8 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 			return nil
 		end)
 
+		hero:SetAcquisitionRange(0)
+
 	   	if hero:GetDeaths() == 0 then
 	   		print("gold should be 0")
 	   		hero:SetGold(0, false)		-- Set starting gold to 0, will be used to track longest tail achieved 

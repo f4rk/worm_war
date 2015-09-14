@@ -5,15 +5,15 @@
 	"PointsToWin_VeryCloseToVictory"				"+{d:points_to_win} more!"
 	"PointsToWin_Victory"							"Victory!"
 
-	"InstructionsTitle"								"OVERTHROW"
+	"InstructionsTitle"								"WORM WAR"
 	"InstructionsObjective"							"OBJECTIVE"
 	"InstructionsObjectiveText"						"Eat food and kill enemies in a race to grow your tail the longest."
 	"InstructionsHowToPlay"							"HOW TO PLAY"
-	"InstructionsLines"								"-Approach the Midas Throne to earn bonus gold and experience.<br>
-													-Snatch up any giant coins the Over Boss tosses to earn even more gold.<br>
-													-Keep an eye out for item deliveries. An icon will appear on your map where an item will appear.<br>
-													-The fewer kills your team has, the better the item you will receive from a delivery.<br>
-													-Slay anyone who isn't on your team."
+	"InstructionsLines"								"- Eat as many sheep as you can by running over them!<br>
+													 - Your worm grows with each meal!<br>
+													 - Don't run into walls or worm tails (even your own)!<br>
+													 - Squish an opponent's worm for a segment bonus (5% of their worm).<br>
+													 - The first to reach a length of 60 wins!"
 
 	"Chest"											"ITEM"
 	"ItemWillSpawn"									"IS ABOUT TO BE DELIVERED!"
@@ -50,6 +50,6 @@
 	"worm_war_game_info_tips_header"				"Tips:"
 	"worm_war_game_info_tip01"						" - Turning too sharply might cause you to kill yourself!"
 	"worm_war_game_info_tip02"						" - Your worm will slow down the longer your tail gets."
-	"worm_war_game_info_tip03"						" - Having the 'Auto Attack' and 'Auto Attack After Spell' turned on can cause unwanted behaviour."
+	"worm_war_game_info_tip03"						" - Suiciding is better than giving an enemy segments!."
 }
 

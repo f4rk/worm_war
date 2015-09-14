@@ -582,6 +582,8 @@ function CWormWarGameMode:ExecuteOrderFilter( filterTable )
 				filterTable["order_type"] = DOTA_UNIT_ORDER_MOVE_TO_POSITION
 		end
 		return true
+	elseif orderType == DOTA_UNIT_ORDER_ATTACK_MOVE then
+		filterTable["order_type"] = DOTA_UNIT_ORDER_MOVE_TO_POSITION
 
 	elseif orderType == DOTA_UNIT_ORDER_HOLD_POSITION or orderType == DOTA_UNIT_ORDER_STOP or orderType == DOTA_UNIT_ORDER_TAUNT then
 		filterTable["order_type"] = DOTA_UNIT_ORDER_NONE

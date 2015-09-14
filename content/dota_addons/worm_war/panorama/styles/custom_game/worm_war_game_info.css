@@ -80,7 +80,7 @@ Label
 {
     margin-top: -20px;
     margin-left: 20px;
-    width: 130px;
+    width: 160px;
     height: 180px;
 }
 
@@ -88,7 +88,7 @@ Label
 {
     margin-top: -20px;
     width: 160px;
-    height: 180px;    
+    height: 120px;    
 }
 
 #ForgeSpiritRow
@@ -98,6 +98,7 @@ Label
 
 #ForgeSpiritImage
 {
+    margin-top: 20px;
     width: 200px;
     height: 216px;
 }
