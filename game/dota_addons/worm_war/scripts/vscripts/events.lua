@@ -58,6 +58,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     local hero = EntIndexToHScript(keys.entindex)
     
     if hero:IsHero() then
+    	TailCleanup(hero)
     	local player = hero:GetOwnerEntity()
 	    local teamN = player:GetTeamNumber()
 
@@ -214,16 +215,16 @@ function CWormWarGameMode:OnEntityKilled( event )
 	local hero = PlayerResource:GetSelectedHeroEntity(nAttackerID)
 	local heroTeam = attacker:GetTeam()
 
-	print("nKillerID: ", nKillerID)
+	--print("nKillerID: ", nKillerID)
 	
-	print("START of OnEntityKilled")
+	--print("START of OnEntityKilled")
 		
 	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
 		--print("Killed unit: ", killedUnit)
-		--print("Killed team: ", killedTeam)
+		print("Killed team: ", GetTeamName(killedTeam))
 		--print("hero: ", hero)
-		--print("heroTeam: ", heroTeam)
+		print("heroTeam: ", GetTeamName(heroTeam))
 		local killedTail = killedUnit.tailLength
 		TailCleanup(killedUnit)
 		self.allSpawned = true
@@ -243,8 +244,8 @@ function CWormWarGameMode:OnEntityKilled( event )
 				local playerID = killedUnit:GetPlayerOwnerID()
 				local playerName = PlayerResource:GetPlayerName(playerID)
 				local color = self.m_TeamColors[ killedTeam ]
-				print("color1: ", color[1])
-				print("color1 hex: "..string.format("%X", color[1]))
+				--print("color1: ", color[1])
+				--print("color1 hex: "..string.format("%X", color[1]))
 				--print(color)
 				GameRules:SendCustomMessage("<font color='#"..string.format("%02X", color[1])..string.format("%02X", color[2])..string.format("%02X", color[3]).."'>" .. playerName .. " (Nyx Assassin) </font> just electrocuted himself!", 0, 0)
 			else
@@ -274,8 +275,8 @@ function CWormWarGameMode:OnEntityKilled( event )
 		end
 	
 		local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
-		print("nSegments: ", nSegments)
-		print("nSegments Remaining: ", nSegmentsRemaining)
+		--print("nSegments: ", nSegments)
+		--print("nSegments Remaining: ", nSegmentsRemaining)
 
 		local on_kill_event =
 		{

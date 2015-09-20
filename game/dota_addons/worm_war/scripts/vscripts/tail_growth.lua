@@ -52,19 +52,19 @@ function GetTeamColor(teamNumber)
 end
 
 function DoTailSpawn(caster,numToSpawn)
-	print("START of DoTailSpawn")
-	print(GetSystemTime())
+	--print("START of DoTailSpawn")
+	--print(GetSystemTime())
 
 
 	if caster.isSpawning == nil or caster.isSpawning == false then
 		caster.isSpawning = true
-		print("before1",caster.numToSpawn)
+		--print("before1",caster.numToSpawn)
 		caster.numToSpawn = caster.numToSpawn + numToSpawn
-		print("after1",caster.numToSpawn)
+		--print("after1",caster.numToSpawn)
 	elseif numToSpawn ~= 0 then
-		print("before2",caster.numToSpawn)
+		--print("before2",caster.numToSpawn)
 		caster.numToSpawn = caster.numToSpawn + numToSpawn
-		print("after2",caster.numToSpawn)
+		--print("after2",caster.numToSpawn)
 		return 1
 	end
 
@@ -97,7 +97,7 @@ function DoTailSpawn(caster,numToSpawn)
 				caster.tailLength = caster.tailLength + 1
 				CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
 
-				print("Tail length: ", caster.tailLength)
+				--print("Tail length: ", caster.tailLength)
 
 				if caster.tailLength == 60 then
 					EmitGlobalSound("WormWar.Wormtastic01")
@@ -126,7 +126,7 @@ function DoTailSpawn(caster,numToSpawn)
 				CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 
 				local playerLongestTail = PlayerResource:GetGold(caster:GetPlayerID())
-				print("longest: ", playerLongestTail)
+				--print("longest: ", playerLongestTail)
 
 				if caster.tailLength  > playerLongestTail then
 					caster:SetGold(caster.tailLength, true)
@@ -145,7 +145,9 @@ end
 
 function TailCleanup(killedHero)
 	--local caster = keys.caster
+	print("START TailCleanUp")
 	if killedHero.tailLength ~= nil then
+		print("Entered CleanUP, taiLength:", killedHero.tailLength)
 		if killedHero.tailLength >=50 then
 			EmitGlobalSound("WormWar.Denied01") 
 		end
@@ -160,6 +162,7 @@ function TailCleanup(killedHero)
 		CWormWarGameMode.TailLengths[killedHero:GetTeamNumber()] = 0
 
 		for i=2,tailLength+1 do
+			print("entered loop")
 			-- local damage_table = {}
 			-- local target = caster.followUnits[i]
 			-- damage_table.attacker = caster
