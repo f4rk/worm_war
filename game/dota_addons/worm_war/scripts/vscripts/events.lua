@@ -267,16 +267,16 @@ function CWormWarGameMode:OnEntityKilled( event )
 		end
 	end
 
-	--Waits for tail spawning to be complete
-	Timers:CreateTimer( 0.5, function()
+	if killedUnit:GetUnitName() ~= "npc_dota_creature_tail_bug" and killedUnit:GetUnitName() ~= "npc_powerup_icon" then
 		local nSegments = 0
 		if hero.tailLength ~= nil then
-			nSegments = hero.tailLength
+			nSegments = CWormWarGameMode.TailLengths[hero:GetTeamNumber()]
+			print("nSegments: ", nSegments)
 		end
-	
+		
 		local nSegmentsRemaining = self.SEGMENTS_TO_WIN - nSegments
-		--print("nSegments: ", nSegments)
-		--print("nSegments Remaining: ", nSegmentsRemaining)
+			--print("nSegments: ", nSegments)
+			--print("nSegments Remaining: ", nSegmentsRemaining)
 
 		local on_kill_event =
 		{
@@ -304,9 +304,9 @@ function CWormWarGameMode:OnEntityKilled( event )
 			EmitGlobalSound("ui.npe_objective_given")
 			on_kill_event.close_to_victory = 1
 		end
-		
+			
 		CustomGameEventManager:Send_ServerToAllClients( "on_kill_event", on_kill_event )
-	end)
-	
+		--end)
+	end
 
 end

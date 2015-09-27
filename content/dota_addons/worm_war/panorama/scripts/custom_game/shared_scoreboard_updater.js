@@ -351,6 +351,11 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
 {
 //	$.Msg( "_ScoreboardUpdater_UpdateAllTeamsAndPlayers: ", scoreboardConfig );
 	
+	if(Game.GetGameWinner() != 5)
+	{
+		tailLengths[Game.GetGameWinner()] = 60;
+	}
+
 	//Append tail_length to teamList data for scoreboard
 	var teamsList = [];
 	for ( var teamId of Game.GetAllTeamIDs() )
@@ -376,6 +381,7 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
 	//$.Msg( teamsList[0].team_id);
 	for ( var i = 0; i < teamsList.length; ++i )
 	{
+
 		var teamPanel = _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, teamsContainer, teamsList[i], teamsInfo, tailLengths[teamsList[i].team_id] );
 		if ( teamPanel )
 		{

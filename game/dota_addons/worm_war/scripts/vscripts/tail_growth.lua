@@ -19,6 +19,18 @@ function TailSpawn(hero, unit, killedTail)
 	end
 
 	if hero:IsAlive() then
+		CWormWarGameMode.TailLengths[hero:GetTeamNumber()] = CWormWarGameMode.TailLengths[hero:GetTeamNumber()]  + numToSpawn
+
+		local playerLongestTail = PlayerResource:GetGold(hero:GetPlayerID())
+				
+				if CWormWarGameMode.TailLengths[hero:GetTeamNumber()]  > playerLongestTail then
+					hero:SetGold(CWormWarGameMode.TailLengths[hero:GetTeamNumber()], true)
+				end
+
+		if CWormWarGameMode.TailLengths[hero:GetTeamNumber()] >= 60 then
+			EmitGlobalSound("WormWar.Wormtastic01")
+		end
+
 		DoTailSpawn(hero,numToSpawn)
 		PopupGrowth(hero,numToSpawn)
 	end
@@ -95,18 +107,11 @@ function DoTailSpawn(caster,numToSpawn)
 				table.insert(caster.followUnits, hBug)
 				
 				caster.tailLength = caster.tailLength + 1
-				CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
-
-				--print("Tail length: ", caster.tailLength)
-
-				if caster.tailLength == 60 then
-					EmitGlobalSound("WormWar.Wormtastic01")
-				end
 
 				headPos = toFollow:GetAbsOrigin()
 				dir = toFollow:GetForwardVector()
 				spawnPoint = headPos - (dir * 150)
-				hBug:MoveToPosition(spawnPoint)
+				hBug:SetAbsOrigin(spawnPoint)
 
 				hBug:SetForwardVector(dir)
 				hBug:SetTeam(caster:GetTeamNumber())
@@ -130,13 +135,6 @@ function DoTailSpawn(caster,numToSpawn)
 					tail_lengths = CWormWarGameMode.TailLengths,
 				}
 				CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
-
-				local playerLongestTail = PlayerResource:GetGold(caster:GetPlayerID())
-				--print("longest: ", playerLongestTail)
-
-				if caster.tailLength  > playerLongestTail then
-					caster:SetGold(caster.tailLength, true)
-				end
 
 				caster.numToSpawn = caster.numToSpawn - 1
 				if caster.numToSpawn <= 0 then
