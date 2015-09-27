@@ -305,7 +305,7 @@ function CWormWarGameMode:MovementThink()
 			entity:MoveToPosition(newMoveLocation)
 		end
 	end
-	return 0.001
+	return 0.1
 end
 
 function CWormWarGameMode:RoamingThink()

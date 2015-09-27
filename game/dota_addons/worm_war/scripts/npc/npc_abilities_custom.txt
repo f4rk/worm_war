@@ -119,7 +119,7 @@
 
 				"Properties"
 				{
-					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT"      "-1"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT"      "-1.2"
 				}
 
 				//"OnKill"
@@ -166,6 +166,7 @@
 			{
 				"Passive"		"1"
 				"IsHidden"		"1"
+				"MODIFIER_PROPERTY_DISABLE_AUTOATTACK" "1"
 
 				"States"
 				{

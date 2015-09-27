@@ -106,6 +106,7 @@ function DoTailSpawn(caster,numToSpawn)
 				hBug:SetForwardVector(dir)
 				hBug:SetTeam(caster:GetTeamNumber())
 				hBug:SetOwner( caster )
+				hBug:SetAcquisitionRange(0)
 
 
 				local hBuff = caster:FindModifierByName( "modifier_tail_growth_datadriven" )
