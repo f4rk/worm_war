@@ -268,7 +268,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 	end
 
 	--Waits for tail spawning to be complete
-	Timers:CreateTimer( 0.2, function()
+	Timers:CreateTimer( 0.5, function()
 		local nSegments = 0
 		if hero.tailLength ~= nil then
 			nSegments = hero.tailLength
