@@ -84,7 +84,7 @@ function DoTailSpawn(caster,numToSpawn)
 	--print(spawnPoint)
 	local success =
 		CreateUnitByNameAsync(
-			"npc_dota_creature_tail_bug", spawnPoint, true, caster, caster:GetOwner(), caster:GetTeamNumber(),
+			"npc_dota_creature_tail_bug", spawnPoint, false, caster, caster:GetOwner(), caster:GetTeamNumber(),
 			function(hBug)
 				--caster.tailLength = caster.tailLength + 1
 				--CWormWarGameMode.TailLengths[caster:GetTeamNumber()] = CWormWarGameMode.TailLengths[caster:GetTeamNumber()]  + 1
@@ -102,6 +102,11 @@ function DoTailSpawn(caster,numToSpawn)
 				if caster.tailLength == 60 then
 					EmitGlobalSound("WormWar.Wormtastic01")
 				end
+
+				headPos = toFollow:GetAbsOrigin()
+				dir = toFollow:GetForwardVector()
+				spawnPoint = headPos - (dir * 150)
+				hBug:MoveToPosition(spawnPoint)
 
 				hBug:SetForwardVector(dir)
 				hBug:SetTeam(caster:GetTeamNumber())
