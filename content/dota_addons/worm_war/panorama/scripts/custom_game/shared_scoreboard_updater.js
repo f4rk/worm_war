@@ -353,7 +353,8 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
 	
 	if(Game.GetGameWinner() != 5)
 	{
-		tailLengths[Game.GetGameWinner()] = 60;
+		var winningPlayer = Game.GetPlayerIDsOnTeam( Game.GetGameWinner() )
+		tailLengths[Game.GetGameWinner()] = Players.GetGold(winningPlayer);
 	}
 
 	//Append tail_length to teamList data for scoreboard

@@ -215,25 +215,35 @@ function CWormWarGameMode:OnEntityKilled( event )
 	local hero = PlayerResource:GetSelectedHeroEntity(nAttackerID)
 	local heroTeam = attacker:GetTeam()
 
-	--print("nKillerID: ", nKillerID)
-	
-	--print("START of OnEntityKilled")
-		
-	--Need to change hero killing code
 	if killedUnit:IsRealHero() then
 		--print("Killed unit: ", killedUnit)
 		print("Killed team: ", GetTeamName(killedTeam))
 		--print("hero: ", hero)
 		print("heroTeam: ", GetTeamName(heroTeam))
+
+		if(killedUnit.totalSegLost == nil) then
+			killedUnit.totalSegLost = 0
+		end
+
+		if(hero.totalSegKilled == nil) then
+			killedUnit.totalSegKilled = 0
+		end
+
 		local killedTail = killedUnit.tailLength
 		TailCleanup(killedUnit)
 		self.allSpawned = true
 		killedUnit.dest = nil
 		--print("Hero has been killed")
+		
+		-- For End Screen stats
+		--killedUnit.totalSegLost = killedUnit.totalSegLost + killedTail
+		
+
 		if heroTeam ~= killedTeam and heroTeam ~= DOTA_TEAM_NEUTRALS then
-			print("squish")
 			EmitGlobalSound("WormWar.Squish01")
 			TailSpawn(hero, killedUnit, killedTail)
+			
+			--hero.totalSegKilled = hero.totalSegKilled + killedTail
 			
 		elseif heroTeam == killedTeam then
 			print("Suicide")
