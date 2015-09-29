@@ -103,16 +103,12 @@ function CWormWarGameMode:InitGameMode()
 	self.m_TeamColors[DOTA_TEAM_CUSTOM_7] = { 199, 228, 13 }	--		Olive
 	self.m_TeamColors[DOTA_TEAM_CUSTOM_8] = { 140, 42, 244 }	--		Purple
 
+
 	for team = 0, (DOTA_TEAM_COUNT-1) do
 		color = self.m_TeamColors[ team ]
 		if color then
 			SetTeamCustomHealthbarColor( team, color[1], color[2], color[3] )
 		end
-	end
-
-	CWormWarGameMode.TailLengths = {}
-	for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
-   		CWormWarGameMode.TailLengths[i] = 0
 	end
 
 	CWormWarGameMode.nSpawnedPowerUps = 0
@@ -209,7 +205,17 @@ function CWormWarGameMode:InitGameMode()
 	for i = 1, self.NUM_FIRE_ELEMENTAL do
 		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_fire_elemental", true )
 	end
-	
+
+
+	CWormWarGameMode.TailLengths = {}
+	for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
+   		CWormWarGameMode.TailLengths[i] = 0
+	end
+
+	for i = 0, 9 do
+   		CustomNetTables:SetTableValue( "segments_lost", "player_" .. tostring(i), {value = 0} );
+   		CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(i), {value = 0} );
+   	end
 
 end
 

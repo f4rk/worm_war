@@ -21,10 +21,12 @@
 				<Panel class="LegendPanel ScoreCol_PlayerDetails" />
 				<Label class="LegendPanel ScoreCol_TeamScore" text="#custom_end_screen_legend_team_score" />
 				<Label class="LegendPanel ScoreCol_Gold" text="Longest" />
-				<Label class="LegendPanel ScoreCol_Kills" text="#custom_end_screen_legend_kills" />
-				<Label class="LegendPanel ScoreCol_Deaths" text="#custom_end_screen_legend_deaths" />
-				<Label class="LegendPanel ScoreCol_Suicides" text="!" />
-				<Label class="LegendPanel ScoreCol_Items" text="#custom_end_screen_legend_items" />
+				<Label class="LegendPanel ScoreCol_Kills" text="Kills" />
+				<Label class="LegendPanel ScoreCol_Deaths" text="Deaths" />
+				<Label class="LegendPanel ScoreCol_Suicides" text="Suicides" />
+				<Label class="LegendPanel ScoreCol_SegmentsKilled" text="Segments  Killed" />
+				<Label class="LegendPanel ScoreCol_SegmentsLost" text="Segments  Lost" />
+				<!-- <Label class="LegendPanel ScoreCol_Items" text="#custom_end_screen_legend_items" /> -->
 			</Panel>
 			<Panel id="TeamsContainer" />
 			<Button id="CloseButton" onactivate="Game.FinishGame();">

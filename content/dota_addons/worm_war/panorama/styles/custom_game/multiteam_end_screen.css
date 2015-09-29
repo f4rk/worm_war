@@ -243,7 +243,9 @@
 #LevelContainer,
 #KillsContainer,
 #DeathsContainer,
-#SuicidesContainer
+#SuicidesContainer,
+#SegmentsKilledContainer,
+#SegmentsLostContainer
 {
 	height: 100%;
 }
@@ -291,6 +293,8 @@
 #Kills,
 #Deaths,
 #Suicides,
+#SegmentsKilled,
+#SegmentsLost,
 #PlayerGoldAmount
 {
 	horizontal-align: center;
@@ -384,9 +388,11 @@
 
 .ScoreCol_Kills,
 .ScoreCol_Deaths,
-.ScoreCol_Suicides
+.ScoreCol_Suicides,
+.ScoreCol_SegmentsKilled,
+.ScoreCol_SegmentsLost
 {
-	width: 50px;
+	width: 100px;
 	text-align: center;
 }
 

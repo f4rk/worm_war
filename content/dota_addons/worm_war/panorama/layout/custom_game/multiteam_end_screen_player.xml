@@ -27,7 +27,13 @@
 			<Panel id="SuicidesContainer" class="ScoreCol_Suicides ScoreboardPanel">
 				<Label id="Suicides" text="999" />
 			</Panel>
-			<Panel id="PlayerItemsContainer" class="ScoreCol_Items ScoreboardPanel" />
+			<Panel id="SegmentsKilledContainer" class="ScoreCol_SegmentsKilled ScoreboardPanel">
+				<Label id="SegmentsKilled" text="999" />
+			</Panel>
+			<Panel id="SegmentsLostContainer" class="ScoreCol_SegmentsLost ScoreboardPanel">
+				<Label id="SegmentsLost" text="999" />
+			</Panel>
+			<!-- <Panel id="PlayerItemsContainer" class="ScoreCol_Items ScoreboardPanel" /> -->
 			
 		</Panel>
 	</Panel>

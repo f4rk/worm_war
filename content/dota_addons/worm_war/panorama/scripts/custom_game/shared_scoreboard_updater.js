@@ -53,6 +53,13 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Kills", playerInfo.player_kills );
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Deaths", playerInfo.player_deaths );
 		_ScoreboardUpdater_SetTextSafe( playerPanel, "Suicides", Players.GetDenies( playerId ) );
+		_ScoreboardUpdater_SetTextSafe( playerPanel, "SegmentsKilled", ( CustomNetTables.GetTableValue( "segments_killed", "player_" + playerId.toString() ).value ) );
+		_ScoreboardUpdater_SetTextSafe( playerPanel, "SegmentsLost", ( CustomNetTables.GetTableValue( "segments_lost", "player_" + playerId.toString() ).value ) );
+
+		// if( CustomNetTables.GetTableValue( "segments_lost", "player_" + playerId.toString() ) )
+		// {
+		// 	$.Msg( "segments_lost ", CustomNetTables.GetTableValue( "segments_lost", "player_" + playerId.toString() ).value );
+		// }
 
 		var playerPortrait = playerPanel.FindChildInLayoutFile( "HeroIcon" );
 		if ( playerPortrait )
@@ -353,8 +360,9 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
 	
 	if(Game.GetGameWinner() != 5)
 	{
-		var winningPlayer = Game.GetPlayerIDsOnTeam( Game.GetGameWinner() )
-		tailLengths[Game.GetGameWinner()] = Players.GetGold(winningPlayer);
+		var winningPlayer = Game.GetPlayerIDsOnTeam( Game.GetGameWinner() );
+		tailLengths[Game.GetGameWinner()[0]] =   Players.GetGold(winningPlayer[0]);
+
 	}
 
 	//Append tail_length to teamList data for scoreboard

@@ -225,8 +225,10 @@ function CWormWarGameMode:OnEntityKilled( event )
 			killedUnit.totalSegLost = 0
 		end
 
-		if(hero.totalSegKilled == nil) then
-			killedUnit.totalSegKilled = 0
+		if hero ~= nil then
+			if(hero.totalSegKilled == nil) then
+				killedUnit.totalSegKilled = 0
+			end
 		end
 
 		local killedTail = killedUnit.tailLength
@@ -236,14 +238,17 @@ function CWormWarGameMode:OnEntityKilled( event )
 		--print("Hero has been killed")
 		
 		-- For End Screen stats
-		--killedUnit.totalSegLost = killedUnit.totalSegLost + killedTail
+		killedUnit.totalSegLost = killedUnit.totalSegLost + killedTail
+		CustomNetTables:SetTableValue( "segments_lost", "player_" .. tostring(killedUnit:GetPlayerOwnerID()), {value = killedUnit.totalSegLost} );
+
 		
 
 		if heroTeam ~= killedTeam and heroTeam ~= DOTA_TEAM_NEUTRALS then
 			EmitGlobalSound("WormWar.Squish01")
 			TailSpawn(hero, killedUnit, killedTail)
 			
-			--hero.totalSegKilled = hero.totalSegKilled + killedTail
+			hero.totalSegKilled = hero.totalSegKilled + killedTail
+			CustomNetTables:SetTableValue( "segments_killed", "player_" + hero:GetPlayerOwnerID(), {value = hero.totalSegKilled} );
 			
 		elseif heroTeam == killedTeam then
 			print("Suicide")

@@ -3,5 +3,7 @@
 	custom_net_tables =
 	[
 		"game_state",
+		"segments_killed",
+		"segments_lost",
 	]
 }
