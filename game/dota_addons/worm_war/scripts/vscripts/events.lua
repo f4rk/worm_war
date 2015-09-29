@@ -248,7 +248,8 @@ function CWormWarGameMode:OnEntityKilled( event )
 			TailSpawn(hero, killedUnit, killedTail)
 			
 			hero.totalSegKilled = hero.totalSegKilled + killedTail
-			CustomNetTables:SetTableValue( "segments_killed", "player_" + hero:GetPlayerOwnerID(), {value = hero.totalSegKilled} );
+			CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(hero:GetPlayerOwnerID()), {value = hero.totalSegKilled} );
+
 			
 		elseif heroTeam == killedTeam then
 			print("Suicide")
