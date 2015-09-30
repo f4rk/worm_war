@@ -274,6 +274,12 @@ function CWormWarGameMode:OnThink()
 		local allHeroes = HeroList:GetAllHeroes()
 
 		for _,entity in pairs( allHeroes) do
+			GameRules:SendCustomMessage(string.format("player: %d",entity:GetPlayerID()))
+			GameRules:SendCustomMessage(string.format("IsOutOfGame: %b",entity:IsOutOfGame()))
+			GameRules:SendCustomMessage(string.format("IsOwnedByAnyPlayer: %b",entity:IsOwnedByAnyPlayer()))
+			GameRules:SendCustomMessage(string.format("IsControllableByAnyPlayer: %b",entity:IsControllableByAnyPlayer()))
+			GameRules:SendCustomMessage(string.format("IsValidPlayer: %b",PlayerResource:IsValidPlayer(entity:GetPlayerID())))
+
 			if entity:IsOutOfGame() then
 				if entity:IsAlive() then
 					entity:ForceKill(true)
