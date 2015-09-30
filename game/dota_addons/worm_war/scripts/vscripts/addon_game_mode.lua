@@ -214,8 +214,8 @@ function CWormWarGameMode:InitGameMode()
 
 
 	for nPlayerID = 0, (DOTA_MAX_TEAM_PLAYERS-1) do
-   		CustomNetTables:SetTableValue( "segments_lost", "player_" .. tostring(nPlayerID), {value = 0} );
-   		CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(nPlayerID), {value = 0} );
+   		CustomNetTables:SetTableValue( "segments_lost", "player_" .. tostring(nPlayerID), {value = 0} )
+   		CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(nPlayerID), {value = 0} )
    	end
 
 end

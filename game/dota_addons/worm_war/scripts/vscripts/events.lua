@@ -239,7 +239,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 		
 		-- For End Screen stats
 		killedUnit.totalSegLost = killedUnit.totalSegLost + killedTail
-		CustomNetTables:SetTableValue( "segments_lost", "player_" .. tostring(killedUnit:GetPlayerOwnerID()), {value = killedUnit.totalSegLost} );
+		CustomNetTables:SetTableValue( "segments_lost", "player_" .. tostring(killedUnit:GetPlayerOwnerID()), {value = killedUnit.totalSegLost} )
 
 		
 
@@ -248,7 +248,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 			TailSpawn(hero, killedUnit, killedTail)
 			
 			hero.totalSegKilled = hero.totalSegKilled + killedTail
-			CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(hero:GetPlayerOwnerID()), {value = hero.totalSegKilled} );
+			CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(hero:GetPlayerOwnerID()), {value = hero.totalSegKilled} )
 
 			
 		elseif heroTeam == killedTeam then
