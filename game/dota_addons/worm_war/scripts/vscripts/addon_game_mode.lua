@@ -274,7 +274,7 @@ function CWormWarGameMode:OnThink()
 		local allHeroes = HeroList:GetAllHeroes()
 
 		for _,entity in pairs( allHeroes) do
-			if not entity:IsOutOfGame() then
+			if entity:IsOutOfGame() then
 				if entity:IsAlive() then
 					entity:ForceKill(true)
 				end
