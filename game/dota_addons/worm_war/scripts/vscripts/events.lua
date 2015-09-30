@@ -324,5 +324,4 @@ function CWormWarGameMode:OnEntityKilled( event )
 		CustomGameEventManager:Send_ServerToAllClients( "on_kill_event", on_kill_event )
 		--end)
 	end
-
 end

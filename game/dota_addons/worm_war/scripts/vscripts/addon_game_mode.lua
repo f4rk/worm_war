@@ -270,6 +270,19 @@ function CWormWarGameMode:OnThink()
 			end
 		end
 
+		-- Check for disconnects
+		local allHeroes = HeroList:GetAllHeroes()
+
+		for _,entity in pairs( allHeroes) do
+			if not entity:IsOutOfGame() then
+				if entity:IsAlive() then
+					entity:ForceKill(true)
+				end
+				entity:SetTimeUntilRespawn(5)
+				print("hero is out of the game")
+			end
+		end
+
 		return 1
 	end
 
