@@ -150,13 +150,13 @@ function CWormWarGameMode:InitGameMode()
 	-- Show the ending scoreboard immediately
 	GameRules:SetCustomGameEndDelay( 0 )
 	GameRules:SetCustomVictoryMessageDuration( 20 )
-	GameRules:SetPreGameTime( 5 )
+	GameRules:SetPreGameTime( 3 )
 	GameMode:SetFixedRespawnTime( 3 )
 	GameMode:SetFogOfWarDisabled(true)
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesOverride( true )
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesVisible( false )
 	GameRules:SetSameHeroSelectionEnabled(true)
-	GameRules:SetHeroSelectionTime(0.0)
+	GameRules:SetHeroSelectionTime(10.0)
 	GameRules:SetGoldPerTick(0)
 	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
 	GameRules:SetUseBaseGoldBountyOnHeroes(true)
@@ -175,17 +175,12 @@ function CWormWarGameMode:InitGameMode()
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CWormWarGameMode, 'OnEntityKilled' ), self )
 	ListenToGameEvent("tail_growth", Dynamic_Wrap( CWormWarGameMode, 'OnTailGrowth' ), self )
 	ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap( CWormWarGameMode, "OnItemPickUp"), self )
-	ListenToGameEvent('player_connect_full', Dynamic_Wrap(CWormWarGameMode, 'OnPlayerConnectFull'), self)
 	-- ListenToGameEvent( "dota_npc_goal_reached", Dynamic_Wrap( CWormWarGameMode, "OnNpcGoalReached" ), self )
 
 	Convars:RegisterCommand( "wormwar_force_end_game", function(...) return self:EndGame( DOTA_TEAM_GOODGUYS ) end, "Force the game to end.", FCVAR_CHEAT )
 
 
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 1 )
-	GameMode:SetThink( "MovementThink", self, "MovementThink")
-	GameMode:SetThink( "RoamingThink", self, "RoamingThink")
-	GameMode:SetThink( "ItemThink", self, "ItemThink")
-	
 
 	--- Spawn initial Food
 	for i = 1, self.FOOD_LIMIT do
@@ -223,17 +218,6 @@ end
 
 -- Evaluate the state of the game
 function CWormWarGameMode:OnThink()
-	for _,hero in pairs( Entities:FindAllByClassname( "npc_dota_hero_nyx_assassin")) do
-        if hero:GetPlayerOwnerID() == -1 then
-            local id = hero:GetPlayerOwner():GetPlayerID()
-            if id ~= -1 then
-                print("Reconnecting hero for player " .. id)
-                hero:SetControllableByPlayer(id, true)
-                hero:SetPlayerID(id)
-            end
-        end
-    end
-
 	for nPlayerID = 0, (DOTA_MAX_TEAM_PLAYERS-1) do
 		self:UpdatePlayerColor( nPlayerID )
 	end
@@ -302,13 +286,6 @@ function CWormWarGameMode:OnThink()
 
 	return 1
 end
-
-function CWormWarGameMode:OnPlayerConnectFull(keys)
-    local player = PlayerInstanceFromIndex(keys.index + 1)
-    print("Creating hero.")
-    local hero = CreateHeroForPlayer('npc_dota_hero_nyx_assassin', player)
-end
-
 
 function CWormWarGameMode:MovementThink()
 	local allHeroes = HeroList:GetAllHeroes()
@@ -601,13 +578,12 @@ function CWormWarGameMode:SpawnPowerUp()
 end
 
 function CWormWarGameMode:ExecuteOrderFilter( filterTable )
-	--[[
-	for k, v in pairs( filterTable ) do
-		print("EO: " .. k .. " " .. tostring(v) )
-	end
-	]]
-
+	
 	local orderType = filterTable["order_type"]
+
+	if GameRules:State_Get() == DOTA_GAMERULES_STATE_PRE_GAME then
+		filterTable["order_type"] = DOTA_UNIT_ORDER_NONE
+	end
 	
 	if orderType == DOTA_UNIT_ORDER_ATTACK_TARGET then
 		local unit = EntIndexToHScript( filterTable["entindex_target"] )

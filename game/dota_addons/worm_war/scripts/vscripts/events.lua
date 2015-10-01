@@ -42,6 +42,11 @@ function CWormWarGameMode:OnGameRulesStateChange()
 	end
 
 	if nNewState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+		local GameMode = GameRules:GetGameModeEntity()
+		GameMode:SetThink( "MovementThink", self, "MovementThink")
+		GameMode:SetThink( "RoamingThink", self, "RoamingThink")
+		GameMode:SetThink( "ItemThink", self, "ItemThink")
+
 		--print( "OnGameRulesStateChange: Game In Progress" )
 		if self.spawnListener then
 			local innateSpells = StopListeningToGameEvent(self.spawnListener) 
@@ -67,9 +72,9 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 	    	teamN = teamN - 2
 	    end
 
-    	--local direction = Vector (math.cos((90 - (teamN-2)*36)*math.pi/180), math.sin((90 - (teamN-2)*36)*math.pi/180), 0)
-    	--direction = direction:Normalized()
-    	--hero:SetForwardVector(direction) 
+    	local direction = Vector (math.cos((90 - (teamN-2)*36)*math.pi/180), math.sin((90 - (teamN-2)*36)*math.pi/180), 0)
+    	direction = direction:Normalized()
+    	hero:SetForwardVector(direction) 
 
     	hero:SetAbilityPoints(0)
     	hero:FindAbilityByName("devour_aura"):SetLevel(1)
