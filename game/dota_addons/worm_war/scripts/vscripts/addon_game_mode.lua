@@ -303,7 +303,7 @@ function CWormWarGameMode:OnThink()
 	return 1
 end
 
-function CAddonTemplateGameMode:OnPlayerConnectFull(keys)
+function CWormWarGameMode:OnPlayerConnectFull(keys)
     local player = PlayerInstanceFromIndex(keys.index + 1)
     print("Creating hero.")
     local hero = CreateHeroForPlayer('npc_dota_hero_nyx_assassin', player)
