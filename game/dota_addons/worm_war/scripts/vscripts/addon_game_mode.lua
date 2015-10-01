@@ -156,7 +156,7 @@ function CWormWarGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesOverride( true )
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesVisible( false )
 	GameRules:SetSameHeroSelectionEnabled(true)
-	GameRules:SetHeroSelectionTime(15.0)
+	GameRules:SetHeroSelectionTime(0.0)
 	GameRules:SetGoldPerTick(0)
 	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
 	GameRules:SetUseBaseGoldBountyOnHeroes(true)
@@ -175,6 +175,7 @@ function CWormWarGameMode:InitGameMode()
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CWormWarGameMode, 'OnEntityKilled' ), self )
 	ListenToGameEvent("tail_growth", Dynamic_Wrap( CWormWarGameMode, 'OnTailGrowth' ), self )
 	ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap( CWormWarGameMode, "OnItemPickUp"), self )
+	ListenToGameEvent('player_connect_full', Dynamic_Wrap(CWormWarGameMode, 'OnPlayerConnectFull'), self)
 	-- ListenToGameEvent( "dota_npc_goal_reached", Dynamic_Wrap( CWormWarGameMode, "OnNpcGoalReached" ), self )
 
 	Convars:RegisterCommand( "wormwar_force_end_game", function(...) return self:EndGame( DOTA_TEAM_GOODGUYS ) end, "Force the game to end.", FCVAR_CHEAT )
@@ -222,6 +223,17 @@ end
 
 -- Evaluate the state of the game
 function CWormWarGameMode:OnThink()
+	for _,hero in pairs( Entities:FindAllByClassname( "npc_dota_hero_nyx_assassin")) do
+        if hero:GetPlayerOwnerID() == -1 then
+            local id = hero:GetPlayerOwner():GetPlayerID()
+            if id ~= -1 then
+                print("Reconnecting hero for player " .. id)
+                hero:SetControllableByPlayer(id, true)
+                hero:SetPlayerID(id)
+            end
+        end
+    end
+
 	for nPlayerID = 0, (DOTA_MAX_TEAM_PLAYERS-1) do
 		self:UpdatePlayerColor( nPlayerID )
 	end
@@ -290,6 +302,13 @@ function CWormWarGameMode:OnThink()
 
 	return 1
 end
+
+function CAddonTemplateGameMode:OnPlayerConnectFull(keys)
+    local player = PlayerInstanceFromIndex(keys.index + 1)
+    print("Creating hero.")
+    local hero = CreateHeroForPlayer('npc_dota_hero_nyx_assassin', player)
+end
+
 
 function CWormWarGameMode:MovementThink()
 	local allHeroes = HeroList:GetAllHeroes()
