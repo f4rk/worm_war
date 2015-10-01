@@ -281,7 +281,8 @@ function CWormWarGameMode:OnThink()
 			-- GameRules:SendCustomMessage(string.format("IsValidPlayer: %b",PlayerResource:IsValidPlayer(entity:GetPlayerID())),0,0)
 
 			-- if entity:IsOutOfGame() then
-			if PlayerResource:GetConnectionState(entity:GetPlayerID()) == DOTA_CONNECTION_STATE_DISCONNECTED
+			local connectionState = PlayerResource:GetConnectionState(entity:GetPlayerID())
+			if connectionState == DOTA_CONNECTION_STATE_DISCONNECTED then
 				if entity:IsAlive() then
 					entity:ForceKill(true)
 				end
