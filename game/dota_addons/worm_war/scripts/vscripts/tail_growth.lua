@@ -31,7 +31,7 @@ function TailSpawn(hero, unit, killedTail)
 			EmitGlobalSound("WormWar.Wormtastic01")
 		end
 
-		DoTailSpawn(hero,numToSpawn)
+		DoTailSpawn(hero,numToSpawn,false)
 		PopupGrowth(hero,numToSpawn)
 	end
 end
@@ -63,7 +63,7 @@ function GetTeamColor(teamNumber)
 	return color
 end
 
-function DoTailSpawn(caster,numToSpawn)
+function DoTailSpawn(caster,numToSpawn,remove)
 	--print("START of DoTailSpawn")
 	--print(GetSystemTime())
 
@@ -71,11 +71,19 @@ function DoTailSpawn(caster,numToSpawn)
 	if caster.isSpawning == nil or caster.isSpawning == false then
 		caster.isSpawning = true
 		--print("before1",caster.numToSpawn)
-		caster.numToSpawn = caster.numToSpawn + numToSpawn
+		if remove == true then
+			caster.numToRemove = caster.numToRemove + numToSpawn
+		else
+			caster.numToSpawn = caster.numToSpawn + numToSpawn
+		end
 		--print("after1",caster.numToSpawn)
 	elseif numToSpawn ~= 0 then
 		--print("before2",caster.numToSpawn)
-		caster.numToSpawn = caster.numToSpawn + numToSpawn
+		if remove == true then
+			caster.numToRemove = caster.numToRemove + numToSpawn
+		else
+			caster.numToSpawn = caster.numToSpawn + numToSpawn
+		end
 		--print("after2",caster.numToSpawn)
 		return 1
 	end
@@ -137,11 +145,17 @@ function DoTailSpawn(caster,numToSpawn)
 				CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 
 				caster.numToSpawn = caster.numToSpawn - 1
+
+				if caster.numToRemove ~= 0 then
+					SegmentBombWorker(caster,caster.numToRemove)
+					caster.numToRemove = 0
+				end
+
 				if caster.numToSpawn <= 0 then
 					caster.isSpawning = false
 					return 1
 				else
-					return DoTailSpawn(caster,0)
+					return DoTailSpawn(caster,0,false)
 				end
 			end )
 
@@ -193,6 +207,41 @@ function PopupGrowth(caster, num)
 	local digits = 1 + #tostring(num)
 
 	ParticleManager:SetParticleControl(pidx, 1, Vector(0, num, 0))
+    ParticleManager:SetParticleControl(pidx, 2, Vector(lifetime, digits, 0))
+    ParticleManager:SetParticleControl(pidx, 3, color)
+end
+
+function SegmentBombWorker (hero,segmentsToRemove)
+	local newLength = hero.tailLength - segmentsToRemove
+
+ 	print("tail length: ", hero.tailLength)
+ 	print("newLength: ", newLength)
+
+ 	if hero.tailLength ~= nil and hero.tailLength > 0 then
+ 		for i= hero.tailLength+1, newLength+2, -1 do
+ 			hero:EmitSound("Hero_Techies.RemoteMine.Detonate")
+ 			local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_techies/techies_remote_mines_detonate_base.vpcf", PATTACH_ABSORIGIN_FOLLOW, hero.followUnits[i] )
+			ParticleManager:SetParticleControl( nFXIndex, 0, hero.followUnits[i]:GetAbsOrigin() )
+			ParticleManager:ReleaseParticleIndex( nFXIndex )
+			hero.followUnits[i]:ForceKill(true)
+			table.remove(hero.followUnits)
+		end
+			hero.tailLength = newLength
+			CWormWarGameMode.TailLengths[hero:GetTeamNumber()] = newLength
+
+			PopupLoss(hero, segmentsToRemove)
+ 	end	
+end
+
+
+function PopupLoss(hero, num)
+	local pfxPath = "particles/msg_fx/msg_damage.vpcf"
+	local pidx = ParticleManager:CreateParticle(pfxPath, PATTACH_OVERHEAD_FOLLOW, hero)
+	local color = Vector(240,14,14)
+	local lifetime = 3.0
+	local digits = 1 + #tostring(num)
+
+	ParticleManager:SetParticleControl(pidx, 1, Vector(1, num, 0))
     ParticleManager:SetParticleControl(pidx, 2, Vector(lifetime, digits, 0))
     ParticleManager:SetParticleControl(pidx, 3, color)
 end

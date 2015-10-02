@@ -1,6 +1,6 @@
 --[[ events.lua ]]
 
-require("tail_growth")
+require( "tail_growth" )
 ---------------------------------------------------------------------------
 -- Event: Game state change handler
 ---------------------------------------------------------------------------
@@ -128,6 +128,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
 
 	hero.dest = nil
 	hero.numToSpawn = 0
+	hero.numToRemove = 0
 end
 
 
@@ -173,7 +174,7 @@ function CWormWarGameMode:OnItemPickUp( event )
 	local item = EntIndexToHScript( event.ItemEntityIndex )
 	local owner = EntIndexToHScript( event.HeroEntityIndex )
 	
-	local r = RandomInt(1, 9)
+	local r = 1
 	local powerUp = ""
 	
 	print("Random num: ", r)
