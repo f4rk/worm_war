@@ -174,7 +174,7 @@ function CWormWarGameMode:OnItemPickUp( event )
 	local item = EntIndexToHScript( event.ItemEntityIndex )
 	local owner = EntIndexToHScript( event.HeroEntityIndex )
 	
-	local r = 1
+	local r = RandomInt(1, 9)
 	local powerUp = ""
 	
 	print("Random num: ", r)
