@@ -255,6 +255,7 @@ function CWormWarGameMode:OnEntityKilled( event )
 			TailSpawn(hero, killedUnit, killedTail)
 			
 			hero.totalSegKilled = hero.totalSegKilled + killedTail
+			print("segments_killed", "player_" .. tostring(hero:GetPlayerOwnerID()))
 			CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(hero:GetPlayerOwnerID()), {value = hero.totalSegKilled} )
 
 			

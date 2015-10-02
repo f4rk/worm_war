@@ -11,12 +11,17 @@ function SegmentBomb (keys)
 				 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
 				 	local segmentsToRemove = math.ceil(hero.tailLength/10)
 
+				 	hero.totalSegLost = hero.totalSegLost + segmentsToRemove
+				 	CustomNetTables:SetTableValue( "segments_lost", "player_" .. tostring(hero:GetPlayerOwnerID()), {value = hero.totalSegLost} )
+
+				 	caster.totalSegKilled = hero.totalSegKilled + segmentsToRemove
 
 				 	DoTailSpawn(hero,segmentsToRemove,true)
 				 end
 		end
 	end
 	
+	CustomNetTables:SetTableValue( "segments_killed", "player_" .. tostring(caster:GetPlayerOwnerID()), {value = caster.totalSegKilled} )
 	-- local tail_growth_event =
 	-- {
 	-- 	tail_lengths = CWormWarGameMode.TailLengths,
