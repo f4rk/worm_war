@@ -5,7 +5,7 @@ function SegmentBomb (keys)
 
 	caster:EmitSound("Hero_Techies.RemoteMine.Detonate")
 	for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
-		if i ~= caster:GetTeamNumber() then
+		if i ~= caster:GetTeamNumber() or i == caster:GetTeamNumber() then
 				 local playerID = PlayerResource:GetNthPlayerIDOnTeam(i, 1)
 				 if PlayerResource:IsValidPlayerID(playerID) then
 				 	local hero = PlayerResource:GetSelectedHeroEntity(playerID)
@@ -17,12 +17,12 @@ function SegmentBomb (keys)
 		end
 	end
 	
-	local tail_growth_event =
-	{
-		tail_lengths = CWormWarGameMode.TailLengths,
-	}
-	CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
+	-- local tail_growth_event =
+	-- {
+	-- 	tail_lengths = CWormWarGameMode.TailLengths,
+	-- }
+	-- CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 
-	caster:RemoveAbility("segment_bomb")
+	-- caster:RemoveAbility("segment_bomb")
 
 end

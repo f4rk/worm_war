@@ -68,20 +68,32 @@ function DoTailSpawn(caster,numToSpawn,remove)
 	--print(GetSystemTime())
 
 
-	if caster.isSpawning == nil or caster.isSpawning == false then
-		caster.isSpawning = true
+	if caster.isSpawning == nil or caster.isSpawning == false then	
 		--print("before1",caster.numToSpawn)
+		caster.isSpawning = true
 		if remove == true then
+			-- print("not spawning: remove")
 			caster.numToRemove = caster.numToRemove + numToSpawn
+			SegmentBombWorker(caster)
+			PopupLoss(caster,numToSpawn)
+			caster.numToRemove = 0
+			if caster.numToSpawn == 0 then
+				caster.isSpawning = false
+				return 1
+			end
 		else
+			-- print("not spawning: add")
 			caster.numToSpawn = caster.numToSpawn + numToSpawn
 		end
 		--print("after1",caster.numToSpawn)
 	elseif numToSpawn ~= 0 then
 		--print("before2",caster.numToSpawn)
 		if remove == true then
+			-- print("spawning: remove")
 			caster.numToRemove = caster.numToRemove + numToSpawn
+			PopupLoss(caster,numToSpawn)
 		else
+			-- print("not spawning: add")
 			caster.numToSpawn = caster.numToSpawn + numToSpawn
 		end
 		--print("after2",caster.numToSpawn)
@@ -126,17 +138,22 @@ function DoTailSpawn(caster,numToSpawn,remove)
 				hBug:SetOwner( caster )
 				hBug:SetAcquisitionRange(0)
 
-
-				local hBuff = caster:FindModifierByName( "modifier_tail_growth_datadriven" )
-				if hBuff ~= nil then
-					hBuff:SetStackCount( caster.tailLength )
+				if caster.numToRemove ~= 0 then
+					SegmentBombWorker(caster,numToSpawn)
+					caster.numToRemove = 0
 				end
+
 
 				ExecuteOrderFromTable({
 					UnitIndex = hBug:GetEntityIndex(),
 					OrderType = DOTA_UNIT_ORDER_MOVE_TO_TARGET,
 					TargetIndex = toFollow:GetEntityIndex(),
 					Queue = true})
+
+				local hBuff = caster:FindModifierByName( "modifier_tail_growth_datadriven" )
+				if hBuff ~= nil then
+					hBuff:SetStackCount( caster.tailLength )
+				end
 
 				local tail_growth_event =
 				{
@@ -145,11 +162,6 @@ function DoTailSpawn(caster,numToSpawn,remove)
 				CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
 
 				caster.numToSpawn = caster.numToSpawn - 1
-
-				if caster.numToRemove ~= 0 then
-					SegmentBombWorker(caster,caster.numToRemove)
-					caster.numToRemove = 0
-				end
 
 				if caster.numToSpawn <= 0 then
 					caster.isSpawning = false
@@ -211,8 +223,8 @@ function PopupGrowth(caster, num)
     ParticleManager:SetParticleControl(pidx, 3, color)
 end
 
-function SegmentBombWorker (hero,segmentsToRemove)
-	local newLength = hero.tailLength - segmentsToRemove
+function SegmentBombWorker (hero)
+	local newLength = hero.tailLength - hero.numToRemove
 
  	print("tail length: ", hero.tailLength)
  	print("newLength: ", newLength)
@@ -225,11 +237,21 @@ function SegmentBombWorker (hero,segmentsToRemove)
 			ParticleManager:ReleaseParticleIndex( nFXIndex )
 			hero.followUnits[i]:ForceKill(true)
 			table.remove(hero.followUnits)
+			newLength = hero.tailLength - hero.numToRemove
 		end
-			hero.tailLength = newLength
-			CWormWarGameMode.TailLengths[hero:GetTeamNumber()] = newLength
+		hero.tailLength = newLength
+		CWormWarGameMode.TailLengths[hero:GetTeamNumber()] = newLength
 
-			PopupLoss(hero, segmentsToRemove)
+		local hBuff = hero:FindModifierByName( "modifier_tail_growth_datadriven" )
+		if hBuff ~= nil then
+			hBuff:SetStackCount( hero.tailLength )
+		end
+
+		local tail_growth_event =
+		{
+			tail_lengths = CWormWarGameMode.TailLengths,
+		}
+		CustomGameEventManager:Send_ServerToAllClients( "tail_growth_event", tail_growth_event )
  	end	
 end
 
