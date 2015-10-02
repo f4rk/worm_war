@@ -228,13 +228,13 @@ function CWormWarGameMode:OnEntityKilled( event )
 		--print("hero: ", hero)
 		print("heroTeam: ", GetTeamName(heroTeam))
 
-		if(killedUnit.totalSegLost == nil) then
+		if (killedUnit.totalSegLost == nil) then
 			killedUnit.totalSegLost = 0
 		end
 
 		if hero ~= nil then
 			if(hero.totalSegKilled == nil) then
-				killedUnit.totalSegKilled = 0
+				hero.totalSegKilled = 0
 			end
 		end
 
