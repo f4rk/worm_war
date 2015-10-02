@@ -77,6 +77,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     	hero:SetForwardVector(direction) 
 
     	hero:SetAbilityPoints(0)
+    	--hero:FindAbilityByName("death_aura"):SetLevel(1)
     	hero:FindAbilityByName("devour_aura"):SetLevel(1)
     	hero:FindAbilityByName("tail_growth"):SetLevel(1)
 		hero:FindAbilityByName("worm_war_phase"):SetLevel(1)

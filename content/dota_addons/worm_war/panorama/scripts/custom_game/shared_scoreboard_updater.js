@@ -360,8 +360,12 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
 	
 	if(Game.GetGameWinner() != 5)
 	{
-		var winningPlayer = Game.GetPlayerIDsOnTeam( Game.GetGameWinner() );
-		tailLengths[Game.GetGameWinner()[0]] =   Players.GetGold(winningPlayer[0]);
+		var winningTeam = Game.GetGameWinner();
+		var winningPlayer = Game.GetPlayerIDsOnTeam( winningTeam );
+		var playerID = winningPlayer[0];
+		var playerInfo = Game.GetPlayerInfo( playerID );	
+		var goldValue = playerInfo.player_gold;
+		tailLengths[winningTeam] = goldValue;
 
 	}
 

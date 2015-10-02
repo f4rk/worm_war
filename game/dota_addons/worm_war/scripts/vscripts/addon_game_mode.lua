@@ -182,6 +182,9 @@ function CWormWarGameMode:InitGameMode()
 
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 1 )
 
+	CWormWarGameMode.HeroSpawns = {}
+	CWormWarGameMode.HeroSpawns = Entities:FindAllByClassname("info_player_start_dota") 
+
 	--- Spawn initial Food
 	for i = 1, self.FOOD_LIMIT do
 		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_sheep", false )
@@ -202,8 +205,8 @@ function CWormWarGameMode:InitGameMode()
 		CWormWarGameMode:SpawnFoodEntity("npc_dota_creature_fire_elemental", true )
 	end
 
-
 	CWormWarGameMode.TailLengths = {}
+
 	for i = DOTA_TEAM_GOODGUYS, DOTA_TEAM_CUSTOM_8 do
    		CWormWarGameMode.TailLengths[i] = 0
 	end
@@ -322,7 +325,7 @@ function CWormWarGameMode:MovementThink()
 			entity:MoveToPosition(newMoveLocation)
 		end
 	end
-	return 0.1
+	return 0.01
 end
 
 function CWormWarGameMode:RoamingThink()
@@ -416,8 +419,8 @@ function CWormWarGameMode:UpdateScoreboard()
 	local sortedTeams = {}
 	for _, team in pairs( self.m_GatheredShuffledTeams ) do
 		local tScore = 0
-		if self.TailLengths[team] ~= nil then
-			tScore = self.TailLengths[team]
+		if CWormWarGameMode.TailLengths[team] ~= nil then
+			tScore = CWormWarGameMode.TailLengths[team]
 		end
 		table.insert( sortedTeams, { teamID = team, teamScore = tScore } )
 	end
@@ -527,23 +530,42 @@ end
 -- Event: Spawn Sheep
 ---------------------------------------------------------------------------
 function CWormWarGameMode:SpawnFoodLocation(centre)
-	local r1 = RandomInt( -40, 40 )
-	local r2 = RandomInt( -40, 40 )
-	local xpos = 0
-	local ypos = 0
-	
-	--print(centre)
-	if centre then
-		xpos = r1*50; -- Coordinates within centre of arena
-		ypos = r2*50;
-	else
-		xpos = r1*100; -- Coordinates within arena (depends on map size)
-		ypos = r2*100;
-	end
+	local goodSpawn = false
 
-	local spawnPoint = Vector(xpos, ypos, 0)
-	--print("sheep position: " .. xpos..", ".. ypos)
-	return spawnPoint
+	while goodSpawn == false do
+		
+		goodSpawn = true
+
+		local r1 = RandomInt( -40, 40 )
+		local r2 = RandomInt( -40, 40 )
+		local xpos = 0
+		local ypos = 0
+	
+		if centre then
+			xpos = r1*50; -- Coordinates within centre of arena
+			ypos = r2*50;
+		else
+			xpos = r1*100; -- Coordinates within arena (depends on map size)
+			ypos = r2*100;
+		end
+
+		local spawnPoint = Vector(xpos, ypos, 0)
+
+		for i = 1, #CWormWarGameMode.HeroSpawns do
+			local heroSpawn = CWormWarGameMode.HeroSpawns[i]:GetAbsOrigin()
+			local dist = spawnPoint - heroSpawn
+
+			if dist:Length2D() < 300 then
+				goodSpawn = false
+				print("BAD SHEEP SPAWN: ", dist:Length2D())
+				break
+			end
+		end
+		print("Good sheep pos")
+		if goodSpawn then
+			return spawnPoint
+		end	
+	end
 end
 
 function CWormWarGameMode:SpawnFoodEntity(foodType, centre)
