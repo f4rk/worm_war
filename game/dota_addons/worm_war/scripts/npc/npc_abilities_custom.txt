@@ -305,7 +305,7 @@
 
     	"precache"
 		{
-			"particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf"
+			"particle" 	"particles/units/heroes/hero_omniknight/omniknight_repel_buff.vpcf"
 		}
 
 		"AbilitySpecial"

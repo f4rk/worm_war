@@ -555,7 +555,7 @@ function CWormWarGameMode:SpawnFoodLocation(centre)
 			local heroSpawn = CWormWarGameMode.HeroSpawns[i]:GetAbsOrigin()
 			local dist = spawnPoint - heroSpawn
 
-			if dist:Length2D() < 600 then
+			if dist:Length2D() < 450 then
 				goodSpawn = false
 				print("BAD SHEEP SPAWN: ", dist:Length2D())
 				break

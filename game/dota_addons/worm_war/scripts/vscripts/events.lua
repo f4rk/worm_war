@@ -63,6 +63,7 @@ function CWormWarGameMode:OnNPCSpawned(keys)
     local hero = EntIndexToHScript(keys.entindex)
     
     if hero:IsHero() then
+    	print("Hero: ", hero)
     	TailCleanup(hero)
     	local player = hero:GetOwnerEntity()
 	    local teamN = player:GetTeamNumber()
